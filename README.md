@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Nrityasana
 
 Nrityasana is a calm practice companion for yoga and Indian classical dance. It combines movement sessions, daily intentions, practice tracking, and a small Java API.
@@ -29,3 +30,6 @@ flutter run
 ```
 
 The client currently uses local seed data so it is useful offline. Set `apiBaseUrl` in `lib/core/api_client.dart` when connecting it to the Java API.
+=======
+# nrityasana
+>>>>>>> 34a76c742084c6e808eb034594364833619a7656
