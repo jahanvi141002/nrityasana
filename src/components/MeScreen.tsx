@@ -81,7 +81,7 @@ export const MeScreen: React.FC<MeScreenProps> = ({
   };
 
   return (
-    <div id="me-screen" className="pb-24 pt-8 px-4 sm:px-6 max-w-2xl mx-auto">
+    <div id="me-screen" className="pb-28 pt-8 px-4 sm:px-6 max-w-2xl mx-auto">
       {/* Hidden File Input */}
       <input
         ref={fileInputRef}
@@ -96,7 +96,7 @@ export const MeScreen: React.FC<MeScreenProps> = ({
         <div className="flex items-center gap-4">
           <div
             onClick={onOpenProfile}
-            className="w-14 h-14 rounded-full bg-[#D9A28C] flex items-center justify-center font-bold text-[#4C2921] text-2xl shadow-xs overflow-hidden cursor-pointer"
+            className="w-14 h-14 rounded-full bg-[#781D32] flex items-center justify-center font-bold text-white text-2xl shadow-xs overflow-hidden cursor-pointer ring-2 ring-[#781D32]/20"
           >
             {session.profilePictureUrl ? (
               <img src={session.profilePictureUrl} alt="Avatar" className="w-full h-full object-cover" />
@@ -105,15 +105,15 @@ export const MeScreen: React.FC<MeScreenProps> = ({
             )}
           </div>
           <div>
-            <h1 className="font-serif text-3xl font-bold text-[#201C1A]">Me</h1>
-            <p className="text-xs text-[#75685F] mt-0.5">{session.email}</p>
+            <h1 className="font-serif text-3xl font-bold text-[#1F161A]">Me</h1>
+            <p className="text-xs text-[#7D6D73] mt-0.5">{session.email}</p>
           </div>
         </div>
 
         <button
           onClick={onOpenProfile}
           title="Profile settings"
-          className="p-2.5 rounded-full hover:bg-black/5 text-[#5F554D] hover:text-[#201C1A] transition cursor-pointer"
+          className="p-2.5 rounded-full hover:bg-black/5 text-[#6B5C62] hover:text-[#1F161A] transition cursor-pointer"
         >
           <Settings className="w-5 h-5" />
         </button>
@@ -121,8 +121,8 @@ export const MeScreen: React.FC<MeScreenProps> = ({
 
       {/* Your Moments */}
       <div className="mb-8">
-        <h2 className="font-serif text-xl font-bold text-[#201C1A]">Your moments</h2>
-        <p className="text-xs sm:text-sm text-[#5F554D] mt-1 leading-relaxed">
+        <h2 className="font-serif text-xl font-bold text-[#1F161A]">Your moments</h2>
+        <p className="text-xs sm:text-sm text-[#6B5C62] mt-1 leading-relaxed">
           Keep the movement, the progress, and the little wins that belong to you.
         </p>
 
@@ -131,34 +131,34 @@ export const MeScreen: React.FC<MeScreenProps> = ({
           <button
             onClick={() => triggerPicker('image/*')}
             disabled={isUploading}
-            className="py-3 px-4 rounded-xl border border-[#DDD3C7] bg-white/70 hover:bg-white text-[#201C1A] font-medium text-xs sm:text-sm flex items-center justify-center gap-2 transition cursor-pointer shadow-2xs"
+            className="py-3 px-4 rounded-xl border border-[#F2E6E2] bg-white/80 hover:bg-white text-[#1F161A] font-medium text-xs sm:text-sm flex items-center justify-center gap-2 transition cursor-pointer shadow-2xs"
           >
-            <Camera className="w-4 h-4 text-[#B8543F]" />
+            <Camera className="w-4 h-4 text-[#781D32]" />
             Photo
           </button>
           <button
             onClick={() => triggerPicker('video/*')}
             disabled={isUploading}
-            className="py-3 px-4 rounded-xl border border-[#DDD3C7] bg-white/70 hover:bg-white text-[#201C1A] font-medium text-xs sm:text-sm flex items-center justify-center gap-2 transition cursor-pointer shadow-2xs"
+            className="py-3 px-4 rounded-xl border border-[#F2E6E2] bg-white/80 hover:bg-white text-[#1F161A] font-medium text-xs sm:text-sm flex items-center justify-center gap-2 transition cursor-pointer shadow-2xs"
           >
-            <Video className="w-4 h-4 text-[#B8543F]" />
+            <Video className="w-4 h-4 text-[#781D32]" />
             Video
           </button>
         </div>
 
         {/* Pending upload list */}
         {pendingQueue.length > 0 && (
-          <div className="mt-4 p-4 rounded-2xl bg-white/90 border border-[#E8DFC8] space-y-3">
-            <span className="text-xs font-semibold text-[#5F554D]">
+          <div className="mt-4 p-4 rounded-2xl bg-white/90 border border-[#F2E6E2] space-y-3">
+            <span className="text-xs font-semibold text-[#6B5C62]">
               Ready to save ({pendingQueue.length})
             </span>
             <div className="flex gap-2.5 overflow-x-auto pb-1">
               {pendingQueue.map((item, idx) => (
-                <div key={idx} className="relative w-24 h-24 rounded-xl overflow-hidden shrink-0 border border-[#DDD3C7]">
+                <div key={idx} className="relative w-24 h-24 rounded-xl overflow-hidden shrink-0 border border-[#F2E6E2]">
                   {item.type === 'photo' ? (
                     <img src={item.url} alt={item.name} className="w-full h-full object-cover" />
                   ) : (
-                    <div className="w-full h-full bg-[#201C1A] flex items-center justify-center text-[#F6D4A7]">
+                    <div className="w-full h-full bg-[#1F161A] flex items-center justify-center text-[#F59E38]">
                       <Play className="w-6 h-6" />
                     </div>
                   )}
@@ -175,7 +175,7 @@ export const MeScreen: React.FC<MeScreenProps> = ({
             <button
               onClick={handleSavePending}
               disabled={isUploading}
-              className="w-full py-2.5 px-4 rounded-xl bg-[#B8543F] hover:bg-[#A3432F] text-white font-medium text-xs sm:text-sm flex items-center justify-center gap-2 transition shadow-xs cursor-pointer"
+              className="w-full py-2.5 px-4 rounded-xl bg-[#781D32] hover:bg-[#641427] text-white font-medium text-xs sm:text-sm flex items-center justify-center gap-2 transition shadow-xs cursor-pointer"
             >
               <Upload className="w-4 h-4" />
               {isUploading ? 'Uploading...' : 'Save to my gallery'}
@@ -193,15 +193,15 @@ export const MeScreen: React.FC<MeScreenProps> = ({
 
       {/* Saved Media Gallery */}
       <div>
-        <h2 className="font-serif text-xl font-bold text-[#201C1A] mb-3.5">
+        <h2 className="font-serif text-xl font-bold text-[#1F161A] mb-3.5">
           Saved media
         </h2>
 
         {media.length === 0 ? (
-          <div className="p-8 text-center bg-white/65 rounded-[22px] border border-[#E8DFC8]">
-            <ImageIcon className="w-8 h-8 text-[#B8543F] mx-auto mb-2" />
-            <h3 className="font-semibold text-sm text-[#332B27]">Your gallery is waiting</h3>
-            <p className="text-xs text-[#75685F] mt-1">
+          <div className="p-8 text-center bg-white/70 rounded-[22px] border border-[#F2E6E2]">
+            <ImageIcon className="w-8 h-8 text-[#781D32] mx-auto mb-2" />
+            <h3 className="font-semibold text-sm text-[#1F161A]">Your gallery is waiting</h3>
+            <p className="text-xs text-[#7D6D73] mt-1">
               Add a photo or video from your practice.
             </p>
           </div>
@@ -211,7 +211,7 @@ export const MeScreen: React.FC<MeScreenProps> = ({
               <div
                 key={item.id}
                 onClick={() => setSelectedPreviewItem(item)}
-                className="group relative aspect-square rounded-[20px] overflow-hidden bg-[#201C1A] shadow-2xs border border-[#E8DFC8]/70 cursor-pointer"
+                className="group relative aspect-square rounded-[20px] overflow-hidden bg-[#1F161A] shadow-2xs border border-[#F2E6E2] cursor-pointer"
               >
                 {item.type === 'photo' ? (
                   <img
@@ -220,7 +220,7 @@ export const MeScreen: React.FC<MeScreenProps> = ({
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 ) : (
-                  <div className="w-full h-full bg-[#201C1A] flex flex-col items-center justify-center text-[#F6D4A7] p-3">
+                  <div className="w-full h-full bg-[#1F161A] flex flex-col items-center justify-center text-[#F59E38] p-3">
                     <Play className="w-8 h-8 group-hover:scale-110 transition-transform" />
                   </div>
                 )}
@@ -237,7 +237,7 @@ export const MeScreen: React.FC<MeScreenProps> = ({
       {/* Lightbox / Media Viewer Modal */}
       {selectedPreviewItem && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs">
-          <div className="relative max-w-lg w-full bg-[#201C1A] rounded-[24px] overflow-hidden shadow-2xl p-4 flex flex-col items-center">
+          <div className="relative max-w-lg w-full bg-[#1F161A] rounded-[24px] overflow-hidden shadow-2xl p-4 flex flex-col items-center border border-white/10">
             <button
               onClick={() => setSelectedPreviewItem(null)}
               className="absolute top-4 right-4 p-2 rounded-full bg-black/40 hover:bg-black/60 text-white transition cursor-pointer"
@@ -254,14 +254,14 @@ export const MeScreen: React.FC<MeScreenProps> = ({
                 />
               ) : (
                 <div className="p-12 text-center text-white">
-                  <Play className="w-16 h-16 text-[#F6D4A7] mx-auto mb-3" />
+                  <Play className="w-16 h-16 text-[#F59E38] mx-auto mb-3" />
                   <p className="text-sm font-semibold">{selectedPreviewItem.name}</p>
-                  <p className="text-xs text-[#C5B8AE] mt-1">Movement practice recording</p>
+                  <p className="text-xs text-[#F9D2DF] mt-1">Movement practice recording</p>
                 </div>
               )}
             </div>
 
-            <p className="text-xs text-[#C5B8AE] mt-4 self-start px-2">
+            <p className="text-xs text-[#F9D2DF] mt-4 self-start px-2">
               {selectedPreviewItem.name}
             </p>
           </div>

@@ -64,16 +64,16 @@ export const ActivePracticeModal: React.FC<ActivePracticeModalProps> = ({ practi
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
       <div className="bg-[#201C1A] text-white w-full max-w-lg rounded-[28px] overflow-hidden shadow-2xl border border-[#4C423A] flex flex-col">
         {/* Header */}
-        <div className="p-6 border-b border-[#332B27] flex items-center justify-between">
+        <div className="p-6 border-b border-white/10 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-[#B8543F] flex items-center justify-center shadow-md">
+            <div className="w-12 h-12 rounded-2xl bg-[#781D32] flex items-center justify-center shadow-md border border-white/15">
               {renderIcon()}
             </div>
             <div>
-              <span className="text-[10px] font-bold tracking-widest text-[#F6D4A7] uppercase">
+              <span className="text-[10px] font-bold tracking-widest text-[#F59E38] uppercase">
                 {practice.discipline} • {practice.category}
               </span>
-              <h2 className="font-serif text-xl font-bold">{practice.title}</h2>
+              <h2 className="font-serif text-xl font-bold text-white">{practice.title}</h2>
             </div>
           </div>
           <button
@@ -85,57 +85,57 @@ export const ActivePracticeModal: React.FC<ActivePracticeModalProps> = ({ practi
         </div>
 
         {/* Timer & Visual Pulse */}
-        <div className="p-8 text-center bg-gradient-to-b from-[#201C1A] to-[#2B2523]">
-          <div className="text-5xl font-mono font-bold tracking-wider text-[#F6D4A7] mb-2">
+        <div className="p-8 text-center bg-gradient-to-b from-[#1F161A] to-[#2B1B22]">
+          <div className="text-5xl font-mono font-bold tracking-wider text-[#F59E38] mb-2">
             {formatTime(secondsLeft)}
           </div>
-          <p className="text-xs text-[#C5B8AE]">
+          <p className="text-xs text-[#F9D2DF]">
             {isPlaying ? 'Session in motion' : secondsLeft === 0 ? 'Session completed' : 'Paused'}
           </p>
 
           {/* Progress bar */}
-          <div className="w-full bg-[#4C423A] h-2 rounded-full overflow-hidden mt-6">
+          <div className="w-full bg-black/40 h-2 rounded-full overflow-hidden mt-6">
             <div
-              className="bg-[#B8543F] h-full transition-all duration-300 rounded-full"
+              className="bg-gradient-to-r from-[#E25B88] to-[#F59E38] h-full transition-all duration-300 rounded-full"
               style={{ width: `${progressPercent}%` }}
             />
           </div>
         </div>
 
         {/* Step Guide */}
-        <div className="p-6 bg-[#1A1615] flex-1">
-          <div className="flex items-center justify-between text-xs text-[#C5B8AE] mb-3">
-            <span className="font-semibold uppercase tracking-wider text-[#F6D4A7]">
+        <div className="p-6 bg-[#181014] flex-1">
+          <div className="flex items-center justify-between text-xs text-[#F9D2DF] mb-3">
+            <span className="font-semibold uppercase tracking-wider text-[#F59E38]">
               Step {currentStepIndex + 1} of {steps.length}
             </span>
             <div className="flex gap-1">
               <button
                 disabled={currentStepIndex === 0}
                 onClick={() => setCurrentStepIndex((prev) => prev - 1)}
-                className="p-1 rounded bg-[#2B2523] disabled:opacity-30 hover:bg-[#3B3330] cursor-pointer"
+                className="p-1 rounded bg-[#2B1B22] disabled:opacity-30 hover:bg-[#3B2530] text-white cursor-pointer"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
               <button
                 disabled={currentStepIndex === steps.length - 1}
                 onClick={() => setCurrentStepIndex((prev) => prev + 1)}
-                className="p-1 rounded bg-[#2B2523] disabled:opacity-30 hover:bg-[#3B3330] cursor-pointer"
+                className="p-1 rounded bg-[#2B1B22] disabled:opacity-30 hover:bg-[#3B2530] text-white cursor-pointer"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>
           </div>
 
-          <div className="p-4 rounded-xl bg-[#27211F] border border-[#3A322F] text-sm text-[#F0EAE1] leading-relaxed min-h-[85px] flex items-center">
+          <div className="p-4 rounded-xl bg-[#25171D] border border-white/10 text-sm text-[#FAF3F0] leading-relaxed min-h-[85px] flex items-center">
             {steps[currentStepIndex]}
           </div>
         </div>
 
         {/* Controls */}
-        <div className="p-6 border-t border-[#332B27] flex items-center justify-between gap-4">
+        <div className="p-6 border-t border-white/10 flex items-center justify-between gap-4">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            className="flex-1 py-3 px-4 rounded-xl bg-[#F6D4A7] hover:bg-[#EAC89B] text-[#51261E] font-semibold text-sm flex items-center justify-center gap-2 transition cursor-pointer"
+            className="flex-1 py-3 px-4 rounded-xl bg-[#781D32] hover:bg-[#641427] text-white font-semibold text-sm flex items-center justify-center gap-2 transition cursor-pointer shadow-xs"
           >
             {isPlaying ? (
               <>
@@ -150,7 +150,7 @@ export const ActivePracticeModal: React.FC<ActivePracticeModalProps> = ({ practi
 
           <button
             onClick={onComplete}
-            className="py-3 px-5 rounded-xl bg-[#B8543F] hover:bg-[#A3432F] text-white font-medium text-sm flex items-center gap-2 transition cursor-pointer"
+            className="py-3 px-5 rounded-xl bg-gradient-to-r from-[#E25B88] to-[#B82B5A] hover:brightness-110 text-white font-medium text-sm flex items-center gap-2 transition cursor-pointer shadow-xs"
           >
             <CheckCircle2 className="w-4 h-4" /> Complete
           </button>

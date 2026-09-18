@@ -107,23 +107,47 @@ export const INITIAL_CLASSES: LiveClass[] = [
 export const INITIAL_CONTACTS: ChatContact[] = [
   {
     id: 'u-admin',
-    email: 'admin@nrityasana.com',
-    role: 'ADMIN'
-  },
-  {
-    id: 'u-priya',
-    email: 'priya.sharma@nrityasana.com',
-    role: 'USER'
+    email: 'guru.meera@nrityasana.com',
+    role: 'ADMIN',
+    name: 'Guru Meera',
+    phone: '+919876543210',
+    avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
+    isOnline: true,
+    lastSeen: 'Online',
+    statusText: 'Teaching Bharatanatyam & Odissi 🪷'
   },
   {
     id: 'u-radhika',
     email: 'radhika.dance@nrityasana.com',
-    role: 'ADMIN'
+    role: 'ADMIN',
+    name: 'Acharya Radhika',
+    phone: '+919823456789',
+    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80',
+    isOnline: true,
+    lastSeen: 'Online',
+    statusText: 'Pranayama & Spine Flow 🌿'
+  },
+  {
+    id: 'u-priya',
+    email: 'priya.sharma@nrityasana.com',
+    role: 'USER',
+    name: 'Priya Sharma',
+    phone: '+919123456780',
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
+    isOnline: false,
+    lastSeen: 'today at 10:45 AM',
+    statusText: 'Practice makes devotion ✨'
   },
   {
     id: 'u-vikram',
     email: 'vikram.yoga@nrityasana.com',
-    role: 'USER'
+    role: 'USER',
+    name: 'Vikram Joshi',
+    phone: '+919811122233',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+    isOnline: false,
+    lastSeen: 'yesterday at 8:15 PM',
+    statusText: 'Yoga practitioner | Mindful breath 🧘'
   }
 ];
 
@@ -131,12 +155,14 @@ export const INITIAL_MESSAGES: ChatMessage[] = [
   {
     id: 'm1',
     senderId: 'u-admin',
-    email: 'admin@nrityasana.com',
+    email: 'guru.meera@nrityasana.com',
     role: 'ADMIN',
     recipientId: 'u-current',
     recipientEmail: 'ananya@nrityasana.com',
     text: 'Namaste Ananya! Welcome to Nrityasana. How is your Aramandi posture feeling this week?',
-    sentAt: new Date(Date.now() - 1000 * 60 * 60 * 4).toISOString()
+    sentAt: new Date(Date.now() - 1000 * 60 * 60 * 4).toISOString(),
+    type: 'text',
+    status: 'read'
   },
   {
     id: 'm2',
@@ -144,19 +170,25 @@ export const INITIAL_MESSAGES: ChatMessage[] = [
     email: 'ananya@nrityasana.com',
     role: 'USER',
     recipientId: 'u-admin',
-    recipientEmail: 'admin@nrityasana.com',
-    text: 'Namaste! The ankle warmups have been helping a lot with knee stabilization.',
-    sentAt: new Date(Date.now() - 1000 * 60 * 60 * 3).toISOString()
+    recipientEmail: 'guru.meera@nrityasana.com',
+    text: 'Namaste Guru ji! The ankle warmups have been helping tremendously with knee stabilization during Surya Namaskar.',
+    sentAt: new Date(Date.now() - 1000 * 60 * 60 * 3).toISOString(),
+    type: 'text',
+    status: 'read'
   },
   {
     id: 'm3',
     senderId: 'u-admin',
-    email: 'admin@nrityasana.com',
+    email: 'guru.meera@nrityasana.com',
     role: 'ADMIN',
     recipientId: 'u-current',
     recipientEmail: 'ananya@nrityasana.com',
-    text: 'Wonderful! Remember to keep the weight evenly distributed between balls of the feet and heels during turns.',
-    sentAt: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString()
+    text: 'Wonderful! Listen to this gentle guidance for wrist mudras in your morning practice:',
+    sentAt: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
+    type: 'voice',
+    voiceDuration: 14,
+    status: 'read',
+    fromWhatsApp: true
   }
 ];
 

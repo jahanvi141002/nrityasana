@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sparkles, Bell, Play, Pause, ArrowRight, Sun, Footprints, Flower2 } from 'lucide-react';
+import { Play, Pause, ArrowRight, Footprints, Flower2, Sparkles } from 'lucide-react';
 import { Practice, UserSession } from '../types';
 
 interface HomeScreenProps {
@@ -8,19 +8,22 @@ interface HomeScreenProps {
   onOpenProfile: () => void;
   onSelectPractice: (practice: Practice) => void;
   onExploreMore: () => void;
+  primaryColor?: string;
+  secondaryColor?: string;
 }
 
 export const HomeScreen: React.FC<HomeScreenProps> = ({
   session,
   practices,
-  onOpenProfile,
+  onOpenProfile: _onOpenProfile,
   onSelectPractice,
   onExploreMore,
+  primaryColor = '#B8543F',
+  secondaryColor = '#F6D4A7',
 }) => {
   const [selectedFilter, setSelectedFilter] = useState<'All' | 'Yoga' | 'Dance'>('All');
   const [isFeaturedActive, setIsFeaturedActive] = useState(false);
 
-  const initial = session.email ? session.email.charAt(0).toUpperCase() : 'A';
   const userName = session.email ? session.email.split('@')[0] : 'Ananya';
   const capitalizedUserName = userName.charAt(0).toUpperCase() + userName.slice(1);
 
@@ -46,65 +49,33 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 
   const renderDisciplineIcon = (discipline: string) => {
     if (discipline === 'Yoga') {
-      return <Flower2 className="w-5 h-5 text-[#4C423A]" />;
+      return <Flower2 className="w-5 h-5 text-[#B86B14]" />;
     }
-    return <Footprints className="w-5 h-5 text-[#4C423A]" />;
+    return <Footprints className="w-5 h-5 text-[#B82B5A]" />;
   };
 
   return (
-    <div id="home-screen" className="pb-24 pt-6 px-4 sm:px-6 max-w-2xl mx-auto">
-      {/* Top Bar */}
-      <div className="flex items-center justify-between mb-7">
-        <div className="flex items-center gap-3">
-          <div className="w-11 h-11 bg-[#201C1A] rounded-[14px] flex items-center justify-center shadow-sm">
-            <Sparkles className="w-5 h-5 text-[#F6D4A7]" />
-          </div>
-          <span className="font-serif text-[22px] font-bold text-[#201C1A] tracking-tight">
-            nrityasana
-          </span>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <button
-            title="Notifications"
-            className="p-2 text-[#5F554D] hover:text-[#201C1A] hover:bg-black/5 rounded-full transition cursor-pointer"
-          >
-            <Bell className="w-5 h-5" />
-          </button>
-          <button
-            id="home-profile-avatar-button"
-            onClick={onOpenProfile}
-            title="Profile"
-            className="w-9 h-9 rounded-full bg-[#D9A28C] hover:ring-2 hover:ring-[#B8543F]/50 flex items-center justify-center font-bold text-[#4C2921] text-sm transition overflow-hidden shadow-xs cursor-pointer"
-          >
-            {session.profilePictureUrl ? (
-              <img src={session.profilePictureUrl} alt="Avatar" className="w-full h-full object-cover" />
-            ) : (
-              initial
-            )}
-          </button>
-        </div>
-      </div>
-
+    <div id="home-screen" className="pb-28 pt-4 px-4 sm:px-6 max-w-2xl mx-auto">
       {/* Welcome Section */}
-      <div className="mb-7">
-        <p className="text-sm font-medium text-[#75685F]">{currentDateFormatted}</p>
-        <h1 className="font-serif text-[32px] sm:text-[38px] font-bold text-[#201C1A] leading-[1.1] mt-2 tracking-tight">
+      <div className="mb-6">
+        <p className="text-xs font-semibold uppercase tracking-wider text-[#94848A]">{currentDateFormatted}</p>
+        <h1 className="font-serif text-[30px] sm:text-[36px] font-bold text-[#1F161A] leading-[1.15] mt-1.5 tracking-tight">
           Come back to your body,<br />
           {capitalizedUserName}.
         </h1>
-        <p className="mt-2.5 text-[#5F554D] text-base">
-          A little movement is still a practice.
+        <p className="mt-1.5 text-[#6B5C62] text-sm sm:text-base">
+          A little movement is still a sacred practice.
         </p>
       </div>
 
       {/* Featured Card */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-3">
-          <h2 className="font-serif text-xl font-bold text-[#201C1A]">Your practice</h2>
+          <h2 className="font-serif text-xl font-bold text-[#1F161A]">Your practice</h2>
           <button
             onClick={onExploreMore}
-            className="text-xs font-semibold text-[#B8543F] hover:underline cursor-pointer"
+            className="text-xs font-semibold hover:underline cursor-pointer transition-colors"
+            style={{ color: primaryColor }}
           >
             See all
           </button>
@@ -112,16 +83,20 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 
         <div
           id="featured-practice-card"
-          className="relative min-h-[220px] rounded-[28px] bg-[#B8543F] p-6 text-white overflow-hidden shadow-sm flex flex-col justify-between"
+          className="relative min-h-[210px] rounded-[28px] p-6 text-white overflow-hidden shadow-md flex flex-col justify-between transition-all"
+          style={{ backgroundColor: primaryColor }}
         >
-          {/* Decorative geometric background rings */}
-          <div className="absolute -right-8 -top-12 w-48 h-48 rounded-full border-[28px] border-[#F6D4A7]/25 pointer-events-none" />
-          <Sun className="absolute right-6 bottom-3 w-28 h-28 text-[#F6D4A7]/20 pointer-events-none" />
+          {/* Decorative geometric glowing ambient lights */}
+          <div className="absolute -right-8 -top-12 w-48 h-48 rounded-full bg-white/15 blur-2xl pointer-events-none" />
+          <div className="absolute right-6 bottom-0 w-36 h-36 rounded-full bg-black/15 blur-xl pointer-events-none" />
 
           {/* Tag */}
-          <div className="relative z-10">
-            <span className="inline-block px-3 py-1 rounded-full bg-white/20 text-[10px] font-bold tracking-wider uppercase text-white backdrop-blur-xs">
+          <div className="relative z-10 flex items-center gap-2">
+            <span className="inline-block px-3 py-1 rounded-full bg-white/20 text-[10px] font-bold tracking-wider uppercase text-white border border-white/20 backdrop-blur-xs">
               RECOMMENDED FOR YOU
+            </span>
+            <span className="text-xs text-white/90 flex items-center gap-1 font-medium">
+              <Sparkles className="w-3.5 h-3.5" style={{ color: secondaryColor }} /> Morning Harmony
             </span>
           </div>
 
@@ -130,18 +105,19 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             <h3 className="font-serif text-2xl sm:text-3xl font-bold text-white tracking-tight">
               Ground & glow
             </h3>
-            <p className="text-sm text-[#F8D8C4] mt-1 font-medium">
-              18 min • Gentle flow
+            <p className="text-sm text-white/85 mt-1 font-medium">
+              18 min • Gentle yoga flow & mudra breathwork
             </p>
 
-            <div className="mt-4 flex items-center gap-3">
+            <div className="mt-5 flex items-center gap-3">
               <button
                 id="featured-start-button"
                 onClick={() => {
                   setIsFeaturedActive(!isFeaturedActive);
                   onSelectPractice(featuredPractice);
                 }}
-                className="inline-flex items-center gap-2 py-2.5 px-5 rounded-full bg-[#F6D4A7] hover:bg-[#ebd0ab] text-[#51261E] font-semibold text-sm transition active:scale-98 shadow-sm cursor-pointer"
+                className="inline-flex items-center gap-2 py-2.5 px-5 rounded-full text-[#1F161A] font-semibold text-sm transition shadow-sm cursor-pointer hover:brightness-105 active:scale-98"
+                style={{ backgroundColor: secondaryColor }}
               >
                 {isFeaturedActive ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current" />}
                 {isFeaturedActive ? 'Pause practice' : 'Start practice'}
@@ -153,7 +129,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 
       {/* Made for your rhythm */}
       <div>
-        <h2 className="font-serif text-xl font-bold text-[#201C1A] mb-3.5">
+        <h2 className="font-serif text-xl font-bold text-[#1F161A] mb-3.5">
           Made for your rhythm
         </h2>
 
@@ -167,9 +143,10 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
                 onClick={() => setSelectedFilter(filter)}
                 className={`px-4 py-1.5 rounded-full text-xs font-semibold transition cursor-pointer ${
                   isSelected
-                    ? 'bg-[#B8543F] text-white shadow-xs'
-                    : 'bg-white/70 text-[#5F554D] hover:bg-white border border-[#E4DACF]'
+                    ? 'text-white shadow-xs'
+                    : 'bg-white/80 text-[#6B5C62] hover:bg-white border border-[#F2E6E2]'
                 }`}
+                style={isSelected ? { backgroundColor: primaryColor } : {}}
               >
                 {filter}
               </button>
@@ -183,28 +160,28 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             <div
               key={practice.id}
               onClick={() => onSelectPractice(practice)}
-              className="p-4 rounded-[20px] bg-white/75 hover:bg-white border border-[#E8DFC8]/60 flex items-center gap-3.5 transition-all shadow-2xs hover:shadow-xs cursor-pointer group"
+              className="p-4 rounded-[20px] bg-white/85 hover:bg-white border border-[#F2E6E2] flex items-center gap-3.5 transition-all shadow-2xs hover:shadow-xs cursor-pointer group"
             >
               <div
                 className={`w-12 h-12 rounded-[16px] flex items-center justify-center shrink-0 ${
-                  practice.discipline === 'Yoga' ? 'bg-[#DCE2C8]' : 'bg-[#F1D4C0]'
+                  practice.discipline === 'Yoga' ? 'bg-[#FEF5EA] border border-[#FCE6CA]' : 'bg-[#FDEEF3] border border-[#F9D2DF]'
                 }`}
               >
                 {renderDisciplineIcon(practice.discipline)}
               </div>
 
               <div className="flex-1 min-w-0">
-                <h4 className="font-semibold text-sm text-[#332B27] group-hover:text-[#B8543F] transition-colors truncate">
+                <h4 className="font-semibold text-sm text-[#1F161A] group-hover:text-[#781D32] transition-colors truncate">
                   {practice.title}
                 </h4>
-                <p className="text-xs text-[#75685F] mt-0.5">
+                <p className="text-xs text-[#7D6D73] mt-0.5">
                   {practice.category} • {practice.minutes} min
                 </p>
               </div>
 
               <button
                 aria-label={`Open ${practice.title}`}
-                className="p-2 text-[#75685F] group-hover:text-[#B8543F] transition-transform group-hover:translate-x-0.5 cursor-pointer"
+                className="p-2 text-[#94848A] group-hover:text-[#781D32] transition-transform group-hover:translate-x-0.5 cursor-pointer"
               >
                 <ArrowRight className="w-4 h-4" />
               </button>

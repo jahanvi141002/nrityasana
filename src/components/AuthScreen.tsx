@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Sparkles, Mail, Lock, UserCheck, ShieldCheck } from 'lucide-react';
+import { Mail, Lock, UserCheck, ShieldCheck } from 'lucide-react';
 import { UserSession } from '../types';
+import { Logo } from './Logo';
 
 interface AuthScreenProps {
   onLogin: (session: UserSession) => void;
@@ -67,28 +68,26 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLogin }) => {
   };
 
   return (
-    <div id="auth-screen" className="min-h-screen bg-[#F7F1E9] flex flex-col justify-center items-center px-6 py-12">
-      <div className="w-full max-w-[430px] bg-white/70 backdrop-blur-sm p-8 sm:p-10 rounded-[32px] border border-[#E8DFC8] shadow-sm">
-        {/* App Emblem */}
-        <div className="flex items-center justify-center mb-6">
-          <div className="w-14 h-14 bg-[#201C1A] rounded-2xl flex items-center justify-center shadow-inner">
-            <Sparkles className="w-7 h-7 text-[#F6D4A7]" />
-          </div>
+    <div id="auth-screen" className="min-h-screen bg-[#FDF8F5] flex flex-col justify-center items-center px-6 py-12">
+      <div className="w-full max-w-[430px] bg-white/85 backdrop-blur-sm p-8 sm:p-10 rounded-[32px] border border-[#F2E6E2] shadow-sm">
+        {/* App Logo Emblem */}
+        <div className="flex justify-center mb-5">
+          <Logo variant="full" size="xl" showSubtitle={false} />
         </div>
 
         {/* Heading */}
-        <div className="text-center mb-8">
-          <h1 className="font-serif text-3xl font-bold text-[#201C1A] tracking-tight">
+        <div className="text-center mb-7">
+          <h2 className="font-serif text-2xl font-bold text-[#1F161A] tracking-tight">
             {isLogin ? 'Welcome back' : 'Begin your practice'}
-          </h1>
-          <p className="mt-2 text-[#5F554D] text-sm">
+          </h2>
+          <p className="mt-1.5 text-[#6B5C62] text-sm">
             {isLogin ? 'Return to your rhythm.' : 'Create a quiet space for movement.'}
           </p>
         </div>
 
         {/* Error Alert */}
         {error && (
-          <div id="auth-error" className="mb-5 p-3 rounded-xl bg-[#FDF2F0] border border-[#F5C2BA] text-[#B8543F] text-xs font-medium">
+          <div id="auth-error" className="mb-5 p-3 rounded-xl bg-[#FDEEF3] border border-[#F9D2DF] text-[#781D32] text-xs font-medium">
             {error}
           </div>
         )}
@@ -96,11 +95,11 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLogin }) => {
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-[#5F554D] uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-semibold text-[#6B5C62] uppercase tracking-wider mb-1.5">
               Email
             </label>
             <div className="relative">
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-[#75685F]">
+              <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-[#94848A]">
                 <Mail className="w-4 h-4" />
               </span>
               <input
@@ -110,17 +109,17 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLogin }) => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="name@example.com"
-                className="w-full pl-10 pr-4 py-3 rounded-xl bg-[#F7F1E9]/60 border border-[#DDD3C7] text-[#201C1A] text-sm focus:outline-none focus:border-[#B8543F] focus:ring-1 focus:ring-[#B8543F] transition-all"
+                className="w-full pl-10 pr-4 py-3 rounded-xl bg-[#FAF3F0]/70 border border-[#EADBDA] text-[#1F161A] text-sm focus:outline-none focus:border-[#781D32] focus:ring-1 focus:ring-[#781D32] transition-all"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-[#5F554D] uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-semibold text-[#6B5C62] uppercase tracking-wider mb-1.5">
               Password
             </label>
             <div className="relative">
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-[#75685F]">
+              <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-[#94848A]">
                 <Lock className="w-4 h-4" />
               </span>
               <input
@@ -130,7 +129,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLogin }) => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-10 pr-4 py-3 rounded-xl bg-[#F7F1E9]/60 border border-[#DDD3C7] text-[#201C1A] text-sm focus:outline-none focus:border-[#B8543F] focus:ring-1 focus:ring-[#B8543F] transition-all"
+                className="w-full pl-10 pr-4 py-3 rounded-xl bg-[#FAF3F0]/70 border border-[#EADBDA] text-[#1F161A] text-sm focus:outline-none focus:border-[#781D32] focus:ring-1 focus:ring-[#781D32] transition-all"
               />
             </div>
           </div>
@@ -139,7 +138,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLogin }) => {
             id="auth-submit-button"
             type="submit"
             disabled={isBusy}
-            className="w-full py-3.5 px-4 mt-2 rounded-xl bg-[#B8543F] hover:bg-[#A3432F] active:scale-[0.99] text-white font-medium text-sm transition shadow-sm disabled:opacity-50 cursor-pointer"
+            className="w-full py-3.5 px-4 mt-2 rounded-xl bg-[#781D32] hover:bg-[#641427] active:scale-[0.99] text-white font-medium text-sm transition shadow-sm disabled:opacity-50 cursor-pointer"
           >
             {isBusy ? 'Processing...' : isLogin ? 'Sign in' : 'Create account'}
           </button>
@@ -148,10 +147,10 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLogin }) => {
         {/* Divider */}
         <div className="relative my-6">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-[#E8DFC8]"></div>
+            <div className="w-full border-t border-[#F2E6E2]"></div>
           </div>
-          <div className="relative flex justify-center text-xs text-[#75685F]">
-            <span className="bg-[#FAF6F0] px-3">or</span>
+          <div className="relative flex justify-center text-xs text-[#94848A]">
+            <span className="bg-[#FAF3F0] px-3">or</span>
           </div>
         </div>
 
@@ -161,7 +160,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLogin }) => {
           type="button"
           onClick={handleGoogleSignIn}
           disabled={isBusy}
-          className="w-full py-3 px-4 rounded-xl bg-white hover:bg-[#F2ECE3] border border-[#DDD3C7] text-[#201C1A] font-medium text-sm flex items-center justify-center gap-2.5 transition active:scale-[0.99] cursor-pointer"
+          className="w-full py-3 px-4 rounded-xl bg-white hover:bg-[#FAF3F0] border border-[#EADBDA] text-[#1F161A] font-medium text-sm flex items-center justify-center gap-2.5 transition active:scale-[0.99] cursor-pointer shadow-2xs"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -181,32 +180,32 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLogin }) => {
               setIsLogin(!isLogin);
               setError(null);
             }}
-            className="text-xs text-[#B8543F] hover:underline font-medium cursor-pointer"
+            className="text-xs text-[#781D32] hover:text-[#E25B88] hover:underline font-semibold cursor-pointer transition-colors"
           >
             {isLogin ? 'New here? Create an account' : 'Already have an account? Sign in'}
           </button>
         </div>
 
         {/* Quick Demo Access Bar */}
-        <div className="mt-8 pt-6 border-t border-[#E8DFC8]">
-          <p className="text-[11px] text-[#75685F] text-center mb-3 font-medium uppercase tracking-wider">
+        <div className="mt-8 pt-6 border-t border-[#F2E6E2]">
+          <p className="text-[11px] text-[#7D6D73] text-center mb-3 font-medium uppercase tracking-wider">
             Quick demo credentials
           </p>
           <div className="grid grid-cols-2 gap-2">
             <button
               type="button"
               onClick={() => quickLoginAs('USER')}
-              className="px-3 py-2 bg-[#EFE7DC] hover:bg-[#E5DCD0] text-[#332B27] text-xs rounded-lg flex items-center justify-center gap-1.5 transition cursor-pointer"
+              className="px-3 py-2 bg-[#FDEEF3] hover:bg-[#FCDAE5] text-[#781D32] text-xs font-medium rounded-xl flex items-center justify-center gap-1.5 transition cursor-pointer border border-[#F9D2DF]"
             >
-              <UserCheck className="w-3.5 h-3.5 text-[#B8543F]" />
+              <UserCheck className="w-3.5 h-3.5 text-[#E25B88]" />
               Student (Ananya)
             </button>
             <button
               type="button"
               onClick={() => quickLoginAs('ADMIN')}
-              className="px-3 py-2 bg-[#EFE7DC] hover:bg-[#E5DCD0] text-[#332B27] text-xs rounded-lg flex items-center justify-center gap-1.5 transition cursor-pointer"
+              className="px-3 py-2 bg-[#FEF5EA] hover:bg-[#FCE6CA] text-[#781D32] text-xs font-medium rounded-xl flex items-center justify-center gap-1.5 transition cursor-pointer border border-[#FCE6CA]"
             >
-              <ShieldCheck className="w-3.5 h-3.5 text-[#B8543F]" />
+              <ShieldCheck className="w-3.5 h-3.5 text-[#F59E38]" />
               Teacher (Admin)
             </button>
           </div>

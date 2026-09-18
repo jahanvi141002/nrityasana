@@ -3,8 +3,8 @@
 @layer base {
   body {
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    background-color: #F7F1E9;
-    color: #201C1A;
+    background-color: #FDF8F5;
+    color: #1F161A;
     margin: 0;
     padding: 0;
     -webkit-tap-highlight-color: transparent;
@@ -14,3 +14,4 @@
     font-family: 'Playfair Display', Georgia, serif;
   }
 }
+
