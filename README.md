@@ -1,35 +1,22 @@
-<<<<<<< HEAD
 # Nrityasana
 
-Nrityasana is a calm practice companion for yoga and Indian classical dance. It combines movement sessions, daily intentions, practice tracking, and a small Java API.
+Nrityasana is a calm practice companion for yoga and Indian classical dance. It combines movement sessions, daily intentions, practice tracking, live classes, community chat, and moments logging.
 
-## Project structure
+## Features
 
-- `frontend/` Flutter mobile client
-- `backend/` Spring Boot Java REST API
+- **Today (Practice Companion)**: Recommended practice sessions with active timer guidance, mindful posture flows, and daily welcome.
+- **Explore (Library)**: Searchable yoga and Indian classical dance practices, including Surya Namaskar, Aramandi, and Abhinaya.
+- **Progress (Rhythm)**: Weekly consistency tracker with completion metrics.
+- **Live Classes**: View scheduled live classes with Google Meet rooms, and admin scheduling tools.
+- **Community Chat**: WhatsApp-inspired community chat threads and direct connection links.
+- **Moments & Gallery**: Photo and video practice recording gallery with upload support.
 
-## Run the API
+## Development
 
-```powershell
-cd backend
-mvn spring-boot:run
+```bash
+npm install
+npm run dev
 ```
 
-The API starts on `http://localhost:8080`.
+Built for Vite + React + Tailwind CSS.
 
-## Run the Flutter client
-
-Flutter is required locally. From the repository root:
-
-```powershell
-flutter create frontend
-# keep the generated platform folders and replace/update the Dart files from this repo
-cd frontend
-flutter pub get
-flutter run
-```
-
-The client currently uses local seed data so it is useful offline. Set `apiBaseUrl` in `lib/core/api_client.dart` when connecting it to the Java API.
-=======
-# nrityasana
->>>>>>> 34a76c742084c6e808eb034594364833619a7656

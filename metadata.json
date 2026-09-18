@@ -1,0 +1,6 @@
+{
+  "name": "Nrityasana",
+  "description": "A calm practice companion for yoga and Indian classical dance with movement sessions, practice tracking, live classes, community chat, and progress logging.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
