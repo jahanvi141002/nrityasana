@@ -9,9 +9,9 @@ interface TopHeaderProps {
   customLogoUrl?: string;
   primaryColor?: string;
   onOpenNotifications: () => void;
-  onOpenLogoTheme: () => void;
+  onOpenLogoTheme?: () => void;
   onOpenProfile: () => void;
-  onOpenDatabase?: () => void;
+  onOpenDatabaseModal?: () => void;
 }
 
 export const TopHeader: React.FC<TopHeaderProps> = ({
@@ -22,7 +22,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
   onOpenNotifications,
   onOpenLogoTheme,
   onOpenProfile,
-  onOpenDatabase,
+  onOpenDatabaseModal,
 }) => {
   const initial = session.email ? session.email.charAt(0).toUpperCase() : 'A';
   const isAdmin = session?.role === 'ADMIN';
@@ -41,16 +41,16 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
 
         {/* Action Controls */}
         <div className="flex items-center gap-2">
-          {/* MySQL & JDBC Database Button - Strictly ADMIN ONLY */}
-          {isAdmin && onOpenDatabase && (
+          {/* Database Workbench Modal Button */}
+          {onOpenDatabaseModal && (
             <button
-              id="header-admin-db-button"
-              onClick={onOpenDatabase}
-              title="MySQL & JDBC Database Workstation (Admin Only)"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white hover:bg-[#FAF3F0] border border-[#F2E6E2] text-xs font-semibold text-[#1F161A] shadow-2xs transition hover:scale-102 cursor-pointer"
+              id="header-database-workbench-button"
+              onClick={onOpenDatabaseModal}
+              title="MySQL 8.0 & Workbench Integration"
+              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full bg-white hover:bg-[#FAF3F0] border border-[#F2E6E2] text-xs font-semibold text-[#1F161A] shadow-2xs transition hover:scale-102 cursor-pointer"
             >
-              <Database className="w-3.5 h-3.5" style={{ color: primaryColor }} />
-              <span className="hidden sm:inline">MySQL / JDBC</span>
+              <Database className="w-3.5 h-3.5 text-[#781D32]" />
+              <span className="hidden sm:inline">MySQL 8.0</span>
             </button>
           )}
 

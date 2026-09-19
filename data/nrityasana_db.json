@@ -1,0 +1,1499 @@
+{
+  "classes": [
+    {
+      "id": "c-1789815974494",
+      "title": "Test Class",
+      "description": "",
+      "startTime": "2026-09-20T10:00:00Z",
+      "durationMinutes": 45,
+      "meetingUrl": "https://meet.google.com/",
+      "createdBy": "admin@nrityasana.com",
+      "participantCount": 1
+    },
+    {
+      "id": "c-aramandi-foundation",
+      "title": "Aramandi Foundation & Pelvic Alignment",
+      "description": "Core biomechanical conditioning in Ardhamandala posture with deep rhythmic diaphragmatic breathing.",
+      "startTime": "2026-09-20T07:00:08.082Z",
+      "durationMinutes": 45,
+      "meetingUrl": "https://meet.google.com/nri-tyas-ana",
+      "createdBy": "teacher@nrityasana.com",
+      "participantCount": 8
+    },
+    {
+      "id": "c-hastha-mudra-flow",
+      "title": "Asamyutta Hastha Mudras & Vinyasa Flow",
+      "description": "Guided mudra geometry synchronizing single-hand gestures with classical Surya Namaskar transitions.",
+      "startTime": "2026-09-21T11:30:08.083Z",
+      "durationMinutes": 60,
+      "meetingUrl": "https://meet.google.com/nri-mudr-flw",
+      "createdBy": "admin@nrityasana.com",
+      "participantCount": 14
+    }
+  ],
+  "messages": [
+    {
+      "id": "m-welcome-1",
+      "senderId": "u-admin",
+      "senderEmail": "admin@nrityasana.com",
+      "senderRole": "ADMIN",
+      "recipientId": "u-user",
+      "recipientEmail": "user@nrityasana.com",
+      "text": "Namaste! Welcome to Nrityasana. How is your morning Aramandi practice feeling today?",
+      "messageType": "text",
+      "sentAt": "2026-09-19T10:06:08.083Z",
+      "status": "read"
+    }
+  ],
+  "media": [
+    {
+      "id": "med-sample-1",
+      "userId": "u-user",
+      "name": "Morning Aramandi posture alignment",
+      "type": "photo",
+      "url": "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&auto=format&fit=crop&q=80",
+      "createdAt": "2026-09-18T11:06:08.083Z"
+    }
+  ],
+  "profiles": {
+    "u-admin": {
+      "userId": "u-admin",
+      "email": "admin@nrityasana.com",
+      "profilePictureUrl": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&auto=format&fit=crop&q=80",
+      "phone": "+91 98765 43210",
+      "bio": "Senior Classical Bharatanatyam & Ashtanga Yoga Acharya. Dedicating movement to divine geometry.",
+      "danceStyle": "Bharatanatyam",
+      "experienceLevel": "Acharya / Master"
+    },
+    "u-user": {
+      "userId": "u-user",
+      "email": "user@nrityasana.com",
+      "phone": "+91 91234 56789",
+      "bio": "Devoted practitioner cultivating mindful posture, Mudra dexterity, and rhythmic grace.",
+      "danceStyle": "Bharatanatyam & Yoga",
+      "experienceLevel": "Intermediate"
+    }
+  },
+  "progress": {
+    "u-user": {
+      "userId": "u-user",
+      "currentStreak": 5,
+      "totalMinutes": 230,
+      "completedSessions": 15,
+      "weeklyGoal": 5,
+      "completedDays": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        false
+      ],
+      "logs": [
+        {
+          "id": "log-1789815972104",
+          "userId": "u-user",
+          "practiceId": "p-1",
+          "title": "Aramandi Alignment",
+          "discipline": "Dance",
+          "minutesPracticed": 15,
+          "completedAt": "2026-09-19T11:06:12.104Z"
+        },
+        {
+          "id": "log-1",
+          "userId": "u-user",
+          "practiceId": "p-aramandi",
+          "title": "Aramandi Deep Centering",
+          "discipline": "Dance",
+          "minutesPracticed": 15,
+          "completedAt": "2026-09-18T11:06:08.083Z"
+        }
+      ]
+    },
+    "u-current": {
+      "userId": "u-current",
+      "currentStreak": 4,
+      "totalMinutes": 203,
+      "completedSessions": 13,
+      "weeklyGoal": 5,
+      "completedDays": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        true,
+        false
+      ],
+      "logs": [
+        {
+          "id": "log-1789816835862",
+          "userId": "u-current",
+          "practiceId": "k-tatkar-foundations",
+          "title": "Sacred Movement Practice",
+          "discipline": "Kathak",
+          "minutesPracticed": 18,
+          "completedAt": "2026-09-19T11:20:35.863Z"
+        }
+      ]
+    }
+  },
+  "practices": [
+    {
+      "id": "y-surya-flow",
+      "title": "Surya Namaskar Vinyasa Flow",
+      "discipline": "Yoga",
+      "category": "Vinyasa Flow",
+      "level": "Beginner",
+      "topic": "Vinyasa Flow",
+      "minutes": 18,
+      "description": "Awaken body warmth, breath-to-movement synchronization, and spinal mobility through the traditional 12-asana sun salutation sequence.",
+      "icon": "sunny",
+      "intensity": "Moderate",
+      "instructions": [
+        "Pranamasana (Prayer Pose) - Stand grounded, hands at Anjali mudra, breathing evenly into the abdomen.",
+        "Hastauttanasana (Raised Arms) - Inhale, sweep arms overhead with gentle thoracic arch.",
+        "Padahastasana (Forward Fold) - Exhale, hinge from the hips, relaxing the crown of the head.",
+        "Ashwa Sanchalanasana (Equestrian) - Step right leg back into low lunge, lifting sternum.",
+        "Dandasana & Ashtanga Namaskara - Step to plank, then gently lower knees, chest, and chin.",
+        "Bhujangasana (Cobra Pose) - Inhale into heart opening, drawing shoulder blades together.",
+        "Adho Mukha Svanasana (Downward Dog) - Exhale, press through knuckles, lengthening spine and hamstrings.",
+        "Step forward smoothly and rise to prayer, completing 5 gentle cycles with full breath awareness."
+      ],
+      "benefits": [
+        "Stimulates arterial circulation and digestive fire (Agni)",
+        "Improves hamstring flexibility and hip flexor range of motion",
+        "Harmonizes autonomic nervous system before dance rehearsal"
+      ]
+    },
+    {
+      "id": "y-hatha-foundations",
+      "title": "Hatha Alignment & Asana Hold",
+      "discipline": "Yoga",
+      "category": "Hatha Yoga",
+      "level": "Beginner",
+      "topic": "Hatha Alignment",
+      "minutes": 22,
+      "description": "Static posture holds focusing on joint biomechanics, pelvic neutrality, and steady diaphragmatic breathing.",
+      "icon": "sunny",
+      "intensity": "Gentle",
+      "instructions": [
+        "Tadasana (Mountain Pose) - Engage arches of feet, neutral pelvis, crown reaching towards sky.",
+        "Vrikshasana (Tree Pose) - Place sole on calf or inner thigh, steadying gaze on a singular drishti point.",
+        "Trikonasana (Triangle Pose) - Extend side body, keeping shoulders stacked and ribcage open.",
+        "Virabhadrasana II (Warrior 2) - Sink into deep hip flexion while gazing over front fingertips with calm resolve.",
+        "Setu Bandhasana (Bridge Pose) - Lift hips steadily, clasping hands under back to expand chest."
+      ],
+      "benefits": [
+        "Establishes strong proprioception and ground stability",
+        "Builds isometric strength in stabilizer muscles",
+        "Corrects postural asymmetries from asymmetrical dance stances"
+      ]
+    },
+    {
+      "id": "y-dynamic-vinyasa",
+      "title": "Dynamic Core & Hip Vinyasa Flow",
+      "discipline": "Yoga",
+      "category": "Vinyasa Flow",
+      "level": "Intermediate",
+      "topic": "Dynamic Flow",
+      "minutes": 30,
+      "description": "A fluid sequence integrating warrior transitions, core stability, and deep external hip rotation essential for classical dance turnouts.",
+      "icon": "flame",
+      "intensity": "High Energy",
+      "instructions": [
+        "Three-Legged Dog to Knee-to-Nose - Flow with breath, engaging transverse abdominis.",
+        "High Crescent Lunge to Skandasana - Transition laterally, warming adductors and ankles.",
+        "Utkata Konasana (Goddess Pose) - Hold deep wide-stance squat with lion breath exhalation.",
+        "Eka Pada Rajakapotasana (Pigeon Pose) - Release deep gluteal and piriformis tension.",
+        "Navasana (Boat Pose) - Build core endurance with 3 sets of 30-second holds."
+      ],
+      "benefits": [
+        "Enhances stamina and core bracing for swift pirouettes",
+        "Increases turnout range in Bharatanatyam Aramandi & Kathak Chakkars",
+        "Burns calories while preserving muscular fluidity"
+      ]
+    },
+    {
+      "id": "y-ashtanga-primary",
+      "title": "Ashtanga Primary Standing & Seated Flow",
+      "discipline": "Yoga",
+      "category": "Ashtanga Yoga",
+      "level": "Advanced",
+      "topic": "Ashtanga Primary",
+      "minutes": 40,
+      "description": "Traditional Mysore-style dynamic discipline with internal heat, Ujjayi pranayama, and Mula and Uddiyana bandhas.",
+      "icon": "flame",
+      "intensity": "Vigorous",
+      "instructions": [
+        "Surya Namaskar A & B - 5 rounds each with continuous Ujjayi ocean breath.",
+        "Padangusthasana & Pada Hastasana - Deep hamstring decompressive forward folds.",
+        "Utthita Parsvakonasana & Parivrtta Variation - Revolved side angles demanding high balance.",
+        "Marichyasana A & C - Deep spinal twist with arm bind, purifying internal organs.",
+        "Chakrasana (Full Wheel Pose) - 3 cycles of full thoracic backbend pushing evenly through palms and soles."
+      ],
+      "benefits": [
+        "Develops athletic resilience and unbreakable concentration",
+        "Deeply detoxifies visceral tissues through internal tapas heat",
+        "Cultivates disciplined kinetic chain awareness"
+      ]
+    },
+    {
+      "id": "y-yin-restorative",
+      "title": "Yin Yoga Deep Fascia & Hip Release",
+      "discipline": "Yoga",
+      "category": "Yin & Restorative",
+      "level": "All Levels",
+      "topic": "Yin Yoga",
+      "minutes": 25,
+      "description": "Long, passive 3-to-5 minute floor holds targeting dense connective tissues, ligaments, and the joint capsules of hips and lower back.",
+      "icon": "moon",
+      "intensity": "Gentle",
+      "instructions": [
+        "Butterfly Pose (Baddha Konasana) - Fold passively forward with rounded spine for 4 minutes.",
+        "Dragon Pose (Low Lunge Hold) - Release tight psoas and hip flexors for 3 minutes per side.",
+        "Sleeping Swan - Passive prone hip opener surrender over bolster or mat.",
+        "Sphinx & Seal Pose - Gentle sustained lumbar compression stimulating kidneys and urinary bladder meridians.",
+        "Supported Savasana - 5 minutes of total neuromuscular silence."
+      ],
+      "benefits": [
+        "Hydrates collagen matrix and restores fascial glide after intense dance",
+        "Down-regulates sympathetic nervous system and lowers cortisol",
+        "Improves joint lubrication and prevents chronic knee and hip strain"
+      ]
+    },
+    {
+      "id": "y-power-balances",
+      "title": "Power Yoga Arm Balances & Inversions",
+      "discipline": "Yoga",
+      "category": "Power Yoga",
+      "level": "Advanced",
+      "topic": "Arm Balances",
+      "minutes": 35,
+      "description": "High-intensity athletic yoga focused on wrist conditioning, scapular protraction, Bakasana (Crow), and forearm balances.",
+      "icon": "flame",
+      "intensity": "Vigorous",
+      "instructions": [
+        "Wrist & Scapular Warmup - Hollow-body planks, dolphin pose shoulder press.",
+        "Bakasana (Crow Pose) - Knees on triceps, leaning weight forward, lifting toes with core suction.",
+        "Parsva Bakasana (Side Crow) - Rotational balance testing oblique strength.",
+        "Pincha Mayurasana prep - Forearm balance against wall with hollow-body ribcage integration.",
+        "Cooldown: Balasana and gentle wrist counter-stretches."
+      ],
+      "benefits": [
+        "Substantially increases shoulder girdle and wrist stability",
+        "Overcomes fear of inversion and builds mental fearlessness",
+        "Sharpens upper body deceleration control for contemporary choreography"
+      ]
+    },
+    {
+      "id": "y-kundalini-spine",
+      "title": "Kundalini Kriya & Spinal Flexibility Flow",
+      "discipline": "Yoga",
+      "category": "Kundalini Yoga",
+      "level": "Intermediate",
+      "topic": "Spine & Kriya",
+      "minutes": 25,
+      "description": "Spinal flexes, Sufi grinds, Breath of Fire, and energetic bandha locks to stimulate cerebro-spinal fluid circulation.",
+      "icon": "sparkles",
+      "intensity": "Moderate",
+      "instructions": [
+        "Adi Mantra Chanting - Ong Namo Guru Dev Namo.",
+        "Spinal Flexes (Camel Rides) - Inhale chest forward, exhale round spine in easy pose (3 min).",
+        "Sufi Grinds - Deep circular pelvic and ribcage rotations massaging the lower chakras.",
+        "Breath of Fire in Ego Eradicator - Arms at 60 degrees, thumbs up, rapid diaphragmatic breath for 2 min.",
+        "Root Lock (Mula Bandha) hold, visualizing golden nectar rising up Sushumna nadi."
+      ],
+      "benefits": [
+        "Unlocks thoracic spine and neck mobility",
+        "Rapidly clears mental lethargy and activates dormant vital force",
+        "Deepens rhythmic endurance for complex dance footwork"
+      ]
+    },
+    {
+      "id": "y-evening-moon",
+      "title": "Chandra Namaskar (Moonlit Restorative Flow)",
+      "discipline": "Yoga",
+      "category": "Restorative Yoga",
+      "level": "All Levels",
+      "topic": "Evening Restorative",
+      "minutes": 15,
+      "description": "A cooling, side-to-side sequence honoring lunar energy to release mental chatter, soothe adrenal glands, and prepare for restful sleep.",
+      "icon": "moon",
+      "intensity": "Gentle",
+      "instructions": [
+        "Anjali Mudra centering - Inhale cooling lunar breath through curled tongue (Sheetali).",
+        "Side Crescent Stretches - Expanding lateral ribcage and intercostal spaces.",
+        "Goddess Pose with Gyan Mudra - Slow deep sway into pelvic floor softness.",
+        "Viparita Karani (Legs Up The Wall) - Inversion allowing venous blood to return to heart.",
+        "Savasana with whole-body mental progressive relaxation scan."
+      ],
+      "benefits": [
+        "Triggers parasympathetic rest-and-digest state",
+        "Alleviates restless leg syndrome and lower back stiffness",
+        "Fosters emotional serenity and peaceful slumber"
+      ]
+    },
+    {
+      "id": "k-tatkar-foundations",
+      "title": "Tatkar Foundations: Ekgun & Dugun Speeds",
+      "discipline": "Kathak",
+      "category": "Tatkar & Footwork",
+      "level": "Beginner",
+      "topic": "Tatkar & Footwork",
+      "minutes": 18,
+      "description": "Master the fundamental Kathak footwork syllables \"Ta Thei Thei Tat, Aa Thei Thei Tat\" in single and double rhythmic tempo.",
+      "icon": "footprints",
+      "intensity": "Moderate",
+      "instructions": [
+        "Arambh Stance - Spine upright, chest lifted, arms bent at chest in basic Kathak posture.",
+        "Weight Transfer - Shift center of gravity cleanly between right and left metatarsals.",
+        "Ekgun Cycle - 1 stamp per beat in 16-beat Teentaal rhythm (Ta Thei Thei Tat, Aa Thei Thei Tat).",
+        "Dugun Acceleration - 2 stamps per beat with crisp, clean heel strikes without bouncing the torso.",
+        "Sam Landing - Conclude precisely on the first beat (Sam) with sharp composure."
+      ],
+      "benefits": [
+        "Builds micro-rhythmic foot coordination and ankle bone density",
+        "Conditions lower leg muscles without causing knee torque",
+        "Instills intuitive understanding of Laya (rhythm)"
+      ]
+    },
+    {
+      "id": "k-tatkar-advanced",
+      "title": "Rapid Chaugun & Athgun Tatkar Variations",
+      "discipline": "Kathak",
+      "category": "Tatkar & Footwork",
+      "level": "Advanced",
+      "topic": "Tatkar & Footwork",
+      "minutes": 25,
+      "description": "High-speed footwork drills executing 4 and 8 strikes per beat, incorporating directional travel and rhythmic polyrhythms.",
+      "icon": "footprints",
+      "intensity": "Vigorous",
+      "instructions": [
+        "Padant Recitation warmup - Chant the Teentaal bols with taali and khaali precision.",
+        "Chaugun Speed (4 footfalls per beat) - Focus on minimal foot elevation from the floor.",
+        "Athgun Burst (8 footfalls per beat) - Micro-articulation of soles, maintaining stable shoulders.",
+        "Cross-directional travel - Maintaining Chaugun while executing diagonal forward and backward shifts.",
+        "Damdar Tihai finale - Three identical rhythmic statements concluding on the Sam."
+      ],
+      "benefits": [
+        "Develops professional stage-level speed and rhythmic clarity",
+        "Builds calf endurance and cardiovascular fitness",
+        "Cultivates extraordinary neuromuscular reaction speed"
+      ]
+    },
+    {
+      "id": "k-chakkar-spotting",
+      "title": "Chakkar Spotting & 5-Turn Rotations",
+      "discipline": "Kathak",
+      "category": "Chakkars & Spins",
+      "level": "Beginner",
+      "topic": "Chakkars & Spins",
+      "minutes": 20,
+      "description": "Learn the biomechanics of spotting, heel-pivot axis, and seamless 5-turn pirouette sequences without dizziness.",
+      "icon": "sparkles",
+      "intensity": "Moderate",
+      "instructions": [
+        "Spotting Drill - Choose a focal point at eye level, whipping the head swiftly as the body turns.",
+        "Heel-Toe Pivot Drill - Lift left heel, pivot on ball of right foot with steady torso cylinder.",
+        "Single Spin to Sam - Turn 360 degrees and halt instantly in poised Thaat.",
+        "Continuous 5-Turn Chakkar - Link five rotations, using arm sweep to maintain rotational torque.",
+        "Controlled Stillness - Freeze completely on the final Sam without any wobble."
+      ],
+      "benefits": [
+        "Eliminates dizziness through vestibulo-ocular reflex training",
+        "Strengthens deep spinal stabilizers and core rotational control",
+        "Creates dazzling visual symmetry on stage"
+      ]
+    },
+    {
+      "id": "k-chakkar-bedam",
+      "title": "Swift 9-Turn Bedam Chakkars & Poised Sama",
+      "discipline": "Kathak",
+      "category": "Chakkars & Spins",
+      "level": "Advanced",
+      "topic": "Chakkars & Spins",
+      "minutes": 22,
+      "description": "Continuous uninterrupted spinning at lightning speed culminating in an abrupt, statuesque freeze on beat one.",
+      "icon": "flame",
+      "intensity": "Vigorous",
+      "instructions": [
+        "Core cylinder engagement - Tighten transverse abdominis and knit ribs inwards.",
+        "Arm pathway alignment - Right arm leads in semi-circle, left arm snaps into chest.",
+        "9-Turn Bedam Sequence - Rapid turns with zero pause between cycles.",
+        "Instantaneous deceleration - Decelerate using foot friction and abdominal lock on Sam.",
+        "Gaze stabilization - Instant eye contact with the audience upon completion."
+      ],
+      "benefits": [
+        "Develops world-class pirouette mastery and spatial orientation",
+        "Enhances balance and inner ear equilibrium",
+        "Generates audience excitement and artistic awe"
+      ]
+    },
+    {
+      "id": "k-teentaal-rhythm",
+      "title": "Teentaal 16-Beat Structure & Theka Clapping",
+      "discipline": "Kathak",
+      "category": "Teentaal & Rhythm",
+      "level": "Beginner",
+      "topic": "Teentaal & Rhythm",
+      "minutes": 15,
+      "description": "Understand the mathematical skeleton of Indian classical rhythm: 4 vibhags of 4 beats each, Taali at 1, 5, 13 and Khaali at 9.",
+      "icon": "music",
+      "intensity": "Gentle",
+      "instructions": [
+        "Clap on beat 1 (Sam / Taali 1): \"Dha\".",
+        "Wave on beat 2, 3, 4: \"Dhin Dhin Dha\".",
+        "Clap on beat 5 (Taali 2): \"Dha Dhin Dhin Dha\".",
+        "Wave back of hand on beat 9 (Khaali): \"Dha Tin Tin Ta\".",
+        "Clap on beat 13 (Taali 3): \"Ta Dhin Dhin Dha\", resolving powerfully back to Sam."
+      ],
+      "benefits": [
+        "Forms the non-negotiable foundation for all classical choreography",
+        "Sharpens analytical thinking and mathematical rhythm calculation",
+        "Enables effortless synchronization with tabla accompanists"
+      ]
+    },
+    {
+      "id": "k-hastaks-mudras",
+      "title": "Classical Hastaks & Hand-Eye Coordination",
+      "discipline": "Kathak",
+      "category": "Hastaks & Mudras",
+      "level": "All Levels",
+      "topic": "Hastaks & Mudras",
+      "minutes": 20,
+      "description": "Refine the 12 core Kathak arm extensions (Hastaks) paired with Pataka, Tripataka, and Alapadma hand mudras and focused eye drishti.",
+      "icon": "sparkles",
+      "intensity": "Moderate",
+      "instructions": [
+        "Urdhva Hastak - Sweep arm upwards from center to sky, eyes tracing the tips of fingers.",
+        "Madhya Hastak - Lateral arm extension along the shoulder horizontal plane.",
+        "Adho Hastak - Downward diagonal arm path with wrist flex and release.",
+        "Wrist Circles (Chakradhar Hastak) - Inward and outward rotational wrist dexterity.",
+        "Drishti Bheda pairing - Sama, Alokita, and Sachi eye glances synchronized with wrist flips."
+      ],
+      "benefits": [
+        "Increases wrist and forearm dexterity for intricate mudra storytelling",
+        "Improves upper body lines, shoulder placement, and posture",
+        "Cultivates magnetic stage presence through expressive eyes"
+      ]
+    },
+    {
+      "id": "k-abhinaya-bhav",
+      "title": "Expressive Abhinaya & Navarasa Storytelling",
+      "discipline": "Kathak",
+      "category": "Abhinaya & Bhav",
+      "level": "Intermediate",
+      "topic": "Abhinaya & Bhav",
+      "minutes": 26,
+      "description": "Delve into facial emoting, Nayika Bheda (heroine archetypes), and poetic interpretation of Thumri and Bhajan compositions.",
+      "icon": "heart",
+      "intensity": "Gentle",
+      "instructions": [
+        "Eye movement warmups - Eyebrow flutters, pupil circles, and micro-expressions.",
+        "Exploring Shringara Rasa (Love & Longing) - Soft gazes, shy turns of the chin, gentle sighs.",
+        "Depicting Karuna Rasa (Pathos & Compassion) - Heavy lids, tender hand reaches, still posture.",
+        "Thumri Lyrical Acting - Interpreting the pangs of separation through subtle eye glances.",
+        "Transitioning between emotions seamlessly without melodramatic overacting."
+      ],
+      "benefits": [
+        "Transforms technical dancing into moving, transcendent art",
+        "Expands emotional intelligence and empathy",
+        "Captivates audiences through nuanced, authentic micro-expressions"
+      ]
+    },
+    {
+      "id": "k-thaat-aamad",
+      "title": "Courtly Thaat Poise & Graceful Aamad Entrance",
+      "discipline": "Kathak",
+      "category": "Thaat & Aamad",
+      "level": "Intermediate",
+      "topic": "Thaat & Aamad",
+      "minutes": 22,
+      "description": "Immerse in the regal stillness of Thaat and the rhythmic elegance of Aamad (Persian for \"arrival\"), characterizing the Lucknow and Jaipur gharanas.",
+      "icon": "sparkles",
+      "intensity": "Moderate",
+      "instructions": [
+        "Thaat Stance - Left arm bent overhead, right arm stretched forward, delicate wrist tilts.",
+        "Micro-glances and neck movements (Sundari Griva) in slow tempo Vilambit laya.",
+        "Kasak-Masak - Subtle breathing movements through the torso and ribcage.",
+        "Aamad Entry - Rhythmic walk sequence starting off-beat and landing on Sam.",
+        "Salami Gesture - Respectful royal court greeting to Guru, musicians, and audience."
+      ],
+      "benefits": [
+        "Teaches the supreme art of stillness between dynamic movements",
+        "Enhances royal stage carriage and dignified poise",
+        "Polishes transitions between musical phrases"
+      ]
+    },
+    {
+      "id": "k-tukdas-tihais",
+      "title": "Crisp Tukdas, Paran & Damdar Tihais",
+      "discipline": "Kathak",
+      "category": "Tukdas & Tihais",
+      "level": "Advanced",
+      "topic": "Tukdas & Tihais",
+      "minutes": 25,
+      "description": "Complex rhythmic compositions featuring pakhawaj bols, explosive foot strikes, and 3-fold mathematical Tihais with dramatic pauses.",
+      "icon": "flame",
+      "intensity": "Vigorous",
+      "instructions": [
+        "Pakhawaj Paran bols: \"Dha Dha Dhit Dhit Dha\", executing heavy heel strikes.",
+        "Sudden tempo change from Madhyam to Drut speed in 8-measure intervals.",
+        "Damdar Tihai calculation - Three identical patterns with 1-beat silence (Dam) in between.",
+        "Bedam Tihai calculation - Three continuous patterns with zero silence landing precisely on Sam.",
+        "Concluding flourish with synchronized head snap and mudra freeze."
+      ],
+      "benefits": [
+        "Mastery of intricate rhythmic architecture and mathematical timing",
+        "Demonstrates authoritative command over live percussion",
+        "Thrilling climax material for solo concerts"
+      ]
+    },
+    {
+      "id": "k-padant-recitation",
+      "title": "Padant: Vocal Bols Recitation & Clapping",
+      "discipline": "Kathak",
+      "category": "Padant Recitation",
+      "level": "All Levels",
+      "topic": "Padant Recitation",
+      "minutes": 15,
+      "description": "Reciting rhythmic poetry with clear diction, modulated voice, and simultaneous hand clapping before dancing the composition.",
+      "icon": "music",
+      "intensity": "Gentle",
+      "instructions": [
+        "Diaphragmatic breath support for crisp vocal projection.",
+        "Pronouncing hard and soft consonants: \"Dha, Dhin, Ta, Tit, Kat, Gadi, Gana\".",
+        "Maintaining steady clapping in hands while speaking syncopated subdivisions.",
+        "Modulating volume and pitch to reflect the mood and tempo of the bols.",
+        "Reciting complex Tihais at double speed without stumbling."
+      ],
+      "benefits": [
+        "Deepens intellectual comprehension of rhythm before physical execution",
+        "Fosters vocal confidence and stage communication skills",
+        "Builds essential artistic discipline respected across the tradition"
+      ]
+    },
+    {
+      "id": "b-hooksteps-grooves",
+      "title": "Bollywood Signature Hooksteps & Grooves",
+      "discipline": "Bollywood",
+      "category": "Hooksteps & Grooves",
+      "level": "Beginner",
+      "topic": "Hooksteps",
+      "minutes": 20,
+      "description": "Catchy, iconic hooksteps from Bollywood chartbusters combining energetic hip swivels, playful shoulder shakes, and facial smiles.",
+      "icon": "music",
+      "intensity": "Moderate",
+      "instructions": [
+        "Bouncing Hip Isolation - Step right, pop right hip with bounce on the beat.",
+        "Shoulder Shimmer & Shimmy - Rapid alternating shoulder isolations with open palms.",
+        "Thumka Technique - Side pelvic snap with heel lift and flirtatious eyebrow raise.",
+        "Signature Chorus Combination - Linking 4 iconic 8-counts into a dynamic routine.",
+        "Expressive ending pose with charismatic Bollywood flair."
+      ],
+      "benefits": [
+        "Instantly boosts mood and releases joyful endorphins",
+        "Loosens stiff hips and lubricates pelvic joints",
+        "Perfect party and wedding dance floor readiness"
+      ]
+    },
+    {
+      "id": "b-commercial-high-energy",
+      "title": "High-Energy Commercial Bollywood Dance",
+      "discipline": "Bollywood",
+      "category": "Commercial Bollywood",
+      "level": "Intermediate",
+      "topic": "High-Energy",
+      "minutes": 25,
+      "description": "High-octane urban Bollywood fusion featuring sharp musicality, rapid level changes, jumps, and clean directional formations.",
+      "icon": "flame",
+      "intensity": "High Energy",
+      "instructions": [
+        "Cardio Warmup - High knees, torso circles, and rhythmic bounce steps.",
+        "Fast-paced 8-Count Part 1 - Chest pop, slide step, turn, and grounded knee drop.",
+        "Fast-paced 8-Count Part 2 - Arm glides with syncopated bass hit accents.",
+        "Full Routine Drill - Running the chorus at 100% stage energy 3 times.",
+        "Breathing cooldown and quad/hamstring stretches."
+      ],
+      "benefits": [
+        "Burns high calories while dancing to energetic beats",
+        "Improves cardiovascular endurance and stamina",
+        "Sharpens contemporary musicality and body coordination"
+      ]
+    },
+    {
+      "id": "b-lyrical-emotional",
+      "title": "Lyrical Bollywood Emotional Expression",
+      "discipline": "Bollywood",
+      "category": "Lyrical Bollywood",
+      "level": "Intermediate",
+      "topic": "Lyrical Bollywood",
+      "minutes": 30,
+      "description": "Expressive contemporary-infused choreography to soulful melodies, weaving graceful floorwork, fluid arm extensions, and emotive lyrics.",
+      "icon": "heart",
+      "intensity": "Moderate",
+      "instructions": [
+        "Fluid Spine Warmup - Undulations, side body sweeps, and tender arm ripples.",
+        "Section 1: Verse Interpretation - Walking lines, gentle pirouette into soft chest opening.",
+        "Section 2: Lyrical Crescendo - Dynamic leap into grounded descent with sweep turn.",
+        "Facial storytelling: Expressing joy, longing, and poetic romance through the eyes.",
+        "Final gentle deceleration into serene stillness."
+      ],
+      "benefits": [
+        "Enhances lyrical fluidity and emotional self-expression",
+        "Strengthens core through seamless floorwork transitions",
+        "Builds artistic sensitivity and aesthetic grace"
+      ]
+    },
+    {
+      "id": "b-garba-bhangra-festive",
+      "title": "Festive Dhol, Garba & Bhangra-Bollywood Fusion",
+      "discipline": "Bollywood",
+      "category": "Festive Folk Fusion",
+      "level": "All Levels",
+      "topic": "Festive Folk",
+      "minutes": 25,
+      "description": "Celebrate Indian festivals with high-stepping Bhangra hops, traditional Gujarati 3-Taali Garba swirls, and infectious dhol beats.",
+      "icon": "flame",
+      "intensity": "High Energy",
+      "instructions": [
+        "Garba 3-Taali Basics - Step right, clap, step left, clap, spin with third clap.",
+        "Bhangra Single & Double Dhamal - High knees, kicking forward with celebratory arm pumps.",
+        "Balle Balle Shoulder Bounce - Synchronized bounce on balls of feet with wide smiles.",
+        "Circular Group Formation - Festive traveling dance simulation building to a crescendo.",
+        "Exultant final freeze with hands raised high."
+      ],
+      "benefits": [
+        "Full-body cardiovascular workout targeting calves and glutes",
+        "Deep communal joy and cultural celebratory connection",
+        "Relieves stress through euphoric high-vibration music"
+      ]
+    },
+    {
+      "id": "b-retro-classic",
+      "title": "Retro Classic Bollywood & Golden Era Charm",
+      "discipline": "Bollywood",
+      "category": "Retro Classic",
+      "level": "Beginner",
+      "topic": "Retro Bollywood",
+      "minutes": 20,
+      "description": "Channel the timeless elegance, coquettish glances, and iconic moves of 70s and 80s cinema legends with playful vintage charm.",
+      "icon": "sparkles",
+      "intensity": "Gentle",
+      "instructions": [
+        "Classic Vintage Walk - Graceful toe-heel steps with gentle skirt sway.",
+        "Playful Wink & Eyebrow Flirt - Emulating retro silver screen divas.",
+        "Twist & Shimmy - 1960s twist on balls of feet with hand rolls.",
+        "Classic Rain Song Arm Waves - Delicate finger ripples and upward gazes.",
+        "Charming vintage ending tableau."
+      ],
+      "benefits": [
+        "Cultivates vintage cinematic charisma and feminine grace",
+        "Gentle on the joints while refining hand-eye precision",
+        "Nostalgic fun and expressive relaxation"
+      ]
+    },
+    {
+      "id": "b-dance-party-burn",
+      "title": "Fast-Paced Bollywood Dance Party Burn",
+      "discipline": "Bollywood",
+      "category": "Dance Party Cardio",
+      "level": "Advanced",
+      "topic": "Dance Party",
+      "minutes": 35,
+      "description": "Non-stop club-remix medley combining continuous footwork, power squats, jump turns, and high-energy chorus drops for maximum calorie burn.",
+      "icon": "flame",
+      "intensity": "Vigorous",
+      "instructions": [
+        "Continuous BPM Ramp-up - 120 to 135 BPM transition.",
+        "Power Squat Bollywood Drops - Hitting the beat with deep thigh engagement.",
+        "Jump Spin Transitions - 180-degree mid-air turns landing in rhythm.",
+        "Non-stop 4-track dance medley without pausing.",
+        "Breath normalization and restorative hamstring cooldown."
+      ],
+      "benefits": [
+        "Burns up to 350-400 calories per session",
+        "Builds explosive leg power and anaerobic capacity",
+        "Unleashes pure euphoria and unstoppable dance confidence"
+      ]
+    },
+    {
+      "id": "sc-fundamentals",
+      "title": "Semi-Classical Fusion Fundamentals & Arm Waves",
+      "discipline": "Semi-Classical",
+      "category": "Fusion Fundamentals",
+      "level": "Beginner",
+      "topic": "Semi-Classical Basics",
+      "minutes": 20,
+      "description": "Learn the core posture of semi-classical dance: soft bent knees, classical Hasta mudras, elongated spine, and liquid arm undulations.",
+      "icon": "sparkles",
+      "intensity": "Gentle",
+      "instructions": [
+        "Ardhamandala-Lite Stance - Comfortable half-bend without extreme outward foot rotation.",
+        "Mayura & Hamsasya Mudra transitions - Transforming peacock into swan gesture.",
+        "Continuous Ripple Arm Wave - Initiating movement from the back of the shoulder through wrist to fingertips.",
+        "Diagonal Floor Walk - Smooth, silent gliding steps keeping torso level.",
+        "Final Salutation Mudra bringing hands to Anjali at heart."
+      ],
+      "benefits": [
+        "Combines the beauty of classical dance with contemporary comfort",
+        "Improves upper body fluidity and relieves thoracic stiffness",
+        "Accessible for beginners desiring classical aesthetics"
+      ]
+    },
+    {
+      "id": "sc-thumri-ghazal",
+      "title": "Thumri & Ghazal Semi-Classical Abhinaya",
+      "discipline": "Semi-Classical",
+      "category": "Abhinaya & Expression",
+      "level": "Intermediate",
+      "topic": "Thumri & Ghazal",
+      "minutes": 25,
+      "description": "Delicate, emotive choreography set to Urdu ghazals and Hindustani thumris, exploring themes of longing, poetic imagery, and subtle grace.",
+      "icon": "heart",
+      "intensity": "Moderate",
+      "instructions": [
+        "Sitting Floor Choreo - Interpreting poetic couplets while seated in Sukhasana.",
+        "Hand gestures depicting the nightingale, crescent moon, and fragrant breeze.",
+        "Subtle shifts of gaze (Drishti) and nuanced sighs.",
+        "Graceful rise from floor into spinning arabesque.",
+        "Poised concluding gaze looking into the distance."
+      ],
+      "benefits": [
+        "Elevates expressive maturity and poetic musical sensitivity",
+        "Builds hip flexibility and core control in ground-to-standing transitions",
+        "Creates deeply touching, memorable artistic performances"
+      ]
+    },
+    {
+      "id": "sc-contemporary-lines",
+      "title": "Contemporary Semi-Classical Fluid Spine Lines",
+      "discipline": "Semi-Classical",
+      "category": "Contemporary Fusion",
+      "level": "Advanced",
+      "topic": "Contemporary Fusion",
+      "minutes": 30,
+      "description": "High-level choreography blending classical Kathak and Odissi mudras with contemporary floor slides, backbends, and dynamic extensions.",
+      "icon": "flame",
+      "intensity": "High Energy",
+      "instructions": [
+        "Spinal Roll-downs into deep plie with classical Alapadma mudras.",
+        "Side sweep into contemporary attitude turn with focused spotting.",
+        "Floor slide transition recovering into graceful high arch backbend.",
+        "Fast syncopated jati footwork mixed with modern arm releases.",
+        "Stunning final pose balancing on one leg in Natarajasana variation."
+      ],
+      "benefits": [
+        "Mastery of innovative, cutting-edge fusion choreography",
+        "Increases spine flexibility, balance, and athletic agility",
+        "Ideal for stage auditions and contemporary dance festivals"
+      ]
+    },
+    {
+      "id": "sc-devotional-stuti",
+      "title": "Devotional Stuti & Shiv Tandav Flow",
+      "discipline": "Semi-Classical",
+      "category": "Devotional Stuti",
+      "level": "Intermediate",
+      "topic": "Devotional Choreo",
+      "minutes": 25,
+      "description": "Powerful, grounding choreography depicting Lord Shiva’s cosmic dance, featuring vigorous stamps, Trishul mudras, and calm meditative stillness.",
+      "icon": "sparkles",
+      "intensity": "Moderate",
+      "instructions": [
+        "Damru & Trishul Mudra formation with upright warrior stance.",
+        "Firm rhythmic stamps depicting the rhythm of the cosmos.",
+        "Broad circular leaps landing in serene meditative posture.",
+        "Chanting \"Om Namah Shivaya\" synchronized with arm offerings.",
+        "Transition from intense Tandav power into calm Lasya peace."
+      ],
+      "benefits": [
+        "Builds deep inner confidence, strength, and grounding",
+        "Strengthens quadriceps, glutes, and shoulder posture",
+        "Provides profound spiritual elevation and mental clarity"
+      ]
+    },
+    {
+      "id": "sc-sufi-swirls",
+      "title": "Sufi Semi-Classical Whirling & Circular Extensions",
+      "discipline": "Semi-Classical",
+      "category": "Sufi Whirling",
+      "level": "All Levels",
+      "topic": "Sufi Whirling",
+      "minutes": 22,
+      "description": "Experience the mystical ecstasy of Sufi whirling: right palm facing upward to receive divine grace, left palm turned downward to earth.",
+      "icon": "sparkles",
+      "intensity": "Gentle",
+      "instructions": [
+        "Right Palm to Heaven, Left Palm to Earth arm placement.",
+        "Footwork: Left foot acts as anchor axis, right foot paddles smoothly in circles.",
+        "Continuous slow clockwise rotation, surrendering ego to the music.",
+        "Gradual acceleration into effortless, trance-like floating sensation.",
+        "Slow, gentle deceleration and deep bow of gratitude to the earth."
+      ],
+      "benefits": [
+        "Transcendent meditative state of inner peace and detachment",
+        "Enhances inner ear balance and spatial equilibrium",
+        "Releases emotional heaviness and restores spiritual connection"
+      ]
+    },
+    {
+      "id": "z-bolly-cardio",
+      "title": "Desi Bolly-Zumba Cardio Blast",
+      "discipline": "Zumba",
+      "category": "Bolly-Zumba",
+      "level": "All Levels",
+      "topic": "Bolly-Zumba",
+      "minutes": 25,
+      "description": "Infectious dance fitness fusing energetic Indian rhythms with Latin aerobic intervals for a fun, sweat-drenched, high-calorie burn.",
+      "icon": "flame",
+      "intensity": "High Energy",
+      "instructions": [
+        "Warmup Groove - Lateral step-touches with rolling wrists and shoulder shrugs.",
+        "Track 1 (Bhangra Hop Cardio) - High knees with overhead hand pumps.",
+        "Track 2 (Bolly-Cumbia Fusion) - Hip sways with syncopated arm reaches.",
+        "Track 3 (High-BPM Finale) - Continuous fast feet with joyful vocal cheers.",
+        "Cool-down stretch for hamstrings, calves, and lower back."
+      ],
+      "benefits": [
+        "Burns 250-350 calories per 25-minute session",
+        "Improves cardiovascular heart health and lung capacity",
+        "So much fun you forget you are exercising"
+      ]
+    },
+    {
+      "id": "z-latin-salsa",
+      "title": "Latin Salsa, Merengue & Reggaeton Beats",
+      "discipline": "Zumba",
+      "category": "Latin Rhythms",
+      "level": "Beginner",
+      "topic": "Latin Beats",
+      "minutes": 30,
+      "description": "Master the four core Zumba rhythms: Salsa 2-step, fast Merengue march, rolling Cumbia hip circle, and grounded Reggaeton bounce.",
+      "icon": "music",
+      "intensity": "Moderate",
+      "instructions": [
+        "Merengue March - Rapid 1-2 march pumping arms with hip sway.",
+        "Salsa Side-to-Side - Quick-quick-slow step rhythm with ribcage isolation.",
+        "Cumbia Sugar Cane - Diagonal step-heel dig with circular arm stirring motion.",
+        "Reggaeton Destroza - Wide-leg bounce with chest pop and grounded bass hits.",
+        "Gentle cool-down salsa walk."
+      ],
+      "benefits": [
+        "Unlocks natural pelvic and hip rhythm",
+        "Tones thighs, calves, and oblique abdominal muscles",
+        "Easy to follow for complete fitness beginners"
+      ]
+    },
+    {
+      "id": "z-low-impact-tone",
+      "title": "Low-Impact Tone & Sculpt Dance Fitness",
+      "discipline": "Zumba",
+      "category": "Low-Impact Tone",
+      "level": "Beginner",
+      "topic": "Low-Impact",
+      "minutes": 20,
+      "description": "Joint-friendly dance workout with zero jumping, emphasizing deep muscle activation, arm sculpting, and steady fat-burning tempo.",
+      "icon": "heart",
+      "intensity": "Gentle",
+      "instructions": [
+        "Grounded Step-Touch - Stepping wide without bouncing to protect knees.",
+        "Overhead Reach & Pull - Engaging latissimus dorsi and shoulders with every step.",
+        "Pelvic Curl & Squeeze - Toning glutes and pelvic floor through rhythmic beats.",
+        "Isometric Squat Pulses - Holding mid-squat while pulsing arms to the rhythm.",
+        "Full body lymphatic drainage cooldown."
+      ],
+      "benefits": [
+        "Completely safe for sensitive knees, ankles, and back",
+        "Sustained fat-oxidation without spike in joint inflammation",
+        "Ideal for active recovery days or postpartum/mature practitioners"
+      ]
+    },
+    {
+      "id": "z-hiit-surges",
+      "title": "HIIT Zumba Cardio Surges & Core Toning",
+      "discipline": "Zumba",
+      "category": "HIIT Cardio Zumba",
+      "level": "Advanced",
+      "topic": "HIIT Zumba",
+      "minutes": 35,
+      "description": "High-intensity interval dance training: 45 seconds of explosive dance sprints alternated with 15 seconds of active rhythmic recovery.",
+      "icon": "flame",
+      "intensity": "Vigorous",
+      "instructions": [
+        "Dynamic dynamic warmup targeting core and hip flexors.",
+        "Interval 1: Jump Squat Turn to Reggaeton Bass Drop (45s sprint, 15s recovery).",
+        "Interval 2: Speed Skater Plyometrics with Bollywood arm whips.",
+        "Interval 3: Standing Mountain Climbers to fast Merengue drums.",
+        "Core finisher on mat: Bicycle crunches and Russian twists to Latin beats."
+      ],
+      "benefits": [
+        "Boosts post-exercise oxygen consumption (EPOC) burning calories for hours",
+        "Maximizes VO2 max and anaerobic stamina",
+        "Shreds abdominal definition and strengthens stabilizing joints"
+      ]
+    },
+    {
+      "id": "m-anapana-breath",
+      "title": "Mindful Breath Awareness (Anapana)",
+      "discipline": "Meditation",
+      "category": "Mindfulness",
+      "level": "Beginner",
+      "topic": "Mindfulness & Breath",
+      "minutes": 10,
+      "description": "Cultivate sharp, unwandering attention by observing natural inhalation and exhalation at the rim of the nostrils without controlling it.",
+      "icon": "moon",
+      "intensity": "Gentle",
+      "instructions": [
+        "Find an erect, relaxed sitting posture with spine naturally straight.",
+        "Close eyes gently, relaxing temples, jaw, and tongue.",
+        "Bring undivided attention to the triangular area below nostrils and above upper lip.",
+        "Observe the natural touch of air: cool on entry, warm on exit.",
+        "When thoughts arise, notice them without judgment and gently return to the breath."
+      ],
+      "benefits": [
+        "Stabilizes restless mind and calms acute anxiety",
+        "Develops one-pointed concentration (Dharana)",
+        "Effortless daily 10-minute mental reset"
+      ]
+    },
+    {
+      "id": "m-chakra-alignment",
+      "title": "7-Chakra Alignment & Pranic Visualization",
+      "discipline": "Meditation",
+      "category": "Chakra Alignment",
+      "level": "All Levels",
+      "topic": "Chakra Alignment",
+      "minutes": 20,
+      "description": "Journey from the root chakra (Mooladhara) to the crown (Sahasrara), vibrating Bija mantras and visualizing radiant luminous centers.",
+      "icon": "sparkles",
+      "intensity": "Gentle",
+      "instructions": [
+        "Root (Mooladhara): Red glow at pelvic floor, chant \"LAM\" - Feeling grounded security.",
+        "Sacral (Svadhisthana): Warm orange at lower belly, chant \"VAM\" - Creative flow.",
+        "Solar Plexus (Manipura): Radiant yellow at navel, chant \"RAM\" - Courage and will.",
+        "Heart (Anahata): Emerald green at heart center, chant \"YAM\" - Compassion and love.",
+        "Throat, Third Eye, and Crown: Ascending light connecting individual with universal consciousness."
+      ],
+      "benefits": [
+        "Harmonizes endocrine glands and emotional stability",
+        "Clears energetic blocks that manifest as physical tension in dance",
+        "Leaves the practitioner radiant, peaceful, and centered"
+      ]
+    },
+    {
+      "id": "m-yoga-nidra",
+      "title": "Deep Yoga Nidra for Somatic Rest & Healing",
+      "discipline": "Meditation",
+      "category": "Yoga Nidra",
+      "level": "All Levels",
+      "topic": "Yoga Nidra",
+      "minutes": 30,
+      "description": "Conscious psychic sleep lying in Savasana. Systematically rotates awareness through all 61 energy points of the physical body.",
+      "icon": "moon",
+      "intensity": "Gentle",
+      "instructions": [
+        "Sankalpa: State your sacred heartfelt intention three times with conviction.",
+        "Rotation of Consciousness: Moving awareness rapidly from right thumb to left toe.",
+        "Breath Awareness: Reverse counting from 27 down to 1 with each breath.",
+        "Opposite Sensations: Experiencing intense heaviness followed by weightless lightness.",
+        "Awakening gently with profound rejuvenation equivalent to 3 hours of sleep."
+      ],
+      "benefits": [
+        "Reduces systemic muscular inflammation and nervous fatigue",
+        "Repairs deep cellular tissue and balances hormones",
+        "Enhances creative neuroplasticity and memory retention"
+      ]
+    },
+    {
+      "id": "m-pranayama-mastery",
+      "title": "Pranayama Mastery: Nadi Shodhana & Sheetali",
+      "discipline": "Meditation",
+      "category": "Pranayama",
+      "level": "Intermediate",
+      "topic": "Pranayama Breathwork",
+      "minutes": 15,
+      "description": "Alternate nostril breathing with Vishuddha mudra paired with cooling Sheetali to purify Ida and Pingala nadis and balance brain hemispheres.",
+      "icon": "sunny",
+      "intensity": "Gentle",
+      "instructions": [
+        "Adopt Nasagra Mudra with right hand, resting left hand in Chin Mudra on knee.",
+        "Close right nostril with thumb, inhale steadily through left nostril for 4 counts.",
+        "Close both nostrils with ring finger and thumb, retaining breath gently for 4 counts.",
+        "Release thumb, exhale smoothly through right nostril for 8 counts.",
+        "Repeat on the opposite side for 10 serene cycles."
+      ],
+      "benefits": [
+        "Equalizes left and right brain hemisphere activity",
+        "Lowers heart rate and balances blood pressure",
+        "Prepares the mind for profound meditative absorption"
+      ]
+    },
+    {
+      "id": "m-nada-yoga-sound",
+      "title": "Nada Yoga & Sacred Om Harmonic Resonance",
+      "discipline": "Meditation",
+      "category": "Nada Yoga",
+      "level": "All Levels",
+      "topic": "Sound Meditation",
+      "minutes": 15,
+      "description": "Internal sound meditation utilizing sustained A-U-M chanting, humming Bhramari pranayama, and listening to the silent unstruck sound (Anahata Nada).",
+      "icon": "music",
+      "intensity": "Gentle",
+      "instructions": [
+        "A sound: Resonate \"Ahhh\" deep in lower abdomen and pelvis for 5 breaths.",
+        "U sound: Resonate \"Ooo\" within the heart and chest cavity for 5 breaths.",
+        "M sound: Resonate \"Mmm\" throughout the skull and sinuses for 5 breaths.",
+        "Merge all three into three unified long Om vibrations.",
+        "Rest in the ringing silence that follows the sound."
+      ],
+      "benefits": [
+        "Releases nitric oxide in nasal passages boosting immune function",
+        "Calms agitated nervous pathways and promotes cellular tranquility",
+        "Deepens artistic resonance and vocal resonance for dance recitations"
+      ]
+    },
+    {
+      "id": "m-vipassana-insight",
+      "title": "Vipassana Insight & Body Scanning",
+      "discipline": "Meditation",
+      "category": "Vipassana",
+      "level": "Advanced",
+      "topic": "Vipassana Insight",
+      "minutes": 25,
+      "description": "Systematic objective observation of sensations (Vedana) across the entire body from crown to toes, training the mind in equanimity (Upekkha).",
+      "icon": "moon",
+      "intensity": "Gentle",
+      "instructions": [
+        "Establish motionless cross-legged sitting posture.",
+        "Scan attention like a soft laser from scalp to forehead, eyes, cheeks, and neck.",
+        "Notice sensations: tingling, warmth, pulse, numbness, or pressure.",
+        "Observe without craving pleasant sensations or averting unpleasant ones.",
+        "Maintain awareness of Anicca (impermanence) — everything arises and passes away."
+      ],
+      "benefits": [
+        "Frees the mind from habitual reactive stress patterns",
+        "Builds supreme mental resilience under high-pressure performance conditions",
+        "Cultivates authentic equanimity and deep wisdom"
+      ]
+    },
+    {
+      "id": "m-pre-performance-calm",
+      "title": "Pre-Performance Grounding & Nervous System Reset",
+      "discipline": "Meditation",
+      "category": "Stress Release",
+      "level": "All Levels",
+      "topic": "Stress Release",
+      "minutes": 12,
+      "description": "Quick backstage or pre-rehearsal somatic centering practice to transform stage fright adrenaline into focused artistic radiance.",
+      "icon": "heart",
+      "intensity": "Gentle",
+      "instructions": [
+        "Physiological Sigh: Double inhale through the nose, followed by a long sighing exhale.",
+        "Grounding 5-4-3-2-1: Acknowledge 5 sights, 4 physical touch points, 3 sounds, 2 scents, 1 breath.",
+        "Drop shoulders, unclamp jaw, and visualize roots extending from feet deep into the earth.",
+        "Anchor word: Silently chant \"I am grounded, I am ready, I am the dance\".",
+        "Step forward onto the stage or mat with serene confidence."
+      ],
+      "benefits": [
+        "Cuts cortisol spikes within 3 minutes",
+        "Converts trembling anxiety into laser-focused performance energy",
+        "Prevents hyperventilation and stabilizes fine motor control"
+      ]
+    }
+  ],
+  "dietPlans": [
+    {
+      "id": "d-0630-veg",
+      "title": "Warm Lemon-Ginger Elixir with Soaked Almonds & Chia",
+      "dietType": "veg",
+      "timeSlot": "early_morning",
+      "timeLabel": "06:30 AM",
+      "targetGoal": "Detox & Lightness",
+      "level": "All Levels",
+      "calories": 95,
+      "proteinGrams": 3,
+      "carbsGrams": 7,
+      "fatGrams": 6,
+      "description": "Alkalizing morning tonic to kickstart digestion, gently cleanse the liver, and deliver omega-3s and vitamin E before morning yoga or dance practice.",
+      "ingredients": [
+        "1 glass warm spring or filtered water (not boiling)",
+        "1/2 freshly squeezed organic lemon",
+        "1/2 inch crushed fresh ginger root",
+        "1 tsp raw organic wild honey (optional)",
+        "5 Mamra almonds (soaked overnight & peeled)",
+        "1 tsp soaked chia seeds"
+      ],
+      "preparationInstructions": [
+        "Warm water to lukewarm temperature. Squeeze fresh lemon juice and stir in crushed ginger.",
+        "Allow to steep for 2 minutes and add soaked chia seeds and raw honey if desired.",
+        "Sip slowly while sitting in Sukhasana, chewing the peeled soaked almonds deliberately."
+      ],
+      "benefits": "Awakens digestive fire (Jatharagni) without taxing the gut, flushes nocturnal toxins, and lubricates joint cartilage for morning stretching.",
+      "icon": "utensils"
+    },
+    {
+      "id": "d-0630-nonveg",
+      "title": "Warm Lemon Electrolyte Water with Bone Broth Shot & Walnuts",
+      "dietType": "non-veg",
+      "timeSlot": "early_morning",
+      "timeLabel": "06:30 AM",
+      "targetGoal": "Lean Muscle & Stamina",
+      "level": "All Levels",
+      "calories": 120,
+      "proteinGrams": 9,
+      "carbsGrams": 3,
+      "fatGrams": 8,
+      "description": "High-collagen restorative morning tonic supplying glycine, trace minerals, and essential fatty acids for joint resilience and connective tissue protection.",
+      "ingredients": [
+        "1 glass warm water with pinch of pink Himalayan rock salt & lemon juice",
+        "60ml slow-simmered organic chicken or beef bone broth warm shot",
+        "4 halves soaked Kashmiri walnuts",
+        "1/2 tsp cold-pressed A2 cow ghee or virgin coconut oil"
+      ],
+      "preparationInstructions": [
+        "Drink the warm lemon Himalayan salt water first to rehydrate intracellular pathways.",
+        "Sip the warm seasoned bone broth shot.",
+        "Consume the soaked walnuts slowly for cognitive clarity and healthy fats."
+      ],
+      "benefits": "Glycine and collagen peptides accelerate tendon and ligament repair after high-impact footwork and deep yoga postures.",
+      "icon": "utensils"
+    },
+    {
+      "id": "d-0830-veg",
+      "title": "Sprouted Moong & Oats Besan Chilla with Mint Chutney",
+      "dietType": "veg",
+      "timeSlot": "breakfast",
+      "timeLabel": "08:30 AM",
+      "targetGoal": "Energy & Agility",
+      "level": "All Levels",
+      "calories": 340,
+      "proteinGrams": 18,
+      "carbsGrams": 46,
+      "fatGrams": 8,
+      "description": "Savory protein-packed Indian crepes made with blended sprouted green gram, stone-ground oats, and chickpea flour topped with fresh greens and mint relish.",
+      "ingredients": [
+        "1/2 cup sprouted green moong dal (lightly blended)",
+        "1/4 cup rolled oats flour & 2 tbsp gram flour (besan)",
+        "Grated ginger, chopped green chillies, coriander leaves, pinch of hing (asafoetida)",
+        "1 tsp cold-pressed sesame or mustard oil for cooking",
+        "Homemade mint-coriander raw chutney (no sugar)",
+        "Small cup of steamed mixed vegetable sprouts on the side"
+      ],
+      "preparationInstructions": [
+        "Whisk batter with water to pouring consistency, seasoning with cumin, turmeric, and pink salt.",
+        "Heat cast-iron tawa, spread a ladle of batter thinly into a golden crisp crepe.",
+        "Flip once cooked, serving hot with fresh mint chutney and steamed sprouts."
+      ],
+      "benefits": "Complex low-glycemic carbohydrates provide 4 hours of steady stamina without sugar crashes; high plant protein repairs micro-tears in muscles.",
+      "icon": "utensils"
+    },
+    {
+      "id": "d-0830-nonveg",
+      "title": "Desi Masala Egg Bhurji on Sourdough with Sauteed Spinach",
+      "dietType": "non-veg",
+      "timeSlot": "breakfast",
+      "timeLabel": "08:30 AM",
+      "targetGoal": "Lean Muscle & Stamina",
+      "level": "All Levels",
+      "calories": 385,
+      "proteinGrams": 26,
+      "carbsGrams": 32,
+      "fatGrams": 15,
+      "description": "Pasture-raised eggs scrambled with fresh onions, vine tomatoes, turmeric, and cumin served alongside artisanal fermented sourdough and baby spinach.",
+      "ingredients": [
+        "3 free-range eggs (2 whole eggs + 1 egg white)",
+        "1 slice artisan whole wheat sourdough toast (dry toasted)",
+        "1 cup organic baby spinach sauteed in 1/2 tsp A2 ghee with garlic",
+        "Finely diced red onion, tomato, green chilli, and fresh cilantro",
+        "Turmeric, freshly ground black pepper, and rock salt"
+      ],
+      "preparationInstructions": [
+        "Whisk eggs with turmeric and a splash of water for fluffiness.",
+        "Sauté onions, tomatoes, and chillies in a light pan until aromatic; pour in eggs and scramble gently.",
+        "Quickly wilt spinach in the same pan, plating over toasted sourdough."
+      ],
+      "benefits": "Complete amino acid profile supports muscle protein synthesis and neurotransmitter production for razor-sharp memory and choreography retention.",
+      "icon": "utensils"
+    },
+    {
+      "id": "d-1100-veg",
+      "title": "Fresh Tender Coconut Water with Spiced Roasted Makhana",
+      "dietType": "veg",
+      "timeSlot": "mid_morning",
+      "timeLabel": "11:00 AM",
+      "targetGoal": "Energy & Agility",
+      "level": "All Levels",
+      "calories": 155,
+      "proteinGrams": 5,
+      "carbsGrams": 24,
+      "fatGrams": 4,
+      "description": "Natural isotonic electrolyte rehydration paired with calcium-rich roasted lotus seeds (foxnuts) spiced with chaat masala and black pepper.",
+      "ingredients": [
+        "1 freshly chopped tender coconut water (approx. 250ml)",
+        "1 bowl roasted phool makhana (foxnuts)",
+        "1/2 tsp A2 cow ghee with pinch of black pepper, turmeric, and rock salt",
+        "1 tbsp raw pumpkin seeds & sunflower seeds"
+      ],
+      "preparationInstructions": [
+        "Drink the coconut water directly for potassium and magnesium electrolyte replenishment.",
+        "Slow roast makhana in cast iron pan with ghee and spices until delightfully crunchy.",
+        "Toss with raw pumpkin seeds for zinc support."
+      ],
+      "benefits": "Replenishes potassium lost through sweat in vigorous dance rehearsals; prevents calf cramps and hydrates spinal discs.",
+      "icon": "utensils"
+    },
+    {
+      "id": "d-1100-nonveg",
+      "title": "Coconut Water with Soft-Boiled Egg Whites & Kashmiri Walnuts",
+      "dietType": "non-veg",
+      "timeSlot": "mid_morning",
+      "timeLabel": "11:00 AM",
+      "targetGoal": "Lean Muscle & Stamina",
+      "level": "All Levels",
+      "calories": 175,
+      "proteinGrams": 14,
+      "carbsGrams": 12,
+      "fatGrams": 7,
+      "description": "Quick, highly bioavailable protein burst paired with nature’s electrolyte fluid to maintain optimal energy between morning and afternoon practice.",
+      "ingredients": [
+        "1 glass fresh coconut water",
+        "2 soft-boiled organic egg whites dusted with black pepper & chaat masala",
+        "3 Kashmiri walnut halves",
+        "Few fresh mint leaves"
+      ],
+      "preparationInstructions": [
+        "Boil eggs for 6 minutes, shock in ice water, peel, and slice whites.",
+        "Dust with black pepper and Himalayan pink salt.",
+        "Consume alongside fresh chilled coconut water."
+      ],
+      "benefits": "Pure albumin protein with zero saturated fat gives sustained mid-day satiety without inducing digestive sluggishness or heaviness.",
+      "icon": "utensils"
+    },
+    {
+      "id": "d-1330-veg",
+      "title": "Sattvic Rainbow Thali: Multigrain Phulka, Dal, Paneer Bhurji & Curd",
+      "dietType": "veg",
+      "timeSlot": "lunch",
+      "timeLabel": "01:30 PM",
+      "targetGoal": "Energy & Agility",
+      "level": "All Levels",
+      "calories": 520,
+      "proteinGrams": 26,
+      "carbsGrams": 65,
+      "fatGrams": 16,
+      "description": "Complete Ayurvedic balanced plate providing all 6 tastes (Shad Rasa): sweet, sour, salty, bitter, pungent, and astringent for holistic nourishment.",
+      "ingredients": [
+        "2 soft multigrain phulkas (wheat, ragi, and jowar blend)",
+        "1 bowl yellow moong & masoor dal tempered with cumin, hing & tomatoes",
+        "100g low-fat fresh paneer bhurji or palak paneer with bell peppers",
+        "1 bowl raw rainbow salad (beetroot, cucumber, grated carrot, lemon juice)",
+        "1/2 bowl homemade probiotic set curd with roasted cumin"
+      ],
+      "preparationInstructions": [
+        "Cook dal until soft and silky, tempering with minimal cold-pressed oil and fresh aromatics.",
+        "Sauté diced vegetables and crumbled paneer quickly to retain crunch.",
+        "Enjoy mindfully without screens, chewing each bite 20 times."
+      ],
+      "benefits": "Supplies high fiber, sustained carbohydrate reserves, natural probiotics for gut microbiome health, and essential calcium for bone density.",
+      "icon": "utensils"
+    },
+    {
+      "id": "d-1330-nonveg",
+      "title": "Brown Basmati Rice, Herb-Grilled Chicken or Fish Curry & Cucumber Raita",
+      "dietType": "non-veg",
+      "timeSlot": "lunch",
+      "timeLabel": "01:30 PM",
+      "targetGoal": "Lean Muscle & Stamina",
+      "level": "All Levels",
+      "calories": 540,
+      "proteinGrams": 38,
+      "carbsGrams": 58,
+      "fatGrams": 14,
+      "description": "Lean high-protein power lunch designed for dancers and yogis demanding deep muscular endurance, fast repair, and sustained vitality.",
+      "ingredients": [
+        "1 bowl steamed aged brown basmati rice or quinoa",
+        "140g grilled lemon-herb chicken breast or Rohu/Salmon fish curry cooked in light coconut milk",
+        "1 cup steamed French beans, carrots, and bottle gourd (lauki)",
+        "1 bowl fresh cucumber-mint raita prepared with cultured yogurt",
+        "Lemon wedge and fresh coriander sprigs"
+      ],
+      "preparationInstructions": [
+        "Marinate chicken or fish with lemon, garlic, turmeric, coriander powder, and grill on griddle.",
+        "Plate with aromatic brown rice and a cooling cucumber raita.",
+        "Finish with warm water sip 30 minutes after the meal."
+      ],
+      "benefits": "High biological value protein promotes lean muscle mass and structural strength without bloating or weighing down the body.",
+      "icon": "utensils"
+    },
+    {
+      "id": "d-1700-veg",
+      "title": "Steamed Sprouted Kala Chana Chaat with Tulsi Green Tea",
+      "dietType": "veg",
+      "timeSlot": "snack",
+      "timeLabel": "05:00 PM",
+      "targetGoal": "Energy & Agility",
+      "level": "All Levels",
+      "calories": 195,
+      "proteinGrams": 10,
+      "carbsGrams": 32,
+      "fatGrams": 3,
+      "description": "Light, tangy, energizing snack rich in iron, zinc, and bio-available B-vitamins to power evening dance and yoga classes.",
+      "ingredients": [
+        "1 cup lightly steamed sprouted brown chickpeas (kala chana)",
+        "Diced cucumber, tomatoes, raw mango (in season), and fresh pomegranate pearls",
+        "Pinch of roasted cumin powder, black salt, and freshly squeezed lemon juice",
+        "1 cup warm organic Tulsi ginger green tea"
+      ],
+      "preparationInstructions": [
+        "Toss steamed sprouted chana with vegetables, pomegranate, and spices in a wooden bowl.",
+        "Brew fresh Tulsi green tea and enjoy 60-90 minutes prior to your evening movement session."
+      ],
+      "benefits": "Iron and folate support red blood cell hemoglobin oxygenation, preventing breathlessness during intense fast-paced dance footwork.",
+      "icon": "utensils"
+    },
+    {
+      "id": "d-1700-nonveg",
+      "title": "Boiled Egg Chaat with Chia Flax Crunch & Herbal Ashwagandha Tea",
+      "dietType": "non-veg",
+      "timeSlot": "snack",
+      "timeLabel": "05:00 PM",
+      "targetGoal": "Lean Muscle & Stamina",
+      "level": "All Levels",
+      "calories": 215,
+      "proteinGrams": 14,
+      "carbsGrams": 14,
+      "fatGrams": 10,
+      "description": "Clean protein snack providing sustained stamina, amino acids, and adaptogenic tea to modulate physical stress and boost focus.",
+      "ingredients": [
+        "2 hard-boiled eggs, quartered",
+        "Finely diced bell peppers, shallots, and fresh coriander",
+        "1 tsp toasted flaxseeds and chia seeds for crunch",
+        "Drizzle of lemon juice and sprinkle of chaat masala",
+        "1 cup warm Ashwagandha & chamomile herbal infusion"
+      ],
+      "preparationInstructions": [
+        "Arrange egg quarters on a plate, topping with diced vegetables and toasted seed blend.",
+        "Sip the calming adaptogenic tea to center mental focus before practice."
+      ],
+      "benefits": "Combines fast-acting and sustained protein release; adaptogens buffer adrenal fatigue and physical exertion.",
+      "icon": "utensils"
+    },
+    {
+      "id": "d-1930-veg",
+      "title": "Yellow Moong & Quinoa Khichdi with Steamed Zucchini & Ghee",
+      "dietType": "veg",
+      "timeSlot": "dinner",
+      "timeLabel": "07:30 PM",
+      "targetGoal": "Deep Recovery",
+      "level": "All Levels",
+      "calories": 360,
+      "proteinGrams": 15,
+      "carbsGrams": 56,
+      "fatGrams": 8,
+      "description": "The supreme Ayurvedic restorative bowl. Extremely easy to digest, gut-soothing, and anti-inflammatory to allow peaceful sleep.",
+      "ingredients": [
+        "1/3 cup split yellow moong dal (washed & soaked)",
+        "1/3 cup washed organic quinoa (or aged basmati rice)",
+        "1/2 cup diced zucchini, carrots, and baby peas",
+        "Tempering: 1 tsp A2 cow ghee, cumin seeds, grated ginger, pinch of asafoetida & turmeric",
+        "3 cups water cooked in pressure cooker or heavy bottom pot until creamy"
+      ],
+      "preparationInstructions": [
+        "Temper spices in warm ghee until fragrant; stir in grains, lentils, and chopped vegetables.",
+        "Simmer until grains melt together into a soft comforting porridge.",
+        "Garnish with fresh coriander and serve warm at least 2.5 hours before bedtime."
+      ],
+      "benefits": "Zero burden on the digestive system during nighttime sleep; allows cellular detoxification and deep muscle repair while sleeping.",
+      "icon": "utensils"
+    },
+    {
+      "id": "d-1930-nonveg",
+      "title": "Warm Shredded Chicken Shorba with Steamed Greens & Sweet Potato Mash",
+      "dietType": "non-veg",
+      "timeSlot": "dinner",
+      "timeLabel": "07:30 PM",
+      "targetGoal": "Deep Recovery",
+      "level": "All Levels",
+      "calories": 375,
+      "proteinGrams": 34,
+      "carbsGrams": 36,
+      "fatGrams": 8,
+      "description": "Soul-warming, easily assimilable spiced broth soup loaded with tender shredded chicken, digestive herbs, and a small side of potassium-rich sweet potato.",
+      "ingredients": [
+        "120g shredded poached chicken breast in rich aromatic clear broth",
+        "Broth brewed with ginger, garlic, cloves, cinnamon stick, and green cardamom",
+        "1 cup steamed broccoli florets and bok choy or spinach",
+        "1/2 cup roasted sweet potato mash with pinch of cinnamon and sea salt",
+        "Fresh lemon juice and cracked black pepper"
+      ],
+      "preparationInstructions": [
+        "Simmer chicken in aromatic spiced stock until fork-tender; shred into bite-sized pieces.",
+        "Ladle piping-hot shorba into a wide bowl with fresh steamed greens on the side.",
+        "Enjoy with sweet potato mash for gentle nighttime glycogen replenishment."
+      ],
+      "benefits": "High protein with minimal fat prevents nighttime acid reflux; tryptophan from chicken naturally promotes melatonin production for restorative sleep.",
+      "icon": "utensils"
+    },
+    {
+      "id": "d-2130-veg",
+      "title": "Golden Turmeric Milk (Haldi Doodh) with Nutmeg & Ashwagandha",
+      "dietType": "veg",
+      "timeSlot": "night_elixir",
+      "timeLabel": "09:30 PM",
+      "targetGoal": "Deep Recovery",
+      "level": "All Levels",
+      "calories": 125,
+      "proteinGrams": 5,
+      "carbsGrams": 10,
+      "fatGrams": 7,
+      "description": "Sacred Ayurvedic nighttime nectar. Curcumin, freshly grated nutmeg, and adaptogenic herbs soothe muscle inflammation and induce deep, dreamless sleep.",
+      "ingredients": [
+        "1 cup warm A2 cow milk (or unsweetened creamy almond milk)",
+        "1/2 tsp organic ground lakadong turmeric (high curcumin)",
+        "A pinch of freshly ground black pepper (enhances curcumin absorption by 2000%)",
+        "A pinch of freshly grated nutmeg (natural sedative)",
+        "1/2 tsp Ashwagandha root powder",
+        "1/2 tsp pure raw honey or date syrup (stirred in once warm, not boiling)"
+      ],
+      "preparationInstructions": [
+        "Gently heat milk in a stainless steel saucepan with turmeric, black pepper, and Ashwagandha.",
+        "Whisk until frothy and aromatic; pour into your favorite ceramic mug.",
+        "Grate a touch of fresh nutmeg on top and sip slowly 30 minutes before sleep."
+      ],
+      "benefits": "Powerful systemic anti-inflammatory targeting dancers’ knees, ankles, and yogis’ wrists; nutmeg calms the central nervous system for deep REM and deep sleep.",
+      "icon": "utensils"
+    },
+    {
+      "id": "d-2130-nonveg",
+      "title": "Almond Spiced Collagen Elixir with Cardamom & Saffron",
+      "dietType": "non-veg",
+      "timeSlot": "night_elixir",
+      "timeLabel": "09:30 PM",
+      "targetGoal": "Deep Recovery",
+      "level": "All Levels",
+      "calories": 130,
+      "proteinGrams": 10,
+      "carbsGrams": 5,
+      "fatGrams": 6,
+      "description": "Dairy-free, ultra-soothing nighttime elixir fortified with hydrolyzed collagen peptides, Kashmiri saffron, and green cardamom for overnight joint regeneration.",
+      "ingredients": [
+        "1 cup warm unsweetened almond milk",
+        "1 scoop (10g) pure hydrolyzed collagen peptides (types I & III)",
+        "3-4 strands of Kashmiri saffron (Kesar) steeped in warm water",
+        "1 crushed green cardamom pod",
+        "Pinch of cinnamon and nutmeg",
+        "1/2 tsp pure maple syrup or stevia (optional)"
+      ],
+      "preparationInstructions": [
+        "Steep saffron in 1 tbsp warm water until deep crimson-gold.",
+        "Whisk warm almond milk with collagen peptides until completely dissolved and silky.",
+        "Stir in saffron infusion, cardamom, and nutmeg. Sip in bed in comfortable darkness."
+      ],
+      "benefits": "Collagen peptides cross the intestinal wall into articular cartilage while you sleep, reducing morning joint stiffness and speeding up micro-tear repair.",
+      "icon": "utensils"
+    }
+  ]
+}

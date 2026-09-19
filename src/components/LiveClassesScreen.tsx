@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Video, Clock, Users, Calendar, ExternalLink, X } from 'lucide-react';
+import { Plus, Video, Clock, Users, Calendar, ExternalLink, X, Trash2 } from 'lucide-react';
 import { LiveClass, UserSession } from '../types';
 
 interface LiveClassesScreenProps {
@@ -7,6 +7,7 @@ interface LiveClassesScreenProps {
   classes: LiveClass[];
   onScheduleClass: (newClass: Omit<LiveClass, 'id' | 'participantCount' | 'joined'>) => void;
   onJoinClass: (classId: string) => void;
+  onDeleteClass?: (classId: string) => void;
 }
 
 export const LiveClassesScreen: React.FC<LiveClassesScreenProps> = ({
@@ -14,6 +15,7 @@ export const LiveClassesScreen: React.FC<LiveClassesScreenProps> = ({
   classes,
   onScheduleClass,
   onJoinClass,
+  onDeleteClass,
 }) => {
   const [isScheduleOpen, setIsScheduleOpen] = useState(false);
   const [title, setTitle] = useState('');
@@ -126,10 +128,25 @@ export const LiveClassesScreen: React.FC<LiveClassesScreenProps> = ({
                   >
                     {soon ? 'SOON' : 'UPCOMING'}
                   </span>
-                  <span className="text-xs text-[#7D6D73] flex items-center gap-1 font-medium">
-                    <Users className="w-3.5 h-3.5" />
-                    {cls.participantCount} joined
-                  </span>
+                  <div className="flex items-center gap-2.5">
+                    <span className="text-xs text-[#7D6D73] flex items-center gap-1 font-medium">
+                      <Users className="w-3.5 h-3.5" />
+                      {cls.participantCount} joined
+                    </span>
+                    {isAdmin && onDeleteClass && (
+                      <button
+                        onClick={() => {
+                          if (window.confirm(`Cancel and remove "${cls.title}"?`)) {
+                            onDeleteClass(cls.id);
+                          }
+                        }}
+                        title="Cancel and remove class"
+                        className="p-1 rounded-md text-[#7D6D73] hover:text-[#B82B5A] hover:bg-[#FDEEF3] transition cursor-pointer"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 {/* Title & Description */}

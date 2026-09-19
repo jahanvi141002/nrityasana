@@ -1,12 +1,57 @@
+export type DisciplineType =
+  | 'Yoga'
+  | 'Kathak'
+  | 'Bollywood'
+  | 'Semi-Classical'
+  | 'Zumba'
+  | 'Meditation'
+  | 'Dance';
+
+export type LevelType = 'All Levels' | 'Beginner' | 'Intermediate' | 'Advanced';
+
 export interface Practice {
   id: string;
   title: string;
-  discipline: 'Yoga' | 'Dance';
-  category: 'Flow' | 'Technique' | 'Restore' | 'Expression';
+  discipline: DisciplineType;
+  category: string; // e.g., 'Vinyasa Flow', 'Tatkar', 'Hooksteps', 'Chakra', etc.
+  level?: LevelType;
+  topic?: string;
   minutes: number;
   description: string;
-  icon: 'sunny' | 'footprints' | 'moon' | 'sparkles';
+  icon?: 'sunny' | 'footprints' | 'moon' | 'sparkles' | 'flame' | 'music' | 'heart' | 'utensils';
+  intensity?: 'Gentle' | 'Moderate' | 'High Energy' | 'Vigorous';
   instructions?: string[];
+  benefits?: string[];
+}
+
+export type DietType = 'veg' | 'non-veg';
+
+export type TimeSlotType =
+  | 'early_morning'
+  | 'breakfast'
+  | 'mid_morning'
+  | 'lunch'
+  | 'snack'
+  | 'dinner'
+  | 'night_elixir';
+
+export interface DietMeal {
+  id: string;
+  title: string;
+  dietType: DietType;
+  timeSlot: TimeSlotType;
+  timeLabel: string; // e.g. "06:30 AM", "08:30 AM"
+  targetGoal: 'Energy & Agility' | 'Lean Muscle & Stamina' | 'Detox & Lightness' | 'Deep Recovery';
+  level: LevelType;
+  calories: number;
+  proteinGrams: number;
+  carbsGrams: number;
+  fatGrams: number;
+  description: string;
+  ingredients: string[];
+  preparationInstructions: string[];
+  benefits: string;
+  icon?: string;
 }
 
 export interface UserSession {
@@ -96,4 +141,35 @@ export interface ThemeColors {
   bgMain: string;
   borderSubtle: string;
   accentBadge: string;
+}
+
+export interface UserProfile {
+  userId: string;
+  email?: string;
+  profilePictureUrl?: string;
+  phone?: string;
+  bio?: string;
+  danceStyle?: string;
+  experienceLevel?: string;
+  updatedAt?: string;
+}
+
+export interface PracticeLog {
+  id: string;
+  userId: string;
+  practiceId: string;
+  title: string;
+  discipline: string;
+  minutesPracticed: number;
+  completedAt: string;
+}
+
+export interface UserProgressData {
+  userId: string;
+  currentStreak: number;
+  totalMinutes: number;
+  completedSessions: number;
+  weeklyGoal: number;
+  completedDays: boolean[];
+  logs: PracticeLog[];
 }

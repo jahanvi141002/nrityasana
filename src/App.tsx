@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Sparkles, Compass, TrendingUp, Video, MessageSquare, User } from 'lucide-react';
-import { UserSession, Practice, LiveClass, ChatContact, ChatMessage, MediaItem, LiveNotification, ThemePreset } from './types';
+import { UserSession, Practice, LiveClass, ChatContact, ChatMessage, MediaItem, LiveNotification, ThemePreset, UserProfile } from './types';
 import {
   INITIAL_PRACTICES,
   INITIAL_CLASSES,
@@ -21,9 +21,9 @@ import { ProfileModal } from './components/ProfileModal';
 import { ActivePracticeModal } from './components/ActivePracticeModal';
 import { TopHeader } from './components/TopHeader';
 import { LogoThemeModal } from './components/LogoThemeModal';
-import { DatabaseModal } from './components/DatabaseModal';
 import { LiveNotificationsDrawer } from './components/LiveNotificationsDrawer';
 import { LiveNotificationToast } from './components/LiveNotificationToast';
+import { DatabaseWorkbenchModal } from './components/DatabaseWorkbenchModal';
 
 type TabType = 'today' | 'explore' | 'progress' | 'live' | 'chat' | 'me';
 
@@ -101,6 +101,7 @@ export function App() {
   });
 
   const [isLogoThemeOpen, setIsLogoThemeOpen] = useState(false);
+  const [isDbModalOpen, setIsDbModalOpen] = useState(false);
 
   // Live Notifications State
   const [notifications, setNotifications] = useState<LiveNotification[]>(() => {
@@ -131,10 +132,15 @@ export function App() {
   });
 
   // Data States
-  const [practices] = useState<Practice[]>(() => {
+  const [practices, setPractices] = useState<Practice[]>(() => {
     try {
       const saved = localStorage.getItem('nrityasana_practices');
-      if (saved) return JSON.parse(saved);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length >= INITIAL_PRACTICES.length) {
+          return parsed;
+        }
+      }
     } catch {}
     return INITIAL_PRACTICES;
   });
@@ -171,10 +177,11 @@ export function App() {
     return INITIAL_MEDIA;
   });
 
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+
   // UI Navigation & Modals
   const [currentTab, setCurrentTab] = useState<TabType>('today');
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isDatabaseOpen, setIsDatabaseOpen] = useState(false);
   const [activePractice, setActivePractice] = useState<Practice | null>(null);
 
   // Compute Active Theme Colors
@@ -227,6 +234,36 @@ export function App() {
     localStorage.setItem('nrityasana_media', JSON.stringify(media));
   }, [media]);
 
+  // Synchronize permanent brand logo and MySQL Database endpoints on startup
+  useEffect(() => {
+    fetch('/api/settings/logo')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.logoUrl) {
+          setCustomLogoUrl(data.logoUrl);
+          try {
+            localStorage.setItem('nrityasana_custom_logo', data.logoUrl);
+          } catch {}
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  // Synchronize practices from backend database on startup
+  useEffect(() => {
+    fetch('/api/practices')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.practices && Array.isArray(data.practices) && data.practices.length > 0) {
+          setPractices(data.practices);
+          try {
+            localStorage.setItem('nrityasana_practices', JSON.stringify(data.practices));
+          } catch {}
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   // Synchronize with MySQL Database endpoints on startup
   useEffect(() => {
     fetch('/api/classes')
@@ -257,6 +294,41 @@ export function App() {
       })
       .catch(() => {});
   }, []);
+
+  // Synchronize User Media from Database
+  useEffect(() => {
+    if (!session?.userId) return;
+    fetch(`/api/media?userId=${session.userId}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setMedia((prev) => {
+            const existingIds = new Set(prev.map((m) => m.id));
+            const merged = [...prev];
+            data.forEach((item: any) => {
+              if (!existingIds.has(item.id)) {
+                merged.unshift(item);
+              }
+            });
+            return merged;
+          });
+        }
+      })
+      .catch(() => {});
+  }, [session?.userId]);
+
+  // Synchronize User Profile from Database
+  useEffect(() => {
+    if (!session?.userId) return;
+    fetch(`/api/profile/${session.userId}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data) {
+          setUserProfile(data);
+        }
+      })
+      .catch(() => {});
+  }, [session?.userId]);
 
   // Push a live notification with toast & optional chime
   const pushNotification = useCallback(
@@ -317,21 +389,42 @@ export function App() {
     setNotifications([]);
   };
 
-  // Handlers for Logo & Theme
+  // Handlers for Logo & Theme (Admin Only)
   const handleUpdateLogo = (url: string) => {
+    if (session?.role !== 'ADMIN') return;
     setCustomLogoUrl(url);
     try {
       localStorage.setItem('nrityasana_custom_logo', url);
       window.dispatchEvent(new Event('storage'));
     } catch {}
+
+    // Persist permanently to server so logo remains constant across sessions and users
+    fetch('/api/settings/logo', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-user-role': 'ADMIN',
+      },
+      body: JSON.stringify({ logoUrl: url, role: 'ADMIN' }),
+    }).catch((err) => console.error('Failed to sync logo to server:', err));
   };
 
   const handleResetLogo = () => {
+    if (session?.role !== 'ADMIN') return;
     setCustomLogoUrl('/logo.jpg');
     try {
       localStorage.removeItem('nrityasana_custom_logo');
       window.dispatchEvent(new Event('storage'));
     } catch {}
+
+    fetch('/api/settings/logo', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-user-role': 'ADMIN',
+      },
+      body: JSON.stringify({ logoUrl: '/logo.jpg', role: 'ADMIN' }),
+    }).catch((err) => console.error('Failed to reset logo on server:', err));
   };
 
   const handleUpdateTheme = (preset: ThemePreset, customHex?: string) => {
@@ -418,6 +511,13 @@ export function App() {
         return c;
       })
     );
+  };
+
+  const handleDeleteClass = (classId: string) => {
+    setClasses((prev) => prev.filter((c) => c.id !== classId));
+    fetch(`/api/classes/${classId}`, {
+      method: 'DELETE',
+    }).catch(() => {});
   };
 
   const handleSendMessage = (
@@ -515,6 +615,18 @@ export function App() {
     };
     setMedia((prev) => [savedItem, ...prev]);
 
+    // Persist to database
+    fetch('/api/media', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userId: session?.userId || 'u-user',
+        name: savedItem.name,
+        type: savedItem.type,
+        url: savedItem.url,
+      }),
+    }).catch(() => {});
+
     pushNotification({
       type: 'practice',
       title: 'Practice Memory Saved',
@@ -523,11 +635,26 @@ export function App() {
     });
   };
 
+  const handleDeleteMedia = (mediaId: string) => {
+    setMedia((prev) => prev.filter((m) => m.id !== mediaId));
+    fetch(`/api/media/${mediaId}`, {
+      method: 'DELETE',
+    }).catch(() => {});
+  };
+
   if (!session) {
     return <AuthScreen onLogin={handleLogin} />;
   }
 
   const unreadNotificationsCount = notifications.filter((n) => !n.read).length;
+
+  const isAdmin = session.role === 'ADMIN';
+
+  const handleOpenLogoTheme = () => {
+    if (isAdmin) {
+      setIsLogoThemeOpen(true);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#FDF8F5] flex flex-col justify-between text-[#1F161A]">
@@ -546,9 +673,9 @@ export function App() {
         customLogoUrl={customLogoUrl}
         primaryColor={primaryColor}
         onOpenNotifications={() => setIsNotificationsOpen(true)}
-        onOpenLogoTheme={() => setIsLogoThemeOpen(true)}
+        onOpenLogoTheme={isAdmin ? handleOpenLogoTheme : undefined}
         onOpenProfile={() => setIsProfileOpen(true)}
-        onOpenDatabase={() => setIsDatabaseOpen(true)}
+        onOpenDatabaseModal={() => setIsDbModalOpen(true)}
       />
 
       {/* Active Screen View */}
@@ -568,15 +695,25 @@ export function App() {
           <ExploreScreen
             practices={practices}
             onSelectPractice={(p) => setActivePractice(p)}
+            session={session}
+            onShowToast={(title, message) => {
+              pushNotification({
+                type: 'practice',
+                title,
+                message,
+                actionTab: 'explore',
+              });
+            }}
           />
         )}
-        {currentTab === 'progress' && <ProgressScreen />}
+        {currentTab === 'progress' && <ProgressScreen session={session} />}
         {currentTab === 'live' && (
           <LiveClassesScreen
             session={session}
             classes={classes}
             onScheduleClass={handleScheduleClass}
             onJoinClass={handleJoinClass}
+            onDeleteClass={handleDeleteClass}
           />
         )}
         {currentTab === 'chat' && (
@@ -591,131 +728,64 @@ export function App() {
           <MeScreen
             session={session}
             media={media}
+            userProfile={userProfile}
             onOpenProfile={() => setIsProfileOpen(true)}
             onAddMedia={handleAddMedia}
+            onDeleteMedia={handleDeleteMedia}
+            onOpenDatabaseModal={() => setIsDbModalOpen(true)}
           />
         )}
       </main>
 
-      {/* Bottom Navigation Bar */}
+      {/* Bottom Navigation Bar with Smooth Easing Transitions */}
       <nav
         id="bottom-navigation-bar"
-        className="fixed bottom-0 inset-x-0 bg-[#FDF8F5]/92 backdrop-blur-lg border-t border-[#F2E6E2] z-40 py-2 px-2 shadow-xs"
+        className="fixed bottom-0 inset-x-0 bg-[#FDF8F5]/92 backdrop-blur-lg border-t border-[#F2E6E2] z-40 py-2 px-2 shadow-xs transition-colors duration-300 ease-out"
       >
         <div className="max-w-md mx-auto grid grid-cols-6 gap-1">
-          <button
-            onClick={() => setCurrentTab('today')}
-            className={`flex flex-col items-center justify-center py-1 px-1 rounded-xl transition cursor-pointer relative ${
-              currentTab === 'today'
-                ? 'font-bold'
-                : 'text-[#94848A] hover:text-[#1F161A]'
-            }`}
-            style={currentTab === 'today' ? { color: primaryColor } : {}}
-          >
-            <Sparkles className="w-5 h-5 mb-0.5" />
-            <span className="text-[10px] leading-tight">Today</span>
-            {currentTab === 'today' && (
-              <span
-                className="absolute -bottom-1 w-1 h-1 rounded-full"
-                style={{ backgroundColor: primaryColor }}
-              />
-            )}
-          </button>
-
-          <button
-            onClick={() => setCurrentTab('explore')}
-            className={`flex flex-col items-center justify-center py-1 px-1 rounded-xl transition cursor-pointer relative ${
-              currentTab === 'explore'
-                ? 'font-bold'
-                : 'text-[#94848A] hover:text-[#1F161A]'
-            }`}
-            style={currentTab === 'explore' ? { color: primaryColor } : {}}
-          >
-            <Compass className="w-5 h-5 mb-0.5" />
-            <span className="text-[10px] leading-tight">Explore</span>
-            {currentTab === 'explore' && (
-              <span
-                className="absolute -bottom-1 w-1 h-1 rounded-full"
-                style={{ backgroundColor: primaryColor }}
-              />
-            )}
-          </button>
-
-          <button
-            onClick={() => setCurrentTab('progress')}
-            className={`flex flex-col items-center justify-center py-1 px-1 rounded-xl transition cursor-pointer relative ${
-              currentTab === 'progress'
-                ? 'font-bold'
-                : 'text-[#94848A] hover:text-[#1F161A]'
-            }`}
-            style={currentTab === 'progress' ? { color: primaryColor } : {}}
-          >
-            <TrendingUp className="w-5 h-5 mb-0.5" />
-            <span className="text-[10px] leading-tight">Progress</span>
-            {currentTab === 'progress' && (
-              <span
-                className="absolute -bottom-1 w-1 h-1 rounded-full"
-                style={{ backgroundColor: primaryColor }}
-              />
-            )}
-          </button>
-
-          <button
-            onClick={() => setCurrentTab('live')}
-            className={`flex flex-col items-center justify-center py-1 px-1 rounded-xl transition cursor-pointer relative ${
-              currentTab === 'live'
-                ? 'font-bold'
-                : 'text-[#94848A] hover:text-[#1F161A]'
-            }`}
-            style={currentTab === 'live' ? { color: primaryColor } : {}}
-          >
-            <Video className="w-5 h-5 mb-0.5" />
-            <span className="text-[10px] leading-tight">Live</span>
-            {currentTab === 'live' && (
-              <span
-                className="absolute -bottom-1 w-1 h-1 rounded-full"
-                style={{ backgroundColor: primaryColor }}
-              />
-            )}
-          </button>
-
-          <button
-            onClick={() => setCurrentTab('chat')}
-            className={`flex flex-col items-center justify-center py-1 px-1 rounded-xl transition cursor-pointer relative ${
-              currentTab === 'chat'
-                ? 'font-bold'
-                : 'text-[#94848A] hover:text-[#1F161A]'
-            }`}
-            style={currentTab === 'chat' ? { color: primaryColor } : {}}
-          >
-            <MessageSquare className="w-5 h-5 mb-0.5" />
-            <span className="text-[10px] leading-tight">Chat</span>
-            {currentTab === 'chat' && (
-              <span
-                className="absolute -bottom-1 w-1 h-1 rounded-full"
-                style={{ backgroundColor: primaryColor }}
-              />
-            )}
-          </button>
-
-          <button
-            onClick={() => setCurrentTab('me')}
-            className={`flex flex-col items-center justify-center py-1 px-1 rounded-xl transition cursor-pointer relative ${
-              currentTab === 'me'
-                ? 'font-bold'
-                : 'text-[#94848A] hover:text-[#1F161A]'
-            }`}
-            style={currentTab === 'me' ? { color: primaryColor } : {}}
-          >
-            <User className="w-5 h-5 mb-0.5" />
-            <span className="text-[10px] leading-tight">Me</span>
-            {currentTab === 'me' && (
-              <span
-                className="absolute -bottom-1 w-1 h-1 rounded-full"
-                style={{ backgroundColor: primaryColor }}
-              />
-            )}
-          </button>
+          {[
+            { id: 'today' as TabType, label: 'Today', icon: Sparkles },
+            { id: 'explore' as TabType, label: 'Explore', icon: Compass },
+            { id: 'progress' as TabType, label: 'Progress', icon: TrendingUp },
+            { id: 'live' as TabType, label: 'Live', icon: Video },
+            { id: 'chat' as TabType, label: 'Chat', icon: MessageSquare },
+            { id: 'me' as TabType, label: 'Me', icon: User },
+          ].map((tab) => {
+            const Icon = tab.icon;
+            const isActive = currentTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                id={`bottom-nav-${tab.id}`}
+                onClick={() => setCurrentTab(tab.id)}
+                className={`group flex flex-col items-center justify-center py-1.5 px-1 rounded-xl transition-all duration-300 ease-out cursor-pointer relative ${
+                  isActive
+                    ? 'font-bold'
+                    : 'text-[#94848A] hover:text-[#1F161A]'
+                }`}
+                style={isActive ? { color: primaryColor } : {}}
+              >
+                <Icon
+                  className={`w-5 h-5 mb-0.5 transition-all duration-300 ease-out transform ${
+                    isActive ? 'scale-110 drop-shadow-xs' : 'group-hover:scale-105'
+                  }`}
+                  style={isActive ? { color: primaryColor } : undefined}
+                />
+                <span
+                  className="text-[10px] leading-tight transition-colors duration-300 ease-out font-medium"
+                  style={isActive ? { color: primaryColor, fontWeight: 700 } : undefined}
+                >
+                  {tab.label}
+                </span>
+                <span
+                  className={`absolute -bottom-1 h-1 rounded-full transition-all duration-300 ease-out ${
+                    isActive ? 'w-3 opacity-100' : 'w-0 opacity-0'
+                  }`}
+                  style={{ backgroundColor: primaryColor }}
+                />
+              </button>
+            );
+          })}
         </div>
       </nav>
 
@@ -735,12 +805,13 @@ export function App() {
         primaryColor={primaryColor}
       />
 
-      {/* Logo & Theme Customizer Modal */}
+      {/* Logo & Theme Customizer Modal - Strictly Admin Only */}
       {isLogoThemeOpen && (
         <LogoThemeModal
           currentLogoUrl={customLogoUrl}
           currentTheme={themePreset}
           customColor={customColor}
+          isAdmin={isAdmin}
           onClose={() => setIsLogoThemeOpen(false)}
           onUpdateLogo={handleUpdateLogo}
           onUpdateTheme={handleUpdateTheme}
@@ -752,18 +823,15 @@ export function App() {
       {isProfileOpen && (
         <ProfileModal
           session={session}
+          userProfile={userProfile}
           onClose={() => setIsProfileOpen(false)}
           onLogout={handleLogout}
           onUpdateAvatar={handleUpdateAvatar}
+          onUpdateProfile={(updated) => setUserProfile((prev) => (prev ? { ...prev, ...updated } : updated as UserProfile))}
+          onOpenLogoTheme={isAdmin ? handleOpenLogoTheme : undefined}
+          primaryColor={primaryColor}
         />
       )}
-
-      {/* MySQL & JDBC Database Workstation Modal */}
-      <DatabaseModal
-        isOpen={isDatabaseOpen}
-        onClose={() => setIsDatabaseOpen(false)}
-        primaryColor={primaryColor}
-      />
 
       {/* Guided Active Practice Modal */}
       {activePractice && (
@@ -771,14 +839,47 @@ export function App() {
           practice={activePractice}
           onClose={() => setActivePractice(null)}
           onComplete={() => {
+            const completedPrac = activePractice;
             setActivePractice(null);
+
+            // Record to Database Progress & Logs
+            if (session?.userId && completedPrac) {
+              fetch('/api/progress/log', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  userId: session.userId,
+                  practiceId: completedPrac.id,
+                  title: completedPrac.title,
+                  discipline: completedPrac.discipline,
+                  minutes: completedPrac.minutes,
+                }),
+              }).catch(() => {});
+            }
+
             pushNotification({
               type: 'milestone',
-              title: 'Practice Session Completed!',
-              message: `Splendid! You completed "${activePractice.title}" (${activePractice.minutes} min). Your dedication nurtures the soul.`,
+              title: 'Practice Session Completed & Logged!',
+              message: `Splendid! You completed "${completedPrac.title}" (${completedPrac.minutes} min). Recorded to your sacred rhythm.`,
               actionTab: 'progress',
             });
             setCurrentTab('progress');
+          }}
+        />
+      )}
+
+      {/* MySQL 8.0 & Workbench Modal */}
+      {session && (
+        <DatabaseWorkbenchModal
+          isOpen={isDbModalOpen}
+          onClose={() => setIsDbModalOpen(false)}
+          session={session}
+          onShowToast={(title, message) => {
+            pushNotification({
+              type: 'milestone',
+              title,
+              message,
+            });
           }}
         />
       )}

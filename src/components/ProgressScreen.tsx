@@ -1,23 +1,77 @@
-import React, { useState } from 'react';
-import { Check, Trophy, CalendarCheck } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Check, Trophy, CalendarCheck, Flame, Clock, Sparkles } from 'lucide-react';
+import { UserSession, PracticeLog } from '../types';
 
-export const ProgressScreen: React.FC = () => {
+interface ProgressScreenProps {
+  session: UserSession;
+}
+
+export const ProgressScreen: React.FC<ProgressScreenProps> = ({ session }) => {
   const [completedDays, setCompletedDays] = useState<boolean[]>([true, true, true, false, false, false, false]);
-  const [gentleGoal] = useState(5);
+  const [gentleGoal, setGentleGoal] = useState(5);
+  const [currentStreak, setCurrentStreak] = useState(4);
+  const [totalMinutes, setTotalMinutes] = useState(215);
+  const [completedSessions, setCompletedSessions] = useState(14);
+  const [recentLogs, setRecentLogs] = useState<PracticeLog[]>([]);
 
   const daysLabels = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
   const fullDayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+  // Load user progress from database API
+  useEffect(() => {
+    fetch(`/api/progress/${session.userId}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data) {
+          if (Array.isArray(data.completedDays)) {
+            setCompletedDays(data.completedDays);
+          }
+          if (typeof data.currentStreak === 'number') setCurrentStreak(data.currentStreak);
+          if (typeof data.totalMinutes === 'number') setTotalMinutes(data.totalMinutes);
+          if (typeof data.completedSessions === 'number') setCompletedSessions(data.completedSessions);
+          if (typeof data.weeklyGoal === 'number') setGentleGoal(data.weeklyGoal);
+          if (Array.isArray(data.logs)) setRecentLogs(data.logs);
+        }
+      })
+      .catch((err) => console.warn('Progress load notice:', err));
+  }, [session.userId]);
 
   const completedCount = completedDays.filter(Boolean).length;
   const progressRatio = Math.min(1, completedCount / gentleGoal);
   const remainingCount = Math.max(0, gentleGoal - completedCount);
 
-  const toggleDay = (index: number) => {
+  const toggleDay = async (index: number) => {
+    // Optimistic UI update
     setCompletedDays((prev) => {
       const next = [...prev];
       next[index] = !next[index];
       return next;
     });
+
+    try {
+      const res = await fetch('/api/progress/toggle-day', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: session.userId, dayIndex: index }),
+      });
+      if (res.ok) {
+        const result = await res.json();
+        if (Array.isArray(result.completedDays)) {
+          setCompletedDays(result.completedDays);
+        }
+      }
+    } catch (err) {
+      console.error('Failed to sync day toggle to DB:', err);
+    }
+  };
+
+  const formatLogDate = (dateStr: string) => {
+    try {
+      const d = new Date(dateStr);
+      return d.toLocaleDateString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    } catch {
+      return dateStr;
+    }
   };
 
   return (
@@ -28,23 +82,30 @@ export const ProgressScreen: React.FC = () => {
           Your rhythm
         </h1>
         <p className="mt-1.5 text-[#6B5C62] text-sm sm:text-base">
-          Small daily steps weave effortless movement.
+          Small daily steps weave effortless movement and inner strength.
         </p>
       </div>
 
       {/* Hero Stats Card */}
-      <div className="mb-8 p-6 rounded-[26px] bg-gradient-to-br from-[#781D32] via-[#861F37] to-[#591223] text-white shadow-md border border-[#942E46] relative overflow-hidden">
+      <div className="mb-6 p-6 rounded-[26px] bg-gradient-to-br from-[#781D32] via-[#861F37] to-[#591223] text-white shadow-md border border-[#942E46] relative overflow-hidden">
         <div className="absolute -right-6 -bottom-6 w-32 h-32 rounded-full bg-[#E25B88]/20 blur-xl pointer-events-none" />
-        
-        <span className="text-[11px] font-bold text-[#F59E38] tracking-[1.4px] uppercase block">
-          THIS WEEK
-        </span>
-        <div className="mt-2 flex items-baseline justify-between">
+
+        <div className="flex items-center justify-between">
+          <span className="text-[11px] font-bold text-[#F59E38] tracking-[1.4px] uppercase block">
+            THIS WEEK'S RHYTHM
+          </span>
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 text-xs font-semibold text-white border border-white/20 backdrop-blur-xs">
+            <Flame className="w-3.5 h-3.5 text-[#F59E38] fill-current" />
+            {currentStreak} Day Streak
+          </span>
+        </div>
+
+        <div className="mt-4 flex items-baseline justify-between">
           <span className="font-serif text-3xl sm:text-4xl font-bold text-white tracking-tight">
-            {completedCount} practices
+            {completedCount} of {gentleGoal}
           </span>
           <span className="text-xs text-[#F9D2DF]">
-            Goal: {gentleGoal} sessions
+            {totalMinutes} min practiced total
           </span>
         </div>
 
@@ -65,6 +126,31 @@ export const ProgressScreen: React.FC = () => {
             `${remainingCount} more to reach your weekly rhythm`
           )}
         </p>
+      </div>
+
+      {/* Metrics Row */}
+      <div className="grid grid-cols-2 gap-3.5 mb-7">
+        <div className="p-4 rounded-2xl bg-white/85 border border-[#F2E6E2] shadow-2xs">
+          <div className="flex items-center gap-2 text-xs font-semibold text-[#6B5C62]">
+            <Clock className="w-4 h-4 text-[#781D32]" />
+            Total Time
+          </div>
+          <p className="font-serif text-2xl font-bold text-[#1F161A] mt-1.5">
+            {totalMinutes} <span className="text-xs font-sans text-[#7D6D73] font-normal">mins</span>
+          </p>
+          <span className="text-[11px] text-[#7D6D73] mt-0.5 block">Across all yoga & dance</span>
+        </div>
+
+        <div className="p-4 rounded-2xl bg-white/85 border border-[#F2E6E2] shadow-2xs">
+          <div className="flex items-center gap-2 text-xs font-semibold text-[#6B5C62]">
+            <Sparkles className="w-4 h-4 text-[#B86B14]" />
+            Sessions Completed
+          </div>
+          <p className="font-serif text-2xl font-bold text-[#1F161A] mt-1.5">
+            {completedSessions} <span className="text-xs font-sans text-[#7D6D73] font-normal">practices</span>
+          </p>
+          <span className="text-[11px] text-[#7D6D73] mt-0.5 block">Stored in sacred journal</span>
+        </div>
       </div>
 
       {/* Consistency Section */}
@@ -101,6 +187,33 @@ export const ProgressScreen: React.FC = () => {
           })}
         </div>
       </div>
+
+      {/* Recent Practice Log History if present */}
+      {recentLogs.length > 0 && (
+        <div className="mb-8">
+          <h2 className="font-serif text-xl font-bold text-[#1F161A] mb-3">
+            Recent practice records
+          </h2>
+          <div className="space-y-2.5">
+            {recentLogs.slice(0, 5).map((log) => (
+              <div
+                key={log.id}
+                className="p-3.5 rounded-2xl bg-white/80 border border-[#F2E6E2] flex items-center justify-between text-xs"
+              >
+                <div>
+                  <p className="font-semibold text-[#1F161A] text-sm">{log.title}</p>
+                  <p className="text-[#7D6D73] mt-0.5">
+                    {log.discipline} • {log.minutesPracticed} minutes
+                  </p>
+                </div>
+                <span className="text-[11px] text-[#94848A]">
+                  {formatLogDate(log.completedAt)}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Gentle Reflection Box */}
       <div className="p-5 rounded-[22px] bg-white/85 border border-[#F2E6E2] flex items-start gap-3.5 shadow-2xs">

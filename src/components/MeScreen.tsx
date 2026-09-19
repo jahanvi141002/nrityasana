@@ -1,19 +1,25 @@
 import React, { useState, useRef } from 'react';
-import { Camera, Video, Settings, Upload, X, Play, Image as ImageIcon } from 'lucide-react';
-import { MediaItem, UserSession } from '../types';
+import { Camera, Video, Settings, Upload, X, Play, Image as ImageIcon, Trash2, Database, ChevronRight } from 'lucide-react';
+import { MediaItem, UserSession, UserProfile } from '../types';
 
 interface MeScreenProps {
   session: UserSession;
   media: MediaItem[];
+  userProfile?: UserProfile | null;
   onOpenProfile: () => void;
   onAddMedia: (newItem: Omit<MediaItem, 'id' | 'createdAt'>) => void;
+  onDeleteMedia?: (mediaId: string) => void;
+  onOpenDatabaseModal?: () => void;
 }
 
 export const MeScreen: React.FC<MeScreenProps> = ({
   session,
   media,
+  userProfile,
   onOpenProfile,
   onAddMedia,
+  onDeleteMedia,
+  onOpenDatabaseModal,
 }) => {
   const [pendingQueue, setPendingQueue] = useState<Array<{ name: string; type: 'photo' | 'video'; url: string }>>([]);
   const [selectedPreviewItem, setSelectedPreviewItem] = useState<MediaItem | null>(null);
@@ -106,7 +112,14 @@ export const MeScreen: React.FC<MeScreenProps> = ({
           </div>
           <div>
             <h1 className="font-serif text-3xl font-bold text-[#1F161A]">Me</h1>
-            <p className="text-xs text-[#7D6D73] mt-0.5">{session.email}</p>
+            <div className="flex items-center gap-2 mt-0.5">
+              <p className="text-xs text-[#7D6D73]">{session.email}</p>
+              {userProfile?.danceStyle && (
+                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#FAF3F0] text-[#781D32] border border-[#F2E6E2]">
+                  {userProfile.danceStyle}
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
@@ -118,6 +131,42 @@ export const MeScreen: React.FC<MeScreenProps> = ({
           <Settings className="w-5 h-5" />
         </button>
       </div>
+
+      {/* Practitioner Bio Reflection if available */}
+      {userProfile?.bio && (
+        <div className="mb-6 p-4 rounded-2xl bg-white/80 border border-[#F2E6E2] text-xs text-[#6B5C62] leading-relaxed italic shadow-2xs">
+          "{userProfile.bio}"
+        </div>
+      )}
+
+      {/* MySQL 8.0 & Workbench Integration Card */}
+      {onOpenDatabaseModal && (
+        <div className="mb-6 p-4 rounded-2xl bg-white border border-[#EADBD5] shadow-2xs flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#781D32]/10 text-[#781D32] flex items-center justify-center shrink-0">
+              <Database className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h3 className="text-xs font-bold text-[#1F161A]">MySQL 8.0 & Workbench</h3>
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#FAF3F0] text-[#781D32] font-semibold border border-[#EADBD5]">
+                  nrityasana
+                </span>
+              </div>
+              <p className="text-[11px] text-[#7D6D73] mt-0.5">
+                All 10 tables, complete schema script, and 60+ seeded practices & nutrition plans
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={onOpenDatabaseModal}
+            className="px-3 py-1.5 rounded-xl bg-[#FAF3F0] hover:bg-[#EADBD5] text-[#1F161A] text-xs font-bold transition flex items-center gap-1 shrink-0 cursor-pointer"
+          >
+            <span>Manage</span>
+            <ChevronRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
 
       {/* Your Moments */}
       <div className="mb-8">
@@ -261,9 +310,26 @@ export const MeScreen: React.FC<MeScreenProps> = ({
               )}
             </div>
 
-            <p className="text-xs text-[#F9D2DF] mt-4 self-start px-2">
-              {selectedPreviewItem.name}
-            </p>
+            <div className="w-full flex items-center justify-between mt-4 px-2">
+              <p className="text-xs text-[#F9D2DF]">
+                {selectedPreviewItem.name}
+              </p>
+
+              {onDeleteMedia && (
+                <button
+                  onClick={() => {
+                    if (window.confirm('Remove this reflection from your gallery?')) {
+                      onDeleteMedia(selectedPreviewItem.id);
+                      setSelectedPreviewItem(null);
+                    }
+                  }}
+                  className="px-3 py-1.5 rounded-lg bg-red-950/60 hover:bg-red-900/80 text-red-200 text-xs flex items-center gap-1.5 transition cursor-pointer border border-red-800/40"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  Remove
+                </button>
+              )}
+            </div>
           </div>
         </div>
       )}
