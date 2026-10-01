@@ -30,7 +30,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
   const isAdmin = session?.role === 'ADMIN';
 
   return (
-    <header className="sticky top-0 z-40 bg-[#FDF8F5]/90 backdrop-blur-md border-b border-[#F2E6E2]/70 px-4 sm:px-6 py-3 transition-colors">
+    <header className="sticky top-0 z-40 bg-[#FDF8F5]/95 backdrop-blur-md border-b border-[#F2E6E2]/70 px-4 sm:px-6 pt-[max(0.75rem,calc(env(safe-area-inset-top,0px)+0.5rem))] pb-3 transition-colors">
       <div className="max-w-2xl mx-auto flex items-center justify-between">
         {/* Logo and Brand - Only clickable for Admin */}
         <Logo

@@ -932,64 +932,68 @@ export function App() {
         </div>
       </nav>
 
-      {/* Floating 'Pranayama' 1-Minute Breath-Timer Trigger on Bottom Navigation Bar */}
-      <button
-        id="floating-pranayama-button"
-        type="button"
-        onClick={() => {
-          triggerHapticFeedback('selection');
-          setIsPranayamaOpen(true);
-        }}
-        className="fixed bottom-19 left-3 sm:left-6 z-40 flex items-center gap-2 px-3 py-2 rounded-full bg-white/95 hover:bg-white text-[#1F161A] shadow-[0_6px_22px_rgba(0,0,0,0.12)] border border-[#EADBDB] hover:border-[#781D32]/40 backdrop-blur-md transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer group"
-        title="Start 1-minute guided breath pause without leaving screen"
-      >
-        <div
-          className="w-7 h-7 rounded-full flex items-center justify-center text-white shadow-xs transition-transform duration-300 group-hover:rotate-12"
-          style={{ backgroundColor: primaryColor }}
+      {/* Floating 'Pranayama' 1-Minute Breath-Timer Trigger - ONLY on Home/Today screen */}
+      {currentTab === 'today' && (
+        <button
+          id="floating-pranayama-button"
+          type="button"
+          onClick={() => {
+            triggerHapticFeedback('selection');
+            setIsPranayamaOpen(true);
+          }}
+          className="fixed bottom-19 left-3 sm:left-6 z-40 flex items-center gap-2 px-3 py-2 rounded-full bg-white/95 hover:bg-white text-[#1F161A] shadow-[0_6px_22px_rgba(0,0,0,0.12)] border border-[#EADBDB] hover:border-[#781D32]/40 backdrop-blur-md transition-all duration-200 hover-pranayama-breath active:scale-95 cursor-pointer group animate-in fade-in duration-200"
+          title="Start 1-minute guided breath pause without leaving screen"
         >
-          <Wind className="w-4 h-4 text-amber-200 animate-pulse" />
-        </div>
-        <div className="flex flex-col text-left">
-          <span className="text-[9px] font-bold tracking-wider uppercase leading-none text-[#781D32] font-mono">
-            प्राणायाम
-          </span>
-          <span className="text-[11px] font-bold text-[#1F161A] leading-tight">
-            1-min Breath
-          </span>
-        </div>
-        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse ml-0.5" />
-      </button>
+          <div
+            className="w-7 h-7 rounded-full flex items-center justify-center text-white shadow-xs transition-transform duration-300 group-hover:rotate-12"
+            style={{ backgroundColor: primaryColor }}
+          >
+            <Wind className="w-4 h-4 text-amber-200 animate-pulse" />
+          </div>
+          <div className="flex flex-col text-left">
+            <span className="text-[9px] font-bold tracking-wider uppercase leading-none text-[#781D32] font-mono">
+              प्राणायाम
+            </span>
+            <span className="text-[11px] font-bold text-[#1F161A] leading-tight">
+              1-min Breath
+            </span>
+          </div>
+          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse ml-0.5" />
+        </button>
+      )}
 
-      {/* Floating Quick Action Button Menu (Log Quick Practice or Record Mood without changing screens) */}
-      <QuickActionMenu
-        session={session}
-        primaryColor={primaryColor}
-        onOpenPranayama={() => {
-          triggerHapticFeedback('selection');
-          setIsPranayamaOpen(true);
-        }}
-        onPracticeLogged={(title, discipline, minutes) => {
-          pushNotification({
-            type: 'practice',
-            title: 'Quick Practice Logged! 🧘',
-            message: `Recorded ${minutes}m of ${discipline} ("${title}") to your rhythm.`,
-          });
-        }}
-        onMoodRecorded={(moodLog) => {
-          pushNotification({
-            type: 'milestone',
-            title: `${moodLog.emoji} Mood & Bhav Recorded`,
-            message: `Felt "${moodLog.mood}" (${moodLog.bhavRasa}) • Energy ${moodLog.energyLevel}/5.`,
-          });
-        }}
-        onShowToast={(title, message) => {
-          pushNotification({
-            type: 'practice',
-            title,
-            message,
-          });
-        }}
-      />
+      {/* Floating Quick Action Button Menu (+ Add button) - ONLY on Home/Today screen */}
+      {currentTab === 'today' && (
+        <QuickActionMenu
+          session={session}
+          primaryColor={primaryColor}
+          onOpenPranayama={() => {
+            triggerHapticFeedback('selection');
+            setIsPranayamaOpen(true);
+          }}
+          onPracticeLogged={(title, discipline, minutes) => {
+            pushNotification({
+              type: 'practice',
+              title: 'Quick Practice Logged! 🧘',
+              message: `Recorded ${minutes}m of ${discipline} ("${title}") to your rhythm.`,
+            });
+          }}
+          onMoodRecorded={(moodLog) => {
+            pushNotification({
+              type: 'milestone',
+              title: `${moodLog.emoji} Mood & Bhav Recorded`,
+              message: `Felt "${moodLog.mood}" (${moodLog.bhavRasa}) • Energy ${moodLog.energyLevel}/5.`,
+            });
+          }}
+          onShowToast={(title, message) => {
+            pushNotification({
+              type: 'practice',
+              title,
+              message,
+            });
+          }}
+        />
+      )}
 
       {/* Live Notifications Drawer Panel */}
       <LiveNotificationsDrawer

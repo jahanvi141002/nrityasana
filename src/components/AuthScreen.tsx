@@ -80,7 +80,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLogin }) => {
   };
 
   return (
-    <div id="auth-screen" className="min-h-screen bg-[#FDF8F5] flex flex-col justify-center items-center px-6 py-12">
+    <div id="auth-screen" className="min-h-screen bg-[#FDF8F5] flex flex-col justify-center items-center px-6 py-12 pt-[max(3rem,calc(env(safe-area-inset-top,0px)+1.5rem))] pb-[max(3rem,calc(env(safe-area-inset-bottom,0px)+1.5rem))]">
       <div className="w-full max-w-[430px] bg-white/85 backdrop-blur-sm p-8 sm:p-10 rounded-[32px] border border-[#F2E6E2] shadow-sm">
         {/* App Logo Emblem */}
         <div className="flex justify-center mb-5">

@@ -39,7 +39,7 @@ export const LiveNotificationToast: React.FC<LiveNotificationToastProps> = ({
   };
 
   return (
-    <div className="fixed top-4 inset-x-4 max-w-md mx-auto z-50 animate-in fade-in slide-in-from-top-4 duration-300 pointer-events-auto">
+    <div className="fixed top-[max(1rem,calc(env(safe-area-inset-top,0px)+0.75rem))] inset-x-4 max-w-md mx-auto z-50 animate-in fade-in slide-in-from-top-4 duration-300 pointer-events-auto">
       <div className="bg-[#1F161A] text-white p-4 rounded-2xl shadow-2xl border border-white/15 flex items-start gap-3.5 backdrop-blur-md">
         {/* Live indicator dot & icon */}
         <div className="relative shrink-0 mt-0.5">
