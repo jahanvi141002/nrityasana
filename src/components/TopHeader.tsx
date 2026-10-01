@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bell, Palette, Database } from 'lucide-react';
+import { Bell, Palette, Database, Download } from 'lucide-react';
 import { UserSession } from '../types';
 import { Logo } from './Logo';
 
@@ -12,6 +12,7 @@ interface TopHeaderProps {
   onOpenLogoTheme?: () => void;
   onOpenProfile: () => void;
   onOpenDatabaseModal?: () => void;
+  onOpenInstallApp?: () => void;
 }
 
 export const TopHeader: React.FC<TopHeaderProps> = ({
@@ -23,6 +24,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
   onOpenLogoTheme,
   onOpenProfile,
   onOpenDatabaseModal,
+  onOpenInstallApp,
 }) => {
   const initial = session.email ? session.email.charAt(0).toUpperCase() : 'A';
   const isAdmin = session?.role === 'ADMIN';
@@ -41,6 +43,20 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
 
         {/* Action Controls */}
         <div className="flex items-center gap-2">
+          {/* PWA Install Button for Android, iOS & Desktop */}
+          {onOpenInstallApp && (
+            <button
+              id="header-install-app-button"
+              onClick={onOpenInstallApp}
+              title="Install Nrityasana on Android, iOS, or Desktop"
+              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-white text-xs font-semibold shadow-2xs transition hover:scale-102 cursor-pointer"
+              style={{ backgroundColor: primaryColor }}
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Install App</span>
+            </button>
+          )}
+
           {/* Database Workbench Modal Button */}
           {onOpenDatabaseModal && (
             <button

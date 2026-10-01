@@ -17,6 +17,7 @@ import {
   Award,
 } from 'lucide-react';
 import { Practice } from '../types';
+import { AiVisualDemonstrator } from './AiVisualDemonstrator';
 
 interface ActivePracticeModalProps {
   practice: Practice;
@@ -85,12 +86,12 @@ export const ActivePracticeModal: React.FC<ActivePracticeModalProps> = ({ practi
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-      <div className="bg-[#1C1618] text-white w-full max-w-lg rounded-[28px] overflow-hidden shadow-2xl border border-[#3E2D33] flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-sm overflow-y-auto">
+      <div className="bg-[#1C1618] text-white w-full max-w-2xl lg:max-w-3xl rounded-[28px] overflow-hidden shadow-2xl border border-[#3E2D33] flex flex-col max-h-[92vh] my-auto">
         {/* Header */}
-        <div className="p-5 sm:p-6 border-b border-white/10 flex items-center justify-between">
+        <div className="p-4 sm:p-5 border-b border-white/10 flex items-center justify-between bg-[#191215]">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-[#781D32] flex items-center justify-center shadow-md border border-white/15 shrink-0">
+            <div className="w-11 h-11 rounded-2xl bg-[#781D32] flex items-center justify-center shadow-md border border-white/15 shrink-0">
               {renderIcon()}
             </div>
             <div>
@@ -108,6 +109,9 @@ export const ActivePracticeModal: React.FC<ActivePracticeModalProps> = ({ practi
                     {practice.intensity}
                   </span>
                 )}
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-950/80 text-emerald-400 font-semibold border border-emerald-500/40">
+                  ✨ AI Visual Motion Guide Active
+                </span>
               </div>
               <h2 className="font-serif text-lg sm:text-xl font-bold text-white mt-0.5">{practice.title}</h2>
             </div>
@@ -120,70 +124,89 @@ export const ActivePracticeModal: React.FC<ActivePracticeModalProps> = ({ practi
           </button>
         </div>
 
-        {/* Timer & Visual Pulse */}
-        <div className="p-6 text-center bg-gradient-to-b from-[#1F161A] to-[#2B1B22]">
-          <div className="text-5xl font-mono font-bold tracking-wider text-[#F59E38] mb-2">
-            {formatTime(secondsLeft)}
-          </div>
-          <p className="text-xs text-[#F9D2DF]">
-            {isPlaying ? 'Session in motion' : secondsLeft === 0 ? 'Session completed' : 'Paused'}
-          </p>
-
-          {/* Progress bar */}
-          <div className="w-full bg-black/40 h-2 rounded-full overflow-hidden mt-5">
-            <div
-              className="bg-gradient-to-r from-[#E25B88] to-[#F59E38] h-full transition-all duration-300 rounded-full"
-              style={{ width: `${progressPercent}%` }}
+        {/* Scrollable Content Body */}
+        <div className="flex-1 overflow-y-auto">
+          {/* Visual Presentation: Woman demonstrating with AI Holographic Biometric Overlay */}
+          <div className="p-3 sm:p-5 pb-2">
+            <AiVisualDemonstrator
+              practice={practice}
+              currentStepIndex={currentStepIndex}
             />
           </div>
-        </div>
 
-        {/* Step Guide & Benefits */}
-        <div className="p-5 sm:p-6 bg-[#161013] flex-1 overflow-y-auto space-y-4">
-          <div>
-            <div className="flex items-center justify-between text-xs text-[#F9D2DF] mb-2.5">
-              <span className="font-semibold uppercase tracking-wider text-[#F59E38]">
-                Movement Step {currentStepIndex + 1} of {steps.length}
-              </span>
-              <div className="flex gap-1">
-                <button
-                  disabled={currentStepIndex === 0}
-                  onClick={() => setCurrentStepIndex((prev) => prev - 1)}
-                  className="p-1 rounded bg-[#2B1B22] disabled:opacity-30 hover:bg-[#3B2530] text-white cursor-pointer"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-                <button
-                  disabled={currentStepIndex === steps.length - 1}
-                  onClick={() => setCurrentStepIndex((prev) => prev + 1)}
-                  className="p-1 rounded bg-[#2B1B22] disabled:opacity-30 hover:bg-[#3B2530] text-white cursor-pointer"
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </button>
+          {/* Timer & Visual Pulse */}
+          <div className="px-5 py-4 text-center bg-gradient-to-b from-[#1F161A] to-[#2B1B22] border-y border-white/10">
+            <div className="flex items-center justify-between max-w-sm mx-auto">
+              <div className="text-left">
+                <div className="text-[10px] text-white/60 uppercase tracking-wider font-mono">Time Remaining</div>
+                <div className="text-3xl sm:text-4xl font-mono font-bold tracking-wider text-[#F59E38]">
+                  {formatTime(secondsLeft)}
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-[10px] text-white/60 uppercase tracking-wider font-mono">Session State</div>
+                <div className="text-xs font-semibold text-[#F9D2DF]">
+                  {isPlaying ? '🟢 In Motion' : secondsLeft === 0 ? '🏁 Completed' : '⏸️ Paused'}
+                </div>
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-[#23151B] border border-white/10 text-sm text-[#FAF3F0] leading-relaxed min-h-[75px] flex items-center shadow-inner">
-              {steps[currentStepIndex]}
+            {/* Progress bar */}
+            <div className="w-full bg-black/40 h-2 rounded-full overflow-hidden mt-3 max-w-sm mx-auto">
+              <div
+                className="bg-gradient-to-r from-[#E25B88] to-[#F59E38] h-full transition-all duration-300 rounded-full"
+                style={{ width: `${progressPercent}%` }}
+              />
             </div>
           </div>
 
-          {/* Benefits bullets */}
-          {practice.benefits && practice.benefits.length > 0 && (
-            <div className="pt-2 border-t border-white/10">
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-[#A7F3D0] flex items-center gap-1.5 mb-2">
-                <Award className="w-3.5 h-3.5" /> Key Practice Benefits
-              </span>
-              <ul className="space-y-1 text-xs text-[#E5D5DA] leading-relaxed">
-                {practice.benefits.map((b, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <span className="text-[#F59E38] font-bold">•</span>
-                    <span>{b}</span>
-                  </li>
-                ))}
-              </ul>
+          {/* Step Guide & Benefits */}
+          <div className="p-4 sm:p-5 bg-[#161013] space-y-4">
+            <div>
+              <div className="flex items-center justify-between text-xs text-[#F9D2DF] mb-2.5">
+                <span className="font-semibold uppercase tracking-wider text-[#F59E38] flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5" /> Movement Step {currentStepIndex + 1} of {steps.length}
+                </span>
+                <div className="flex gap-1.5">
+                  <button
+                    disabled={currentStepIndex === 0}
+                    onClick={() => setCurrentStepIndex((prev) => prev - 1)}
+                    className="px-2.5 py-1 rounded-lg bg-[#2B1B22] disabled:opacity-30 hover:bg-[#3B2530] text-xs text-white cursor-pointer flex items-center gap-1"
+                  >
+                    <ChevronLeft className="w-3.5 h-3.5" /> Prev
+                  </button>
+                  <button
+                    disabled={currentStepIndex === steps.length - 1}
+                    onClick={() => setCurrentStepIndex((prev) => prev + 1)}
+                    className="px-2.5 py-1 rounded-lg bg-[#2B1B22] disabled:opacity-30 hover:bg-[#3B2530] text-xs text-white cursor-pointer flex items-center gap-1"
+                  >
+                    Next <ChevronRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+
+              <div className="p-3.5 rounded-xl bg-[#23151B] border border-white/10 text-sm text-[#FAF3F0] leading-relaxed shadow-inner">
+                {steps[currentStepIndex]}
+              </div>
             </div>
-          )}
+
+            {/* Benefits bullets */}
+            {practice.benefits && practice.benefits.length > 0 && (
+              <div className="pt-2 border-t border-white/10">
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-[#A7F3D0] flex items-center gap-1.5 mb-2">
+                  <Award className="w-3.5 h-3.5" /> Key Practice Benefits
+                </span>
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs text-[#E5D5DA] leading-relaxed">
+                  {practice.benefits.map((b, idx) => (
+                    <li key={idx} className="flex items-start gap-2 bg-[#211419] p-2 rounded-xl border border-white/5">
+                      <span className="text-[#F59E38] font-bold">•</span>
+                      <span>{b}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Controls */}

@@ -22,6 +22,10 @@ export interface Practice {
   intensity?: 'Gentle' | 'Moderate' | 'High Energy' | 'Vigorous';
   instructions?: string[];
   benefits?: string[];
+  aiDemoImage?: string;
+  aiDemoPose?: string;
+  aiAlignmentScore?: number;
+  aiKeyPointers?: string[];
 }
 
 export type DietType = 'veg' | 'non-veg';
@@ -120,7 +124,7 @@ export interface LiveNotification {
   message: string;
   timestamp: string; // ISO string
   read: boolean;
-  actionTab?: 'today' | 'explore' | 'progress' | 'live' | 'chat' | 'me';
+  actionTab?: 'today' | 'explore' | 'progress' | 'aiStudio' | 'live' | 'chat' | 'me';
   actionPayload?: {
     classId?: string;
     contactId?: string;
@@ -173,3 +177,28 @@ export interface UserProgressData {
   completedDays: boolean[];
   logs: PracticeLog[];
 }
+
+export interface MoodLog {
+  id: string;
+  userId: string;
+  mood: string;
+  emoji: string;
+  energyLevel: number;
+  notes?: string;
+  bhavRasa?: string;
+  recordedAt: string;
+}
+
+export interface SankalpaQuote {
+  id: string;
+  theme: 'Yoga' | 'Dance' | 'Prana' | 'Bhakti' | 'Mindfulness';
+  sanskritOriginal?: string;
+  transliteration?: string;
+  quote: string;
+  source: string;
+  authorOrText: string;
+  reflectionPrompt: string;
+  mudraOrAsanaFocus?: string;
+  dateKey?: string;
+}
+

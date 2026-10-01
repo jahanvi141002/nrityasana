@@ -1,9 +1,11 @@
 import express, { Request, Response } from 'express';
+import http from 'http';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import 'dotenv/config';
 import { createServer as createViteServer } from 'vite';
+import { createAiRouter, attachLiveWebSocket } from './src/server/aiRouter';
 import {
   checkDbStatus,
   runMigrations,
@@ -23,6 +25,7 @@ import {
   StoredProgress,
 } from './src/db/store';
 import { Practice, DietMeal } from './src/types';
+import { getDailySankalpa, getRandomSankalpa } from './src/utils/sankalpaQuotes';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -62,6 +65,9 @@ async function startServer() {
 
   // --- API ROUTES ---
 
+  // Mount Gemini AI routes (Chat, Search Grounding, Transcribe, Lyria Music, Veo Video)
+  app.use('/api/ai', createAiRouter());
+
   // Health check
   app.get('/api/health', (_req: Request, res: Response) => {
     res.json({
@@ -70,6 +76,35 @@ async function startServer() {
       timestamp: new Date().toISOString(),
       databaseMode: 'dual-persistent',
     });
+  });
+
+  // Daily Sankalpa (Intention) - Philosophy Quote of the Day
+  app.get('/api/sankalpa/daily', (_req: Request, res: Response) => {
+    try {
+      const dailySankalpa = getDailySankalpa(new Date());
+      res.json({
+        success: true,
+        sankalpa: dailySankalpa,
+        timestamp: new Date().toISOString(),
+      });
+    } catch {
+      res.status(500).json({ error: 'Failed to retrieve daily sankalpa' });
+    }
+  });
+
+  // Random Sankalpa (For refreshing / shuffling intention)
+  app.get('/api/sankalpa/random', (req: Request, res: Response) => {
+    try {
+      const excludeId = typeof req.query.exclude === 'string' ? req.query.exclude : undefined;
+      const randomSankalpa = getRandomSankalpa(excludeId);
+      res.json({
+        success: true,
+        sankalpa: randomSankalpa,
+        timestamp: new Date().toISOString(),
+      });
+    } catch {
+      res.status(500).json({ error: 'Failed to retrieve random sankalpa' });
+    }
   });
 
   // Persistent Active Logo storage
@@ -1167,7 +1202,10 @@ async function startServer() {
     });
   }
 
-  app.listen(PORT, '0.0.0.0', () => {
+  const httpServer = http.createServer(app);
+  attachLiveWebSocket(httpServer);
+
+  httpServer.listen(PORT, '0.0.0.0', () => {
     console.log(`[Nrityasana] Full-stack server running on http://0.0.0.0:${PORT}`);
     const config = getDbConfig();
     console.log(`[Nrityasana] JDBC Target: ${config.jdbcUrl}`);

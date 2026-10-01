@@ -19,18 +19,23 @@ import {
   Award,
   PlusCircle,
   X,
+  Eye,
+  Activity,
 } from 'lucide-react';
 import { Practice, DietMeal, DisciplineType, LevelType, TimeSlotType, UserSession } from '../types';
 import { COMPREHENSIVE_DIET_PLANS } from '../data/categoriesData';
+import { getPracticeAiVisualDemo } from '../utils/aiVisualDemos';
+import { AyurvedaRoutinesView } from './AyurvedaRoutinesView';
 
 interface ExploreScreenProps {
   practices: Practice[];
   onSelectPractice: (practice: Practice) => void;
   session?: UserSession | null;
   onShowToast?: (title: string, message: string) => void;
+  initialTab?: MainTab;
 }
 
-type MainTab = 'All' | DisciplineType | 'Diet Plans';
+type MainTab = 'All' | DisciplineType | 'Diet Plans' | 'Ayurveda & Dinacharya';
 
 const DISCIPLINE_TABS: { id: MainTab; label: string; icon: any }[] = [
   { id: 'All', label: 'All Practices', icon: Sparkles },
@@ -40,7 +45,8 @@ const DISCIPLINE_TABS: { id: MainTab; label: string; icon: any }[] = [
   { id: 'Semi-Classical', label: 'Semi-Classical', icon: Heart },
   { id: 'Zumba', label: 'Zumba Fitness', icon: Flame },
   { id: 'Meditation', label: 'Meditation', icon: Moon },
-  { id: 'Diet Plans', label: 'Diet Plans', icon: Utensils },
+  { id: 'Ayurveda & Dinacharya', label: 'Ayurveda & Routines', icon: Sparkles },
+  { id: 'Diet Plans', label: 'Food Routines', icon: Utensils },
 ];
 
 const TOPICS_BY_DISCIPLINE: Record<string, string[]> = {
@@ -117,8 +123,15 @@ export const ExploreScreen: React.FC<ExploreScreenProps> = ({
   onSelectPractice,
   session,
   onShowToast,
+  initialTab,
 }) => {
-  const [activeTab, setActiveTab] = useState<MainTab>('All');
+  const [activeTab, setActiveTab] = useState<MainTab>(initialTab || 'All');
+
+  useEffect(() => {
+    if (initialTab) {
+      setActiveTab(initialTab);
+    }
+  }, [initialTab]);
   const [activeTopic, setActiveTopic] = useState<string>('All');
   const [levelFilter, setLevelFilter] = useState<LevelType | 'All Levels'>('All Levels');
   const [searchQuery, setSearchQuery] = useState('');
@@ -449,9 +462,14 @@ export const ExploreScreen: React.FC<ExploreScreenProps> = ({
       </div>
 
       {/* ====================================================================== */}
-      {/* DIET PLANS VIEW (Veg & Non-Veg with Time Schedule) */}
+      {/* AYURVEDA & DINACHARYA VIEW */}
       {/* ====================================================================== */}
-      {activeTab === 'Diet Plans' ? (
+      {activeTab === 'Ayurveda & Dinacharya' ? (
+        <AyurvedaRoutinesView
+          onSelectPractice={onSelectPractice}
+          practices={practicesList}
+        />
+      ) : activeTab === 'Diet Plans' ? (
         <div className="space-y-4">
           {/* Veg vs Non-Veg Switcher */}
           <div className="flex flex-wrap items-center justify-between gap-3 bg-[#FAF3F0] p-3 rounded-2xl border border-[#EADBD5]">
@@ -662,7 +680,28 @@ export const ExploreScreen: React.FC<ExploreScreenProps> = ({
         /* ====================================================================== */
         /* PRACTICES VIEW (Yoga, Kathak, Bollywood, Semi-Classical, Zumba, Meditation) */
         /* ====================================================================== */
-        <div className="space-y-3.5">
+        <div className="space-y-4">
+          {/* AI Visual Demonstration Banner */}
+          <div className="p-4 sm:p-5 rounded-[24px] bg-gradient-to-r from-[#24131B] via-[#1D1016] to-[#2D1621] text-white border border-[#4A2534] shadow-md">
+            <div className="flex items-center justify-between gap-3 mb-2 flex-wrap">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping inline-block" />
+                <span className="text-[10px] uppercase font-bold tracking-widest text-[#F59E38] font-mono">
+                  Visual Presentation & Motion Guides
+                </span>
+              </div>
+              <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-white/10 text-white/90 font-medium">
+                Live Holographic AI Overlays
+              </span>
+            </div>
+            <h3 className="font-serif text-base sm:text-lg font-bold text-white">
+              Watch & Learn: Women Practitioners with AI Posture Alignment
+            </h3>
+            <p className="text-xs text-[#E5D5DA] mt-1 leading-relaxed max-w-xl">
+              Every course now includes high-definition visual demonstrations showing exact joint angles, mudras, spine alignment, and tempo tracking so you can visually see exactly how to perform each movement.
+            </p>
+          </div>
+
           {filteredPractices.length === 0 ? (
             <div className="p-8 text-center bg-white/70 rounded-2xl border border-[#EADBD5]">
               <p className="text-sm text-[#7D6D73]">No practices found matching your search and filter criteria.</p>
@@ -670,21 +709,47 @@ export const ExploreScreen: React.FC<ExploreScreenProps> = ({
           ) : (
             filteredPractices.map((practice) => {
               const badgeClass = getDisciplineBadgeClass(practice.discipline);
+              const demo = getPracticeAiVisualDemo(practice);
 
               return (
                 <div
                   key={practice.id}
                   onClick={() => onSelectPractice(practice)}
-                  className="p-4 sm:p-5 rounded-[22px] bg-white/90 hover:bg-white border border-[#EADBD5] transition-all duration-200 shadow-2xs hover:shadow-xs cursor-pointer group"
+                  className="p-4 sm:p-5 rounded-[24px] bg-white/95 hover:bg-white border border-[#EADBD5] hover:border-[#781D32]/40 transition-all duration-200 shadow-2xs hover:shadow-md cursor-pointer group flex flex-col md:flex-row items-stretch gap-4"
                 >
-                  <div className="flex items-start gap-3.5">
-                    {/* Practice Icon */}
-                    <div className="w-12 h-12 rounded-[16px] flex items-center justify-center shrink-0 bg-[#FAF3F0] border border-[#EADBD5] group-hover:border-[#781D32]/30 transition-colors">
+                  {/* Visual Presentation Thumbnail: Woman demonstrating with AI guidance */}
+                  <div className="relative w-full md:w-56 h-36 md:h-auto rounded-[18px] overflow-hidden shrink-0 bg-black shadow-xs">
+                    <img
+                      src={demo.imageUrl}
+                      alt={`${demo.demonstratorName} demonstrating ${practice.title}`}
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+                    {/* AI Biometric tag over thumbnail */}
+                    <div className="absolute top-2 left-2 flex items-center gap-1 bg-black/70 backdrop-blur-xs px-2 py-0.5 rounded-lg border border-white/20 text-[9px] font-mono font-semibold text-emerald-300">
+                      <Activity className="w-3 h-3 text-emerald-400" />
+                      <span>{demo.alignmentScore}% AI Match</span>
+                    </div>
+
+                    <div className="absolute top-2 right-2 p-1.5 rounded-lg bg-black/60 backdrop-blur-xs border border-white/20">
                       {renderPracticeIcon(practice)}
                     </div>
 
-                    {/* Content Details */}
-                    <div className="flex-1 min-w-0">
+                    <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between text-[10px] text-white">
+                      <span className="font-medium text-[#F6D4A7] truncate">
+                        {demo.demonstratorName}
+                      </span>
+                      <span className="bg-[#781D32]/90 px-1.5 py-0.2 rounded-md text-[9px] font-bold text-white shrink-0">
+                        {practice.minutes}m
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Content Details */}
+                  <div className="flex-1 min-w-0 flex flex-col justify-between">
+                    <div>
                       <div className="flex items-center justify-between gap-2 flex-wrap">
                         <div className="flex items-center gap-2 flex-wrap">
                           <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${badgeClass}`}>
@@ -703,14 +768,13 @@ export const ExploreScreen: React.FC<ExploreScreenProps> = ({
                               {practice.intensity}
                             </span>
                           )}
+                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold flex items-center gap-1">
+                            <Sparkles className="w-3 h-3 text-emerald-600" /> AI Visual Guide
+                          </span>
                         </div>
-
-                        <span className="text-xs font-semibold text-[#781D32] shrink-0 bg-[#FDEEF3] px-2.5 py-0.5 rounded-full border border-[#F9D2DF]">
-                          {practice.minutes} min
-                        </span>
                       </div>
 
-                      <h3 className="font-serif font-bold text-base text-[#1F161A] group-hover:text-[#781D32] transition-colors mt-1">
+                      <h3 className="font-serif font-bold text-base text-[#1F161A] group-hover:text-[#781D32] transition-colors mt-1.5">
                         {practice.title}
                       </h3>
 
@@ -718,23 +782,27 @@ export const ExploreScreen: React.FC<ExploreScreenProps> = ({
                         {practice.description}
                       </p>
 
-                      {/* Benefits preview if present */}
-                      {practice.benefits && practice.benefits.length > 0 && (
-                        <div className="mt-2 flex items-center gap-2 text-[11px] text-[#059669] flex-wrap">
-                          <span className="font-semibold flex items-center gap-1">
-                            <Award className="w-3 h-3" /> {practice.benefits[0]}
-                          </span>
-                        </div>
-                      )}
+                      {/* Visual key pointer preview */}
+                      <div className="mt-2.5 flex items-center gap-2 text-[11px] text-[#781D32] bg-[#FDF5F2] p-2 rounded-xl border border-[#F2E0D8]">
+                        <Eye className="w-3.5 h-3.5 text-[#781D32] shrink-0" />
+                        <span className="truncate font-medium">
+                          <strong>Visual Key: </strong>{demo.keyInstructions[0]}
+                        </span>
+                      </div>
                     </div>
 
-                    {/* Start arrow button */}
-                    <div className="self-center pl-1">
+                    {/* Bottom action row */}
+                    <div className="mt-3.5 pt-2.5 border-t border-[#F2E6E2] flex items-center justify-between gap-3">
+                      <span className="text-[11px] text-[#7D6D73] font-mono">
+                        Biometrics: {demo.biomechanics.spineAxisAngle} • {demo.biomechanics.weightDistribution}
+                      </span>
                       <button
-                        aria-label={`Start ${practice.title}`}
-                        className="w-9 h-9 rounded-full bg-[#FAF3F0] group-hover:bg-[#781D32] group-hover:text-white text-[#94848A] flex items-center justify-center transition cursor-pointer"
+                        aria-label={`Watch & Practice ${practice.title}`}
+                        className="px-3.5 py-1.5 rounded-xl bg-[#781D32] group-hover:bg-[#601426] text-white text-xs font-semibold flex items-center gap-1.5 transition-all shadow-xs shrink-0 cursor-pointer"
                       >
-                        <ArrowRight className="w-4 h-4" />
+                        <Eye className="w-3.5 h-3.5" />
+                        <span>Watch & Practice</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
                       </button>
                     </div>
                   </div>

@@ -15,3 +15,28 @@
   }
 }
 
+/* Subtle repeating scale pulse animation for active bottom-navigation-bar icon */
+@keyframes active-icon-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  12% {
+    transform: scale(1.15);
+  }
+  24% {
+    transform: scale(1.03);
+  }
+  36% {
+    transform: scale(1.1);
+  }
+  50% {
+    transform: scale(1);
+  }
+}
+
+.animate-active-icon-pulse {
+  animation: active-icon-pulse 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform-origin: center;
+  will-change: transform;
+}
+

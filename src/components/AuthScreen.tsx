@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Mail, Lock, UserCheck, ShieldCheck } from 'lucide-react';
 import { UserSession } from '../types';
 import { Logo } from './Logo';
+import { loginWithGoogle } from '../firebase';
 
 interface AuthScreenProps {
   onLogin: (session: UserSession) => void;
@@ -42,19 +43,30 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onLogin }) => {
     }, 400);
   };
 
-  const handleGoogleSignIn = () => {
+  const handleGoogleSignIn = async () => {
     setIsBusy(true);
     setError(null);
-    setTimeout(() => {
+    try {
+      const user = await loginWithGoogle();
+      const token = await user.getIdToken();
+      const isAdmin =
+        user.email === 'jahanvigoyal2002@gmail.com' ||
+        user.email === 'admin@nrityasana.com';
       const session: UserSession = {
-        userId: 'u-google-' + Math.random().toString(36).substring(2, 7),
-        email: 'ananya@nrityasana.com',
-        role: 'USER',
-        token: 'mock-google-token-' + Date.now(),
+        userId: user.uid,
+        email: user.email || 'practitioner@nrityasana.com',
+        role: isAdmin ? 'ADMIN' : 'USER',
+        token,
+        profilePictureUrl: user.photoURL || undefined,
       };
-      setIsBusy(false);
       onLogin(session);
-    }, 500);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.error('Google Sign-In failed:', msg);
+      setError('Google Sign-In was cancelled or encountered an error. Please try again.');
+    } finally {
+      setIsBusy(false);
+    }
   };
 
   const quickLoginAs = (role: 'USER' | 'ADMIN') => {

@@ -1,0 +1,396 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile with personal identity, dance style, and bio",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Firebase Auth UID of the user",
+          "maxLength": 128
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the user",
+          "maxLength": 128
+        },
+        "displayName": {
+          "type": "string",
+          "description": "User display name",
+          "maxLength": 100
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "Avatar or profile picture URL",
+          "maxLength": 1024
+        },
+        "phone": {
+          "type": "string",
+          "description": "Optional contact number",
+          "maxLength": 30
+        },
+        "bio": {
+          "type": "string",
+          "description": "Short bio or artistic statement",
+          "maxLength": 500
+        },
+        "danceStyle": {
+          "type": "string",
+          "description": "Primary dance style or yoga path",
+          "maxLength": 100
+        },
+        "experienceLevel": {
+          "type": "string",
+          "description": "Practitioner experience level",
+          "maxLength": 50
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp of last update"
+        }
+      },
+      "required": ["userId", "email"]
+    },
+    "UserProgress": {
+      "title": "UserProgress",
+      "description": "Aggregated user practice statistics and streak",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Firebase Auth UID",
+          "maxLength": 128
+        },
+        "currentStreak": {
+          "type": "number",
+          "description": "Current consecutive days streak"
+        },
+        "totalMinutes": {
+          "type": "number",
+          "description": "Total cumulative practice minutes"
+        },
+        "completedSessions": {
+          "type": "number",
+          "description": "Total number of completed movement sessions"
+        },
+        "weeklyGoal": {
+          "type": "number",
+          "description": "Weekly sessions goal"
+        },
+        "completedDays": {
+          "type": "string",
+          "description": "Comma separated boolean flags for day completion in current week",
+          "maxLength": 30
+        },
+        "lastPracticeDate": {
+          "type": "string",
+          "description": "Date string YYYY-MM-DD of last completed practice",
+          "maxLength": 30
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp of update"
+        }
+      },
+      "required": ["userId", "currentStreak", "totalMinutes", "completedSessions", "weeklyGoal"]
+    },
+    "PracticeLog": {
+      "title": "PracticeLog",
+      "description": "Individual completed practice or meditation session log",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique log document ID",
+          "maxLength": 128
+        },
+        "userId": {
+          "type": "string",
+          "description": "User UID who completed the practice",
+          "maxLength": 128
+        },
+        "practiceId": {
+          "type": "string",
+          "description": "ID of the practiced routine",
+          "maxLength": 128
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the practice session",
+          "maxLength": 200
+        },
+        "discipline": {
+          "type": "string",
+          "description": "Discipline type like Kathak, Yoga, Bollywood",
+          "maxLength": 50
+        },
+        "minutesPracticed": {
+          "type": "number",
+          "description": "Duration in minutes"
+        },
+        "completedAt": {
+          "type": "string",
+          "description": "ISO timestamp when session completed"
+        }
+      },
+      "required": ["id", "userId", "practiceId", "title", "discipline", "minutesPracticed", "completedAt"]
+    },
+    "LiveClass": {
+      "title": "LiveClass",
+      "description": "Live streaming or masterclass session scheduled by teachers/admins",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Class identifier",
+          "maxLength": 128
+        },
+        "title": {
+          "type": "string",
+          "description": "Class title",
+          "maxLength": 200
+        },
+        "description": {
+          "type": "string",
+          "description": "Session description and syllabus",
+          "maxLength": 1000
+        },
+        "startTime": {
+          "type": "string",
+          "description": "ISO start time of class"
+        },
+        "durationMinutes": {
+          "type": "number",
+          "description": "Class duration in minutes"
+        },
+        "meetingUrl": {
+          "type": "string",
+          "description": "Video conferencing link",
+          "maxLength": 500
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "UID or email of teacher/admin who created it",
+          "maxLength": 128
+        },
+        "participantCount": {
+          "type": "number",
+          "description": "Registered attendee count"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp"
+        }
+      },
+      "required": ["id", "title", "startTime", "durationMinutes", "meetingUrl"]
+    },
+    "ClassAttendee": {
+      "title": "ClassAttendee",
+      "description": "Registration record for a user in a live class",
+      "type": "object",
+      "properties": {
+        "classId": {
+          "type": "string",
+          "description": "Class ID",
+          "maxLength": 128
+        },
+        "userId": {
+          "type": "string",
+          "description": "Attendee user UID",
+          "maxLength": 128
+        },
+        "userEmail": {
+          "type": "string",
+          "description": "Attendee email",
+          "maxLength": 128
+        },
+        "joinedAt": {
+          "type": "string",
+          "description": "Registration timestamp"
+        }
+      },
+      "required": ["classId", "userId"]
+    },
+    "ChatMessage": {
+      "title": "ChatMessage",
+      "description": "Direct or community message between dancers and mentors",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Message ID",
+          "maxLength": 128
+        },
+        "senderId": {
+          "type": "string",
+          "description": "Sender UID",
+          "maxLength": 128
+        },
+        "senderEmail": {
+          "type": "string",
+          "description": "Sender email",
+          "maxLength": 128
+        },
+        "senderRole": {
+          "type": "string",
+          "description": "Sender role: ADMIN or USER",
+          "maxLength": 20
+        },
+        "recipientId": {
+          "type": "string",
+          "description": "Recipient UID or 'all'",
+          "maxLength": 128
+        },
+        "recipientEmail": {
+          "type": "string",
+          "description": "Recipient email",
+          "maxLength": 128
+        },
+        "text": {
+          "type": "string",
+          "description": "Message body text",
+          "maxLength": 2000
+        },
+        "type": {
+          "type": "string",
+          "description": "Message type (text, voice, image)",
+          "maxLength": 20
+        },
+        "mediaUrl": {
+          "type": "string",
+          "description": "Optional attached audio/image URL",
+          "maxLength": 1024
+        },
+        "voiceDuration": {
+          "type": "number",
+          "description": "Audio duration in seconds"
+        },
+        "sentAt": {
+          "type": "string",
+          "description": "ISO timestamp"
+        }
+      },
+      "required": ["id", "senderId", "recipientId", "text", "sentAt"]
+    },
+    "MediaItem": {
+      "title": "MediaItem",
+      "description": "User uploaded practice photo or video analysis clip",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Media ID",
+          "maxLength": 128
+        },
+        "userId": {
+          "type": "string",
+          "description": "Owner user UID",
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "description": "Label or posture title",
+          "maxLength": 200
+        },
+        "type": {
+          "type": "string",
+          "description": "photo or video",
+          "maxLength": 20
+        },
+        "url": {
+          "type": "string",
+          "description": "URL or data string",
+          "maxLength": 2000
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Upload timestamp"
+        }
+      },
+      "required": ["id", "userId", "name", "type", "url"]
+    },
+    "AIGeneration": {
+      "title": "AIGeneration",
+      "description": "Record of AI generated music, Veo video, or transcription",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Generation ID",
+          "maxLength": 128
+        },
+        "userId": {
+          "type": "string",
+          "description": "Owner user UID",
+          "maxLength": 128
+        },
+        "type": {
+          "type": "string",
+          "description": "Generation type (veo_video, lyria_music, transcribe, chatbot)",
+          "maxLength": 50
+        },
+        "prompt": {
+          "type": "string",
+          "description": "Prompt or query provided",
+          "maxLength": 1000
+        },
+        "resultUrl": {
+          "type": "string",
+          "description": "Resulting media URL or audio URL",
+          "maxLength": 2000
+        },
+        "resultText": {
+          "type": "string",
+          "description": "Transcribed or generated text response",
+          "maxLength": 5000
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp"
+        }
+      },
+      "required": ["id", "userId", "type", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}/profile/main": {
+      "schema": "UserProfile",
+      "description": "Main user profile storing personalized dance info and preferences"
+    },
+    "/users/{userId}/progress/stats": {
+      "schema": "UserProgress",
+      "description": "User practice statistics, streak, and target completion"
+    },
+    "/users/{userId}/practice_logs/{logId}": {
+      "schema": "PracticeLog",
+      "description": "Subcollection of verified completed movement sessions"
+    },
+    "/users/{userId}/media/{mediaId}": {
+      "schema": "MediaItem",
+      "description": "User uploaded practice posture captures and progress media"
+    },
+    "/users/{userId}/ai_generations/{genId}": {
+      "schema": "AIGeneration",
+      "description": "Saved AI generated dance tracks, Veo movement videos, and speech transcripts"
+    },
+    "/live_classes/{classId}": {
+      "schema": "LiveClass",
+      "description": "Scheduled live stream masterclasses and workshops"
+    },
+    "/live_classes/{classId}/attendees/{userId}": {
+      "schema": "ClassAttendee",
+      "description": "Registered attendee record for a live class"
+    },
+    "/chat_messages/{messageId}": {
+      "schema": "ChatMessage",
+      "description": "Mentorship chat and practitioner conversations"
+    },
+    "/admins/{adminId}": {
+      "schema": {
+        "$ref": "UserProfile"
+      },
+      "description": "Admin authorization registry document"
+    }
+  }
+}

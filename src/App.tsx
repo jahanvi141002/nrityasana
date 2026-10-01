@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Sparkles, Compass, TrendingUp, Video, MessageSquare, User } from 'lucide-react';
-import { UserSession, Practice, LiveClass, ChatContact, ChatMessage, MediaItem, LiveNotification, ThemePreset, UserProfile } from './types';
+import { Sparkles, Compass, TrendingUp, Video, MessageSquare, User, Bot, Wind } from 'lucide-react';
+import { UserSession, Practice, LiveClass, ChatContact, ChatMessage, MediaItem, LiveNotification, ThemePreset, UserProfile, DisciplineType } from './types';
 import {
   INITIAL_PRACTICES,
   INITIAL_CLASSES,
@@ -9,7 +9,7 @@ import {
   INITIAL_MEDIA,
 } from './data/seedData';
 import { THEME_CONFIGS, INITIAL_NOTIFICATIONS } from './data/themeConfig';
-import { playGentleChime } from './utils/sound';
+import { playGentleChime, triggerHapticFeedback } from './utils/sound';
 import { AuthScreen } from './components/AuthScreen';
 import { HomeScreen } from './components/HomeScreen';
 import { ExploreScreen } from './components/ExploreScreen';
@@ -17,6 +17,7 @@ import { ProgressScreen } from './components/ProgressScreen';
 import { LiveClassesScreen } from './components/LiveClassesScreen';
 import { ChatScreen } from './components/ChatScreen';
 import { MeScreen } from './components/MeScreen';
+import { AIStudioScreen } from './components/AIStudioScreen';
 import { ProfileModal } from './components/ProfileModal';
 import { ActivePracticeModal } from './components/ActivePracticeModal';
 import { TopHeader } from './components/TopHeader';
@@ -24,8 +25,13 @@ import { LogoThemeModal } from './components/LogoThemeModal';
 import { LiveNotificationsDrawer } from './components/LiveNotificationsDrawer';
 import { LiveNotificationToast } from './components/LiveNotificationToast';
 import { DatabaseWorkbenchModal } from './components/DatabaseWorkbenchModal';
+import { PwaInstallPrompt } from './components/PwaInstallPrompt';
+import { QuickActionMenu } from './components/QuickActionMenu';
+import { PranayamaBreathOverlay } from './components/PranayamaBreathOverlay';
+import { testFirestoreConnection, db, auth, onAuthStateChanged, logoutUser } from './firebase';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
-type TabType = 'today' | 'explore' | 'progress' | 'live' | 'chat' | 'me';
+type TabType = 'today' | 'explore' | 'progress' | 'aiStudio' | 'live' | 'chat' | 'me';
 
 const SIMULATED_LIVE_EVENTS = [
   {
@@ -113,6 +119,7 @@ export function App() {
   });
 
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const [isPranayamaOpen, setIsPranayamaOpen] = useState(false);
   const [activeToast, setActiveToast] = useState<LiveNotification | null>(null);
 
   const [soundEnabled, setSoundEnabled] = useState<boolean>(() => {
@@ -181,6 +188,8 @@ export function App() {
 
   // UI Navigation & Modals
   const [currentTab, setCurrentTab] = useState<TabType>('today');
+  const [exploreInitialTab, setExploreInitialTab] = useState<'All' | DisciplineType | 'Diet Plans' | 'Ayurveda & Dinacharya'>('All');
+  const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [activePractice, setActivePractice] = useState<Practice | null>(null);
 
@@ -233,6 +242,50 @@ export function App() {
   useEffect(() => {
     localStorage.setItem('nrityasana_media', JSON.stringify(media));
   }, [media]);
+
+  // Test Firestore Connection on boot per Skill Guidelines
+  useEffect(() => {
+    testFirestoreConnection();
+  }, []);
+
+  // Synchronize Firebase Auth state
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        try {
+          const token = await firebaseUser.getIdToken();
+          const isAdmin =
+            firebaseUser.email === 'jahanvigoyal2002@gmail.com' ||
+            firebaseUser.email === 'admin@nrityasana.com';
+          const newSession: UserSession = {
+            userId: firebaseUser.uid,
+            email: firebaseUser.email || 'practitioner@nrityasana.com',
+            role: isAdmin ? 'ADMIN' : 'USER',
+            token,
+            profilePictureUrl: firebaseUser.photoURL || undefined,
+          };
+          setSession(newSession);
+
+          // Sync user profile to Firestore
+          const profileRef = doc(db, 'users', firebaseUser.uid, 'profile', 'main');
+          const profileSnap = await getDoc(profileRef);
+          if (!profileSnap.exists()) {
+            await setDoc(profileRef, {
+              userId: firebaseUser.uid,
+              email: firebaseUser.email || '',
+              displayName: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'Practitioner',
+              photoURL: firebaseUser.photoURL || '',
+              updatedAt: new Date().toISOString(),
+            });
+          }
+        } catch (e) {
+          console.warn('Firestore profile sync notice:', e);
+        }
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   // Synchronize permanent brand logo and MySQL Database endpoints on startup
   useEffect(() => {
@@ -443,8 +496,12 @@ export function App() {
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+    } catch {}
     setSession(null);
+    localStorage.removeItem('nrityasana_session');
     setIsProfileOpen(false);
   };
 
@@ -676,6 +733,7 @@ export function App() {
         onOpenLogoTheme={isAdmin ? handleOpenLogoTheme : undefined}
         onOpenProfile={() => setIsProfileOpen(true)}
         onOpenDatabaseModal={() => setIsDbModalOpen(true)}
+        onOpenInstallApp={() => setIsInstallModalOpen(true)}
       />
 
       {/* Active Screen View */}
@@ -686,7 +744,15 @@ export function App() {
             practices={practices}
             onOpenProfile={() => setIsProfileOpen(true)}
             onSelectPractice={(p) => setActivePractice(p)}
-            onExploreMore={() => setCurrentTab('explore')}
+            onExploreMore={() => {
+              setExploreInitialTab('All');
+              setCurrentTab('explore');
+            }}
+            onOpenAIStudio={() => setCurrentTab('aiStudio')}
+            onOpenAyurvedaRoutines={() => {
+              setExploreInitialTab('Ayurveda & Dinacharya');
+              setCurrentTab('explore');
+            }}
             primaryColor={primaryColor}
             secondaryColor={secondaryColor}
           />
@@ -696,6 +762,7 @@ export function App() {
             practices={practices}
             onSelectPractice={(p) => setActivePractice(p)}
             session={session}
+            initialTab={exploreInitialTab}
             onShowToast={(title, message) => {
               pushNotification({
                 type: 'practice',
@@ -707,6 +774,34 @@ export function App() {
           />
         )}
         {currentTab === 'progress' && <ProgressScreen session={session} />}
+        {currentTab === 'aiStudio' && (
+          <AIStudioScreen
+            session={session}
+            onSaveToPracticeLog={(title, discipline, minutes) => {
+              if (session?.userId) {
+                const logId = 'log-' + Date.now();
+                setDoc(doc(db, 'users', session.userId, 'practice_logs', logId), {
+                  id: logId,
+                  userId: session.userId,
+                  practiceId: 'ai-reflection',
+                  title,
+                  discipline,
+                  minutesPracticed: minutes,
+                  completedAt: new Date().toISOString(),
+                }).catch(() => {});
+              }
+              pushNotification({
+                type: 'milestone',
+                title: 'Reflection Logged',
+                message: `Saved "${title}" (${minutes} min) to your Sacred Rhythm.`,
+                actionTab: 'progress',
+              });
+            }}
+            onSaveMedia={(name, url, type) => {
+              handleAddMedia({ name, url, type, userId: session?.userId || 'user' });
+            }}
+          />
+        )}
         {currentTab === 'live' && (
           <LiveClassesScreen
             session={session}
@@ -733,20 +828,22 @@ export function App() {
             onAddMedia={handleAddMedia}
             onDeleteMedia={handleDeleteMedia}
             onOpenDatabaseModal={() => setIsDbModalOpen(true)}
+            onOpenInstallApp={() => setIsInstallModalOpen(true)}
           />
         )}
       </main>
 
-      {/* Bottom Navigation Bar with Smooth Easing Transitions */}
+      {/* Bottom Navigation Bar with Pronounced Active Pill & Subtle Glow */}
       <nav
         id="bottom-navigation-bar"
-        className="fixed bottom-0 inset-x-0 bg-[#FDF8F5]/92 backdrop-blur-lg border-t border-[#F2E6E2] z-40 py-2 px-2 shadow-xs transition-colors duration-300 ease-out"
+        className="fixed bottom-0 inset-x-0 bg-[#FDF8F5]/95 backdrop-blur-xl border-t border-[#EADBDB] z-40 py-1.5 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] shadow-[0_-4px_20px_rgba(0,0,0,0.04)] transition-colors duration-300 ease-out"
       >
-        <div className="max-w-md mx-auto grid grid-cols-6 gap-1">
+        <div className="max-w-lg mx-auto grid grid-cols-7 gap-1 sm:gap-1.5">
           {[
             { id: 'today' as TabType, label: 'Today', icon: Sparkles },
             { id: 'explore' as TabType, label: 'Explore', icon: Compass },
             { id: 'progress' as TabType, label: 'Progress', icon: TrendingUp },
+            { id: 'aiStudio' as TabType, label: 'AI Studio', icon: Bot },
             { id: 'live' as TabType, label: 'Live', icon: Video },
             { id: 'chat' as TabType, label: 'Chat', icon: MessageSquare },
             { id: 'me' as TabType, label: 'Me', icon: User },
@@ -757,37 +854,142 @@ export function App() {
               <button
                 key={tab.id}
                 id={`bottom-nav-${tab.id}`}
-                onClick={() => setCurrentTab(tab.id)}
-                className={`group flex flex-col items-center justify-center py-1.5 px-1 rounded-xl transition-all duration-300 ease-out cursor-pointer relative ${
+                onClick={() => {
+                  triggerHapticFeedback('selection');
+                  setCurrentTab(tab.id);
+                }}
+                className={`group flex flex-col items-center justify-center py-1 sm:py-1.5 px-0.5 rounded-2xl transition-all duration-200 ease-out cursor-pointer relative select-none active:scale-92 active:translate-y-0.5 active:brightness-95 ${
                   isActive
-                    ? 'font-bold'
-                    : 'text-[#94848A] hover:text-[#1F161A]'
+                    ? 'bg-white shadow-[0_4px_14px_-2px_rgba(0,0,0,0.08)] ring-1.5 ring-inset'
+                    : 'text-[#8C7B82] hover:text-[#1F161A] hover:bg-black/[0.03]'
                 }`}
-                style={isActive ? { color: primaryColor } : {}}
+                style={
+                  isActive
+                    ? {
+                        color: primaryColor,
+                        boxShadow: `0 4px 14px -2px ${primaryColor}26, 0 0 12px -1px ${primaryColor}20`,
+                        borderColor: `${primaryColor}40`,
+                      }
+                    : undefined
+                }
               >
-                <Icon
-                  className={`w-5 h-5 mb-0.5 transition-all duration-300 ease-out transform ${
-                    isActive ? 'scale-110 drop-shadow-xs' : 'group-hover:scale-105'
+                {/* Active Pill Glow Aura */}
+                {isActive && (
+                  <div
+                    className="absolute inset-0 rounded-2xl pointer-events-none opacity-20 blur-xs transition-opacity duration-300"
+                    style={{ backgroundColor: primaryColor }}
+                  />
+                )}
+
+                {/* Icon Container with Optional Subtle Tint on Active */}
+                <div
+                  className={`w-7 h-7 sm:w-8 sm:h-7.5 rounded-xl flex items-center justify-center transition-all duration-300 transform ${
+                    isActive ? 'scale-105' : 'group-hover:scale-105'
+                  }`}
+                  style={
+                    isActive
+                      ? {
+                          backgroundColor: `${primaryColor}14`,
+                        }
+                      : undefined
+                  }
+                >
+                  <Icon
+                    className={`w-4.5 h-4.5 sm:w-5 sm:h-5 transition-transform duration-300 ${
+                      isActive ? 'animate-active-icon-pulse' : ''
+                    }`}
+                    style={isActive ? { color: primaryColor } : undefined}
+                  />
+                </div>
+
+                {/* Tab Label */}
+                <span
+                  className={`text-[9px] sm:text-[10px] leading-tight transition-all duration-300 truncate mt-0.5 ${
+                    isActive ? 'font-bold tracking-tight' : 'font-medium'
                   }`}
                   style={isActive ? { color: primaryColor } : undefined}
-                />
-                <span
-                  className="text-[10px] leading-tight transition-colors duration-300 ease-out font-medium"
-                  style={isActive ? { color: primaryColor, fontWeight: 700 } : undefined}
                 >
                   {tab.label}
                 </span>
-                <span
-                  className={`absolute -bottom-1 h-1 rounded-full transition-all duration-300 ease-out ${
-                    isActive ? 'w-3 opacity-100' : 'w-0 opacity-0'
+
+                {/* Glowing Bottom Indicator Bar */}
+                <div
+                  className={`h-0.5 rounded-full transition-all duration-300 ease-out mt-0.5 ${
+                    isActive ? 'w-4 opacity-100 scale-100' : 'w-0 opacity-0 scale-75'
                   }`}
-                  style={{ backgroundColor: primaryColor }}
+                  style={
+                    isActive
+                      ? {
+                          backgroundColor: primaryColor,
+                          boxShadow: `0 0 8px ${primaryColor}90`,
+                        }
+                      : undefined
+                  }
                 />
               </button>
             );
           })}
         </div>
       </nav>
+
+      {/* Floating 'Pranayama' 1-Minute Breath-Timer Trigger on Bottom Navigation Bar */}
+      <button
+        id="floating-pranayama-button"
+        type="button"
+        onClick={() => {
+          triggerHapticFeedback('selection');
+          setIsPranayamaOpen(true);
+        }}
+        className="fixed bottom-19 left-3 sm:left-6 z-40 flex items-center gap-2 px-3 py-2 rounded-full bg-white/95 hover:bg-white text-[#1F161A] shadow-[0_6px_22px_rgba(0,0,0,0.12)] border border-[#EADBDB] hover:border-[#781D32]/40 backdrop-blur-md transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer group"
+        title="Start 1-minute guided breath pause without leaving screen"
+      >
+        <div
+          className="w-7 h-7 rounded-full flex items-center justify-center text-white shadow-xs transition-transform duration-300 group-hover:rotate-12"
+          style={{ backgroundColor: primaryColor }}
+        >
+          <Wind className="w-4 h-4 text-amber-200 animate-pulse" />
+        </div>
+        <div className="flex flex-col text-left">
+          <span className="text-[9px] font-bold tracking-wider uppercase leading-none text-[#781D32] font-mono">
+            प्राणायाम
+          </span>
+          <span className="text-[11px] font-bold text-[#1F161A] leading-tight">
+            1-min Breath
+          </span>
+        </div>
+        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse ml-0.5" />
+      </button>
+
+      {/* Floating Quick Action Button Menu (Log Quick Practice or Record Mood without changing screens) */}
+      <QuickActionMenu
+        session={session}
+        primaryColor={primaryColor}
+        onOpenPranayama={() => {
+          triggerHapticFeedback('selection');
+          setIsPranayamaOpen(true);
+        }}
+        onPracticeLogged={(title, discipline, minutes) => {
+          pushNotification({
+            type: 'practice',
+            title: 'Quick Practice Logged! 🧘',
+            message: `Recorded ${minutes}m of ${discipline} ("${title}") to your rhythm.`,
+          });
+        }}
+        onMoodRecorded={(moodLog) => {
+          pushNotification({
+            type: 'milestone',
+            title: `${moodLog.emoji} Mood & Bhav Recorded`,
+            message: `Felt "${moodLog.mood}" (${moodLog.bhavRasa}) • Energy ${moodLog.energyLevel}/5.`,
+          });
+        }}
+        onShowToast={(title, message) => {
+          pushNotification({
+            type: 'practice',
+            title,
+            message,
+          });
+        }}
+      />
 
       {/* Live Notifications Drawer Panel */}
       <LiveNotificationsDrawer
@@ -883,6 +1085,41 @@ export function App() {
           }}
         />
       )}
+
+      {/* Cross-Platform PWA Install Prompt Banner & Modal */}
+      <PwaInstallPrompt
+        primaryColor={primaryColor}
+        isOpenManual={isInstallModalOpen}
+        onCloseManual={() => setIsInstallModalOpen(false)}
+      />
+
+      {/* Floating 1-min Pranayama Guided Breath-Timer Overlay */}
+      <PranayamaBreathOverlay
+        isOpen={isPranayamaOpen}
+        onClose={() => setIsPranayamaOpen(false)}
+        primaryColor={primaryColor}
+        onCompleted={(minutes) => {
+          if (session?.userId) {
+            fetch('/api/progress/log', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                userId: session.userId,
+                practiceId: 'pranayama-quick',
+                title: '1-min Guided Pranayama Pause',
+                discipline: 'Meditation',
+                minutes,
+              }),
+            }).catch(() => {});
+          }
+
+          pushNotification({
+            type: 'practice',
+            title: 'Pranayama Pause Completed! 🌬️',
+            message: `${minutes}m of conscious Prana breathing recorded. Your nervous system is grounded.`,
+          });
+        }}
+      />
     </div>
   );
 }

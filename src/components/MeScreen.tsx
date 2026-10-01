@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Camera, Video, Settings, Upload, X, Play, Image as ImageIcon, Trash2, Database, ChevronRight } from 'lucide-react';
+import { Camera, Video, Settings, Upload, X, Play, Image as ImageIcon, Trash2, Database, ChevronRight, Download } from 'lucide-react';
 import { MediaItem, UserSession, UserProfile } from '../types';
 
 interface MeScreenProps {
@@ -10,6 +10,7 @@ interface MeScreenProps {
   onAddMedia: (newItem: Omit<MediaItem, 'id' | 'createdAt'>) => void;
   onDeleteMedia?: (mediaId: string) => void;
   onOpenDatabaseModal?: () => void;
+  onOpenInstallApp?: () => void;
 }
 
 export const MeScreen: React.FC<MeScreenProps> = ({
@@ -20,6 +21,7 @@ export const MeScreen: React.FC<MeScreenProps> = ({
   onAddMedia,
   onDeleteMedia,
   onOpenDatabaseModal,
+  onOpenInstallApp,
 }) => {
   const [pendingQueue, setPendingQueue] = useState<Array<{ name: string; type: 'photo' | 'video'; url: string }>>([]);
   const [selectedPreviewItem, setSelectedPreviewItem] = useState<MediaItem | null>(null);
@@ -163,6 +165,35 @@ export const MeScreen: React.FC<MeScreenProps> = ({
             className="px-3 py-1.5 rounded-xl bg-[#FAF3F0] hover:bg-[#EADBD5] text-[#1F161A] text-xs font-bold transition flex items-center gap-1 shrink-0 cursor-pointer"
           >
             <span>Manage</span>
+            <ChevronRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
+
+      {/* Cross-Platform App Installation Card */}
+      {onOpenInstallApp && (
+        <div className="mb-6 p-4 rounded-2xl bg-gradient-to-r from-white via-[#FAF5F0] to-white border border-[#EADBD5] shadow-2xs flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#781D32] text-white flex items-center justify-center shrink-0 shadow-xs">
+              <Download className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h3 className="text-xs font-bold text-[#1F161A]">Cross-Platform Application</h3>
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-semibold border border-emerald-200">
+                  Web • Android • iOS • Desktop
+                </span>
+              </div>
+              <p className="text-[11px] text-[#7D6D73] mt-0.5">
+                Install as a standalone app on your home screen or desktop for full-screen offline practice
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={onOpenInstallApp}
+            className="px-3 py-1.5 rounded-xl bg-[#781D32] hover:bg-[#601426] text-white text-xs font-bold transition flex items-center gap-1 shrink-0 cursor-pointer shadow-xs"
+          >
+            <span>Install</span>
             <ChevronRight className="w-3.5 h-3.5" />
           </button>
         </div>

@@ -298,23 +298,6 @@ export async function seedDatabase(): Promise<{ success: boolean; message: strin
         d.benefits || '',
       ]);
     }
-        d.id,
-        d.title,
-        d.dietType,
-        d.timeSlot,
-        d.timeLabel,
-        d.targetGoal,
-        d.level || 'All Levels',
-        d.calories,
-        d.proteinGrams,
-        d.carbsGrams,
-        d.fatGrams,
-        d.description,
-        JSON.stringify(d.ingredients || []),
-        JSON.stringify(d.preparationInstructions || []),
-        d.benefits || '',
-      ]);
-    }
     counts.diet_plans = COMPREHENSIVE_DIET_PLANS.length;
 
     conn.release();
