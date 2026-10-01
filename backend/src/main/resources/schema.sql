@@ -56,3 +56,12 @@ CREATE TABLE IF NOT EXISTS profiles (
     bio VARCHAR(500),
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+-- Seed Default Admin and User with valid BCrypt hash for password 'admin1234'
+INSERT INTO users (id, email, role, password_hash) VALUES
+('u-admin', 'admin@nrityasana.com', 'ADMIN', '$2a$10$hYMF/U0RH/U2oQWlJChEuOEi1K5iDZ0Ijc84VffyPdbU0Rk1REW2O'),
+('u-user', 'user@nrityasana.com', 'USER', '$2a$10$hYMF/U0RH/U2oQWlJChEuOEi1K5iDZ0Ijc84VffyPdbU0Rk1REW2O')
+ON DUPLICATE KEY UPDATE 
+    role = VALUES(role),
+    password_hash = VALUES(password_hash);
+

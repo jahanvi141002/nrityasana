@@ -185,10 +185,10 @@ export async function seedDatabase(): Promise<{ success: boolean; message: strin
     // 1. Users
     await conn.query(`
       REPLACE INTO \`users\` (\`id\`, \`email\`, \`role\`, \`password_hash\`) VALUES
-      ('u-admin', 'admin@nrityasana.com', 'ADMIN', '$2a$10$sampleAdminHash'),
-      ('u-user', 'user@nrityasana.com', 'USER', '$2a$10$sampleUserHash'),
-      ('u-teacher', 'teacher@nrityasana.com', 'ADMIN', '$2a$10$sampleTeacherHash'),
-      ('u-student', 'student@nrityasana.com', 'USER', '$2a$10$sampleStudentHash');
+      ('u-admin', 'admin@nrityasana.com', 'ADMIN', '$2a$10$hYMF/U0RH/U2oQWlJChEuOEi1K5iDZ0Ijc84VffyPdbU0Rk1REW2O'),
+      ('u-user', 'user@nrityasana.com', 'USER', '$2a$10$hYMF/U0RH/U2oQWlJChEuOEi1K5iDZ0Ijc84VffyPdbU0Rk1REW2O'),
+      ('u-teacher', 'teacher@nrityasana.com', 'ADMIN', '$2a$10$hYMF/U0RH/U2oQWlJChEuOEi1K5iDZ0Ijc84VffyPdbU0Rk1REW2O'),
+      ('u-student', 'student@nrityasana.com', 'USER', '$2a$10$hYMF/U0RH/U2oQWlJChEuOEi1K5iDZ0Ijc84VffyPdbU0Rk1REW2O');
     `);
     counts.users = 4;
 

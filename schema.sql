@@ -175,11 +175,11 @@ CREATE TABLE IF NOT EXISTS `diet_plans` (
 
 -- Seed Users
 INSERT INTO `users` (`id`, `email`, `role`, `password_hash`) VALUES
-('u-admin', 'admin@nrityasana.com', 'ADMIN', '$2a$10$e74Vp.sampleHashForAdminUser12345'),
-('u-user', 'user@nrityasana.com', 'USER', '$2a$10$e74Vp.sampleHashForStandardUser123'),
-('u-teacher', 'teacher@nrityasana.com', 'ADMIN', '$2a$10$e74Vp.sampleHashForTeacherUser123'),
-('u-student', 'student@nrityasana.com', 'USER', '$2a$10$e74Vp.sampleHashForStudentUser123')
-ON DUPLICATE KEY UPDATE `role` = VALUES(`role`);
+('u-admin', 'admin@nrityasana.com', 'ADMIN', '$2a$10$hYMF/U0RH/U2oQWlJChEuOEi1K5iDZ0Ijc84VffyPdbU0Rk1REW2O'),
+('u-user', 'user@nrityasana.com', 'USER', '$2a$10$hYMF/U0RH/U2oQWlJChEuOEi1K5iDZ0Ijc84VffyPdbU0Rk1REW2O'),
+('u-teacher', 'teacher@nrityasana.com', 'ADMIN', '$2a$10$hYMF/U0RH/U2oQWlJChEuOEi1K5iDZ0Ijc84VffyPdbU0Rk1REW2O'),
+('u-student', 'student@nrityasana.com', 'USER', '$2a$10$hYMF/U0RH/U2oQWlJChEuOEi1K5iDZ0Ijc84VffyPdbU0Rk1REW2O')
+ON DUPLICATE KEY UPDATE `role` = VALUES(`role`), `password_hash` = VALUES(`password_hash`);
 
 -- Seed Profiles
 INSERT INTO `profiles` (`user_id`, `email`, `profile_picture_url`, `phone`, `bio`, `dance_style`, `experience_level`) VALUES

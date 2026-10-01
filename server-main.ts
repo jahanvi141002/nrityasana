@@ -157,6 +157,203 @@ async function startServer() {
     res.json(status);
   });
 
+  // Dynamic Table Schemas API (Inspection of all 10 tables, column structures, keys and data types)
+  app.get('/api/db/schemas', async (_req: Request, res: Response) => {
+    try {
+      const status = await checkDbStatus();
+      const storeData = getDbStore();
+
+      const tableSchemas = [
+        {
+          name: 'users',
+          description: 'Authentication credentials, user roles (ADMIN, USER)',
+          rowCount: status.tables.find((t) => t.name === 'users')?.rowCount ?? 2,
+          apiEndpoint: '/api/profile/:userId',
+          primaryKey: 'id',
+          columns: [
+            { name: 'id', type: 'VARCHAR(50)', key: 'PRI', nullable: false, defaultVal: null },
+            { name: 'email', type: 'VARCHAR(100)', key: 'UNI', nullable: false, defaultVal: null },
+            { name: 'password_hash', type: 'VARCHAR(255)', key: '', nullable: false, defaultVal: null },
+            { name: 'role', type: "ENUM('ADMIN','USER','TEACHER')", key: '', nullable: false, defaultVal: "'USER'" },
+            { name: 'created_at', type: 'TIMESTAMP', key: '', nullable: false, defaultVal: 'CURRENT_TIMESTAMP' },
+          ],
+        },
+        {
+          name: 'profiles',
+          description: 'Guru and student profiles, bios, styles, avatar photos',
+          rowCount: status.tables.find((t) => t.name === 'profiles')?.rowCount ?? Object.keys(storeData.profiles || {}).length,
+          apiEndpoint: '/api/profile/:userId',
+          primaryKey: 'user_id',
+          columns: [
+            { name: 'user_id', type: 'VARCHAR(50)', key: 'PRI', nullable: false, defaultVal: null },
+            { name: 'profile_picture_url', type: 'TEXT', key: '', nullable: true, defaultVal: null },
+            { name: 'phone', type: 'VARCHAR(30)', key: '', nullable: true, defaultVal: null },
+            { name: 'bio', type: 'TEXT', key: '', nullable: true, defaultVal: null },
+            { name: 'dance_style', type: 'VARCHAR(100)', key: '', nullable: true, defaultVal: "'Bharatanatyam'" },
+            { name: 'experience_level', type: 'VARCHAR(50)', key: '', nullable: true, defaultVal: "'Intermediate'" },
+            { name: 'updated_at', type: 'TIMESTAMP', key: '', nullable: false, defaultVal: 'CURRENT_TIMESTAMP ON UPDATE' },
+          ],
+        },
+        {
+          name: 'live_classes',
+          description: 'Scheduled live video sessions with Google Meet URLs',
+          rowCount: status.tables.find((t) => t.name === 'live_classes')?.rowCount ?? (storeData.classes?.length || 0),
+          apiEndpoint: '/api/classes',
+          primaryKey: 'id',
+          columns: [
+            { name: 'id', type: 'VARCHAR(50)', key: 'PRI', nullable: false, defaultVal: null },
+            { name: 'title', type: 'VARCHAR(150)', key: '', nullable: false, defaultVal: null },
+            { name: 'description', type: 'TEXT', key: '', nullable: true, defaultVal: null },
+            { name: 'start_time', type: 'DATETIME', key: '', nullable: false, defaultVal: null },
+            { name: 'duration_minutes', type: 'INT', key: '', nullable: false, defaultVal: '60' },
+            { name: 'meeting_url', type: 'VARCHAR(255)', key: '', nullable: false, defaultVal: null },
+            { name: 'created_by', type: 'VARCHAR(100)', key: '', nullable: false, defaultVal: null },
+            { name: 'created_at', type: 'TIMESTAMP', key: '', nullable: false, defaultVal: 'CURRENT_TIMESTAMP' },
+          ],
+        },
+        {
+          name: 'class_attendees',
+          description: 'Class RSVP registrations and participant linkages',
+          rowCount: status.tables.find((t) => t.name === 'class_attendees')?.rowCount ?? 18,
+          apiEndpoint: '/api/classes/:id/join',
+          primaryKey: '(class_id, user_id)',
+          columns: [
+            { name: 'class_id', type: 'VARCHAR(50)', key: 'PRI', nullable: false, defaultVal: null },
+            { name: 'user_id', type: 'VARCHAR(50)', key: 'PRI', nullable: false, defaultVal: null },
+            { name: 'joined_at', type: 'TIMESTAMP', key: '', nullable: false, defaultVal: 'CURRENT_TIMESTAMP' },
+          ],
+        },
+        {
+          name: 'chat_messages',
+          description: 'Mentor direct messages and community discussions',
+          rowCount: status.tables.find((t) => t.name === 'chat_messages')?.rowCount ?? (storeData.messages?.length || 0),
+          apiEndpoint: '/api/chat/messages',
+          primaryKey: 'id',
+          columns: [
+            { name: 'id', type: 'VARCHAR(50)', key: 'PRI', nullable: false, defaultVal: null },
+            { name: 'sender_id', type: 'VARCHAR(50)', key: '', nullable: false, defaultVal: null },
+            { name: 'sender_email', type: 'VARCHAR(100)', key: '', nullable: false, defaultVal: null },
+            { name: 'sender_role', type: 'VARCHAR(20)', key: '', nullable: false, defaultVal: null },
+            { name: 'recipient_id', type: 'VARCHAR(50)', key: '', nullable: false, defaultVal: null },
+            { name: 'recipient_email', type: 'VARCHAR(100)', key: '', nullable: false, defaultVal: null },
+            { name: 'message_text', type: 'TEXT', key: '', nullable: false, defaultVal: null },
+            { name: 'message_type', type: 'VARCHAR(20)', key: '', nullable: false, defaultVal: "'text'" },
+            { name: 'sent_at', type: 'DATETIME(6)', key: '', nullable: false, defaultVal: 'NOW(6)' },
+          ],
+        },
+        {
+          name: 'media_items',
+          description: 'Practice reflection photos, audio recordings, video poses',
+          rowCount: status.tables.find((t) => t.name === 'media_items')?.rowCount ?? (storeData.media?.length || 0),
+          apiEndpoint: '/api/media',
+          primaryKey: 'id',
+          columns: [
+            { name: 'id', type: 'VARCHAR(50)', key: 'PRI', nullable: false, defaultVal: null },
+            { name: 'user_id', type: 'VARCHAR(50)', key: '', nullable: false, defaultVal: null },
+            { name: 'name', type: 'VARCHAR(150)', key: '', nullable: false, defaultVal: null },
+            { name: 'media_type', type: 'VARCHAR(20)', key: '', nullable: false, defaultVal: "'PHOTO'" },
+            { name: 'url', type: 'LONGTEXT', key: '', nullable: false, defaultVal: null },
+            { name: 'created_at', type: 'TIMESTAMP', key: '', nullable: false, defaultVal: 'CURRENT_TIMESTAMP' },
+          ],
+        },
+        {
+          name: 'practice_logs',
+          description: 'Completed session logs with duration, titles and disciplines',
+          rowCount: status.tables.find((t) => t.name === 'practice_logs')?.rowCount ?? 15,
+          apiEndpoint: '/api/progress/log',
+          primaryKey: 'id',
+          columns: [
+            { name: 'id', type: 'VARCHAR(50)', key: 'PRI', nullable: false, defaultVal: null },
+            { name: 'user_id', type: 'VARCHAR(50)', key: '', nullable: false, defaultVal: null },
+            { name: 'practice_id', type: 'VARCHAR(50)', key: '', nullable: false, defaultVal: null },
+            { name: 'title', type: 'VARCHAR(150)', key: '', nullable: false, defaultVal: null },
+            { name: 'discipline', type: 'VARCHAR(50)', key: '', nullable: false, defaultVal: null },
+            { name: 'minutes_practiced', type: 'INT', key: '', nullable: false, defaultVal: '15' },
+            { name: 'completed_at', type: 'TIMESTAMP', key: '', nullable: false, defaultVal: 'CURRENT_TIMESTAMP' },
+          ],
+        },
+        {
+          name: 'user_progress',
+          description: 'Weekly rhythm streak, total minutes, completed days',
+          rowCount: status.tables.find((t) => t.name === 'user_progress')?.rowCount ?? 1,
+          apiEndpoint: '/api/progress/:userId',
+          primaryKey: 'user_id',
+          columns: [
+            { name: 'user_id', type: 'VARCHAR(50)', key: 'PRI', nullable: false, defaultVal: null },
+            { name: 'current_streak', type: 'INT', key: '', nullable: false, defaultVal: '3' },
+            { name: 'total_minutes', type: 'INT', key: '', nullable: false, defaultVal: '185' },
+            { name: 'completed_sessions', type: 'INT', key: '', nullable: false, defaultVal: '12' },
+            { name: 'weekly_goal', type: 'INT', key: '', nullable: false, defaultVal: '5' },
+            { name: 'completed_days', type: 'VARCHAR(50)', key: '', nullable: false, defaultVal: "'1,1,1,0,0,0,0'" },
+            { name: 'updated_at', type: 'TIMESTAMP', key: '', nullable: false, defaultVal: 'CURRENT_TIMESTAMP ON UPDATE' },
+          ],
+        },
+        {
+          name: 'practices',
+          description: 'All 40 practices (Yoga, Kathak, Bollywood, Semi-Classical, Zumba, Meditation)',
+          rowCount: status.tables.find((t) => t.name === 'practices')?.rowCount ?? (storeData.practices?.length || 40),
+          apiEndpoint: '/api/practices',
+          primaryKey: 'id',
+          columns: [
+            { name: 'id', type: 'VARCHAR(50)', key: 'PRI', nullable: false, defaultVal: null },
+            { name: 'title', type: 'VARCHAR(150)', key: '', nullable: false, defaultVal: null },
+            { name: 'discipline', type: 'VARCHAR(50)', key: 'MUL', nullable: false, defaultVal: null },
+            { name: 'category', type: 'VARCHAR(100)', key: '', nullable: false, defaultVal: null },
+            { name: 'level', type: 'VARCHAR(50)', key: '', nullable: true, defaultVal: "'All Levels'" },
+            { name: 'topic', type: 'VARCHAR(100)', key: '', nullable: true, defaultVal: null },
+            { name: 'minutes', type: 'INT', key: '', nullable: false, defaultVal: '15' },
+            { name: 'description', type: 'TEXT', key: '', nullable: false, defaultVal: null },
+            { name: 'icon', type: 'VARCHAR(50)', key: '', nullable: true, defaultVal: "'sunny'" },
+            { name: 'intensity', type: 'VARCHAR(50)', key: '', nullable: true, defaultVal: "'Moderate'" },
+            { name: 'instructions', type: 'JSON', key: '', nullable: true, defaultVal: null },
+            { name: 'benefits', type: 'JSON', key: '', nullable: true, defaultVal: null },
+            { name: 'created_at', type: 'TIMESTAMP', key: '', nullable: false, defaultVal: 'CURRENT_TIMESTAMP' },
+          ],
+        },
+        {
+          name: 'diet_plans',
+          description: 'All 14 scheduled meals (Veg & Non-Veg from 06:30 AM to 09:30 PM)',
+          rowCount: status.tables.find((t) => t.name === 'diet_plans')?.rowCount ?? (storeData.dietPlans?.length || 14),
+          apiEndpoint: '/api/diet-plans',
+          primaryKey: 'id',
+          columns: [
+            { name: 'id', type: 'VARCHAR(50)', key: 'PRI', nullable: false, defaultVal: null },
+            { name: 'title', type: 'VARCHAR(150)', key: '', nullable: false, defaultVal: null },
+            { name: 'diet_type', type: 'VARCHAR(20)', key: 'MUL', nullable: false, defaultVal: null },
+            { name: 'time_slot', type: 'VARCHAR(50)', key: '', nullable: false, defaultVal: null },
+            { name: 'time_label', type: 'VARCHAR(30)', key: '', nullable: false, defaultVal: null },
+            { name: 'target_goal', type: 'VARCHAR(100)', key: '', nullable: false, defaultVal: null },
+            { name: 'level', type: 'VARCHAR(50)', key: '', nullable: true, defaultVal: "'All Levels'" },
+            { name: 'calories', type: 'INT', key: '', nullable: false, defaultVal: '200' },
+            { name: 'protein_grams', type: 'INT', key: '', nullable: false, defaultVal: '10' },
+            { name: 'carbs_grams', type: 'INT', key: '', nullable: false, defaultVal: '20' },
+            { name: 'fat_grams', type: 'INT', key: '', nullable: false, defaultVal: '5' },
+            { name: 'description', type: 'TEXT', key: '', nullable: false, defaultVal: null },
+            { name: 'ingredients', type: 'JSON', key: '', nullable: true, defaultVal: null },
+            { name: 'preparation_instructions', type: 'JSON', key: '', nullable: true, defaultVal: null },
+            { name: 'benefits', type: 'TEXT', key: '', nullable: true, defaultVal: null },
+            { name: 'created_at', type: 'TIMESTAMP', key: '', nullable: false, defaultVal: 'CURRENT_TIMESTAMP' },
+          ],
+        },
+      ];
+
+      res.json({
+        success: true,
+        database: status.config.database,
+        engine: status.connected ? 'MySQL 8.0 InnoDB (Live Pool)' : 'Dual-Persistent JSON Store (Standby / Fallback)',
+        connected: status.connected,
+        status: status.status,
+        config: status.config,
+        lastChecked: status.lastChecked,
+        tableCount: tableSchemas.length,
+        tables: tableSchemas,
+      });
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      res.status(500).json({ error: msg });
+    }
+  });
+
   // Download or view complete SQL script for MySQL Workbench
   app.get('/api/db/schema.sql', (_req: Request, res: Response) => {
     const sql = getCompleteSchemaSql();

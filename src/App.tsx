@@ -336,8 +336,41 @@ export function App() {
                   durationMinutes: c.duration_minutes || c.durationMinutes || 60,
                   meetingUrl: c.meeting_url || c.meetingUrl,
                   createdBy: c.created_by || c.createdBy || 'Teacher',
-                  participantCount: 1,
+                  participantCount: c.participantCount || 1,
                   joined: false,
+                });
+              }
+            });
+            return merged;
+          });
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  // Synchronize chat messages from Database on startup
+  useEffect(() => {
+    fetch('/api/chat/messages')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setMessages((prev) => {
+            const existingIds = new Set(prev.map((m) => m.id));
+            const merged = [...prev];
+            data.forEach((m: any) => {
+              if (!existingIds.has(m.id)) {
+                merged.push({
+                  id: m.id,
+                  senderId: m.senderId || m.sender_id,
+                  email: m.email || m.sender_email,
+                  role: m.role || m.sender_role || 'USER',
+                  recipientId: m.recipientId || m.recipient_id,
+                  recipientEmail: m.recipientEmail || m.recipient_email,
+                  text: m.text || m.message_text || '',
+                  sentAt: m.sentAt || m.sent_at || new Date().toISOString(),
+                  type: m.type || m.message_type || 'text',
+                  status: m.status || 'delivered',
+                  fromWhatsApp: Boolean(m.fromWhatsApp),
                 });
               }
             });
@@ -544,11 +577,13 @@ export function App() {
   };
 
   const handleJoinClass = (classId: string) => {
+    const target = classes.find((c) => c.id === classId);
+    const willJoin = target ? !target.joined : true;
+
     setClasses((prev) =>
       prev.map((c) => {
         if (c.id === classId) {
-          const willJoin = !c.joined;
-          if (c.meetingUrl) {
+          if (c.meetingUrl && willJoin) {
             window.open(c.meetingUrl, '_blank');
           }
           if (willJoin) {
@@ -568,6 +603,13 @@ export function App() {
         return c;
       })
     );
+
+    // Dynamic backend and database sync
+    fetch(`/api/classes/${classId}/join`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: session?.userId || 'u-current', willJoin }),
+    }).catch(() => {});
   };
 
   const handleDeleteClass = (classId: string) => {
@@ -1048,8 +1090,9 @@ export function App() {
             const completedPrac = activePractice;
             setActivePractice(null);
 
-            // Record to Database Progress & Logs
+            // Record dynamically to API & Firestore Progress & Logs
             if (session?.userId && completedPrac) {
+              const logId = 'log-' + Date.now();
               fetch('/api/progress/log', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -1060,6 +1103,16 @@ export function App() {
                   discipline: completedPrac.discipline,
                   minutes: completedPrac.minutes,
                 }),
+              }).catch(() => {});
+
+              setDoc(doc(db, 'users', session.userId, 'practice_logs', logId), {
+                id: logId,
+                userId: session.userId,
+                practiceId: completedPrac.id,
+                title: completedPrac.title,
+                discipline: completedPrac.discipline,
+                minutesPracticed: completedPrac.minutes,
+                completedAt: new Date().toISOString(),
               }).catch(() => {});
             }
 
@@ -1104,6 +1157,7 @@ export function App() {
         primaryColor={primaryColor}
         onCompleted={(minutes) => {
           if (session?.userId) {
+            const logId = 'log-' + Date.now();
             fetch('/api/progress/log', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -1114,6 +1168,16 @@ export function App() {
                 discipline: 'Meditation',
                 minutes,
               }),
+            }).catch(() => {});
+
+            setDoc(doc(db, 'users', session.userId, 'practice_logs', logId), {
+              id: logId,
+              userId: session.userId,
+              practiceId: 'pranayama-quick',
+              title: '1-min Guided Pranayama Pause',
+              discipline: 'Meditation',
+              minutesPracticed: minutes,
+              completedAt: new Date().toISOString(),
             }).catch(() => {});
           }
 

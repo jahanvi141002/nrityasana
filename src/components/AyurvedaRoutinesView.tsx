@@ -35,11 +35,23 @@ export const AyurvedaRoutinesView: React.FC<AyurvedaRoutinesViewProps> = ({
   const [selectedSubTab, setSelectedSubTab] = useState<'dinacharya' | 'dosha' | 'elixirs'>('dinacharya');
   const [selectedDosha, setSelectedDosha] = useState<'vata' | 'pitta' | 'kapha'>('vata');
   const [expandedRoutineId, setExpandedRoutineId] = useState<string>('dina-1');
-  const [completedSteps, setCompletedSteps] = useState<Record<string, boolean>>({});
+  const [completedSteps, setCompletedSteps] = useState<Record<string, boolean>>(() => {
+    try {
+      const saved = localStorage.getItem('nrityasana_dinacharya_completed');
+      if (saved) return JSON.parse(saved);
+    } catch {}
+    return {};
+  });
 
   const toggleStepComplete = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    setCompletedSteps((prev) => ({ ...prev, [id]: !prev[id] }));
+    setCompletedSteps((prev) => {
+      const next = { ...prev, [id]: !prev[id] };
+      try {
+        localStorage.setItem('nrityasana_dinacharya_completed', JSON.stringify(next));
+      } catch {}
+      return next;
+    });
   };
 
   const getStepIcon = (iconName: DinacharyaStep['icon']) => {

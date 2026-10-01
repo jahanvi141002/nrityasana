@@ -14,6 +14,11 @@ import {
   Code2,
   Terminal,
   Sliders,
+  Search,
+  Link2,
+  Eye,
+  Table,
+  Cpu,
 } from 'lucide-react';
 import { UserSession } from '../types';
 
@@ -27,6 +32,41 @@ interface DatabaseWorkbenchModalProps {
 interface TableStatus {
   name: string;
   rowCount: number;
+}
+
+interface ColumnSchema {
+  name: string;
+  type: string;
+  key: string;
+  nullable: boolean;
+  defaultVal: string | null;
+}
+
+interface TableSchemaInfo {
+  name: string;
+  description: string;
+  rowCount: number;
+  apiEndpoint: string;
+  primaryKey: string;
+  columns: ColumnSchema[];
+}
+
+interface DbSchemasResponse {
+  success: boolean;
+  database: string;
+  engine: string;
+  connected: boolean;
+  status: 'connected' | 'connecting' | 'standby' | 'error';
+  config: {
+    host: string;
+    port: number;
+    database: string;
+    user: string;
+    jdbcUrl: string;
+  };
+  lastChecked: string;
+  tableCount: number;
+  tables: TableSchemaInfo[];
 }
 
 interface DbStatusResponse {
@@ -63,9 +103,15 @@ export const DatabaseWorkbenchModal: React.FC<DatabaseWorkbenchModalProps> = ({
   session,
   onShowToast,
 }) => {
-  const [activeTab, setActiveTab] = useState<'workbench' | 'tables' | 'config' | 'console'>('workbench');
+  const [activeTab, setActiveTab] = useState<'workbench' | 'tables' | 'api' | 'config' | 'console'>('workbench');
   const [dbStatus, setDbStatus] = useState<DbStatusResponse | null>(null);
+  const [schemasData, setSchemasData] = useState<DbSchemasResponse | null>(null);
   const [isLoadingStatus, setIsLoadingStatus] = useState(false);
+  const [isLoadingSchemas, setIsLoadingSchemas] = useState(false);
+  const [selectedSchemaTable, setSelectedSchemaTable] = useState<string>('practices');
+  const [schemaSearchFilter, setSchemaSearchFilter] = useState('');
+  const [showRawJson, setShowRawJson] = useState(false);
+  const [pingLatency, setPingLatency] = useState<number | null>(null);
   const [isCopiedSql, setIsCopiedSql] = useState(false);
   const [isCopiedJdbc, setIsCopiedJdbc] = useState(false);
   const [isMigrating, setIsMigrating] = useState(false);
@@ -91,11 +137,13 @@ export const DatabaseWorkbenchModal: React.FC<DatabaseWorkbenchModalProps> = ({
 
   const fetchStatus = async () => {
     setIsLoadingStatus(true);
+    const start = performance.now();
     try {
       const res = await fetch('/api/db/status');
       if (res.ok) {
         const data = await res.json();
         setDbStatus(data);
+        setPingLatency(Math.round(performance.now() - start));
         if (data.config) {
           setHost(data.config.host || 'localhost');
           setPort(String(data.config.port || '3306'));
@@ -110,9 +158,27 @@ export const DatabaseWorkbenchModal: React.FC<DatabaseWorkbenchModalProps> = ({
     }
   };
 
+  const fetchSchemas = async () => {
+    setIsLoadingSchemas(true);
+    const start = performance.now();
+    try {
+      const res = await fetch('/api/db/schemas');
+      if (res.ok) {
+        const data = await res.json();
+        setSchemasData(data);
+        setPingLatency(Math.round(performance.now() - start));
+      }
+    } catch (err) {
+      console.warn('Failed to load table schemas:', err);
+    } finally {
+      setIsLoadingSchemas(false);
+    }
+  };
+
   useEffect(() => {
     if (isOpen) {
       fetchStatus();
+      fetchSchemas();
       // Fetch full schema.sql text for preview and copy
       fetch('/api/db/schema.sql')
         .then((res) => (res.ok ? res.text() : ''))
@@ -349,6 +415,25 @@ export const DatabaseWorkbenchModal: React.FC<DatabaseWorkbenchModalProps> = ({
             All 10 Tables & Seed Data
           </button>
           <button
+            onClick={() => {
+              setActiveTab('api');
+              fetchSchemas();
+            }}
+            className={`flex items-center gap-2 py-3 px-3 text-xs font-bold border-b-2 transition cursor-pointer ${
+              activeTab === 'api'
+                ? 'border-[#781D32] text-[#781D32]'
+                : 'border-transparent text-[#7D6D73] hover:text-[#1F161A]'
+            }`}
+          >
+            <Cpu className="w-3.5 h-3.5" />
+            Database API
+            <span
+              className={`w-1.5 h-1.5 rounded-full ${
+                isConnected ? 'bg-emerald-500' : 'bg-amber-500'
+              }`}
+            />
+          </button>
+          <button
             onClick={() => setActiveTab('config')}
             className={`flex items-center gap-2 py-3 px-3 text-xs font-bold border-b-2 transition cursor-pointer ${
               activeTab === 'config'
@@ -548,6 +633,367 @@ export const DatabaseWorkbenchModal: React.FC<DatabaseWorkbenchModalProps> = ({
                     </p>
                   </div>
                 ))}
+              </div>
+            </div>
+          )}
+
+          {/* TAB: DATABASE API (DYNAMIC MYSQL CONNECTION STATUS & TABLE SCHEMAS) */}
+          {activeTab === 'api' && (
+            <div className="space-y-6">
+              {/* Header & Live Ping Bar */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-4.5 rounded-2xl border border-[#EADBD5] shadow-xs">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-serif text-base font-bold text-[#1F161A]">
+                      Live MySQL Connection & Schema API
+                    </h3>
+                    <span
+                      className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold ${
+                        isConnected
+                          ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                          : 'bg-amber-100 text-amber-800 border border-amber-200'
+                      }`}
+                    >
+                      <span
+                        className={`w-1.5 h-1.5 rounded-full ${
+                          isConnected ? 'bg-emerald-600' : 'bg-amber-600'
+                        }`}
+                      />
+                      {isConnected ? 'Active MySQL Live Pool' : 'Dual-Persistent Standby'}
+                    </span>
+                  </div>
+                  <p className="text-xs text-[#7D6D73] mt-1 leading-relaxed">
+                    Dynamically fetched from <code className="font-mono text-[#781D32]">/api/db/status</code> &amp;{' '}
+                    <code className="font-mono text-[#781D32]">/api/db/schemas</code>.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2 shrink-0">
+                  {pingLatency !== null && (
+                    <span className="px-2.5 py-1 rounded-xl text-xs font-mono font-semibold bg-[#FAF3F0] text-[#781D32] border border-[#EADBD5]">
+                      {pingLatency} ms latency
+                    </span>
+                  )}
+                  <button
+                    onClick={() => {
+                      fetchStatus();
+                      fetchSchemas();
+                    }}
+                    disabled={isLoadingStatus || isLoadingSchemas}
+                    className="px-3.5 py-1.5 rounded-xl bg-[#781D32] hover:bg-[#601426] text-white text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer shadow-xs disabled:opacity-50"
+                  >
+                    <RefreshCw
+                      className={`w-3.5 h-3.5 ${
+                        isLoadingStatus || isLoadingSchemas ? 'animate-spin' : ''
+                      }`}
+                    />
+                    Ping &amp; Refresh API
+                  </button>
+                </div>
+              </div>
+
+              {/* Status Dashboard Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {/* Card 1: Connection & Engine State */}
+                <div className="p-4 rounded-2xl bg-white border border-[#EADBD5] shadow-xs">
+                  <div className="flex items-center gap-2 text-xs font-bold text-[#7D6D73] uppercase tracking-wider mb-2">
+                    <Server className="w-3.5 h-3.5 text-[#781D32]" />
+                    Engine &amp; Connection
+                  </div>
+                  <p className="font-serif text-sm font-bold text-[#1F161A]">
+                    {schemasData?.engine || (isConnected ? 'MySQL 8.0 InnoDB' : 'Dual-Persistent Fallback')}
+                  </p>
+                  <div className="mt-2.5 space-y-1 text-xs text-[#7D6D73]">
+                    <div className="flex justify-between">
+                      <span>Status Code:</span>
+                      <span className="font-mono font-semibold text-[#1F161A] capitalize">
+                        {dbStatus?.status || 'standby'}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Driver Protocol:</span>
+                      <span className="font-mono text-[#1F161A]">mysql2 / pool</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Last Checked:</span>
+                      <span className="font-mono text-[10px] text-[#7D6D73]">
+                        {dbStatus?.lastChecked ? new Date(dbStatus.lastChecked).toLocaleTimeString() : 'Just now'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Card 2: Database Coordinates */}
+                <div className="p-4 rounded-2xl bg-white border border-[#EADBD5] shadow-xs">
+                  <div className="flex items-center gap-2 text-xs font-bold text-[#7D6D73] uppercase tracking-wider mb-2">
+                    <Database className="w-3.5 h-3.5 text-[#781D32]" />
+                    Target Coordinates
+                  </div>
+                  <p className="font-mono text-sm font-bold text-[#781D32]">
+                    {dbStatus?.config?.database || 'nrityasana'}
+                  </p>
+                  <div className="mt-2.5 space-y-1 text-xs text-[#7D6D73]">
+                    <div className="flex justify-between">
+                      <span>Host:</span>
+                      <span className="font-mono text-[#1F161A]">{dbStatus?.config?.host || 'localhost'}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Port:</span>
+                      <span className="font-mono text-[#1F161A]">{dbStatus?.config?.port || 3306}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>User:</span>
+                      <span className="font-mono text-[#1F161A]">{dbStatus?.config?.user || 'root'}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Card 3: Endpoints & Tools */}
+                <div className="p-4 rounded-2xl bg-white border border-[#EADBD5] shadow-xs flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center gap-2 text-xs font-bold text-[#7D6D73] uppercase tracking-wider mb-2">
+                      <Link2 className="w-3.5 h-3.5 text-[#781D32]" />
+                      Active API Endpoints
+                    </div>
+                    <div className="space-y-1 text-[11px] font-mono">
+                      <div className="bg-[#FAF3F0] px-2 py-1 rounded border border-[#EADBD5] truncate">
+                        GET /api/db/status
+                      </div>
+                      <div className="bg-[#FAF3F0] px-2 py-1 rounded border border-[#EADBD5] truncate">
+                        GET /api/db/schemas
+                      </div>
+                    </div>
+                  </div>
+                  <div className="pt-2 flex items-center justify-between">
+                    <button
+                      onClick={() => setShowRawJson(!showRawJson)}
+                      className="text-xs font-semibold text-[#781D32] hover:underline flex items-center gap-1 cursor-pointer"
+                    >
+                      <Eye className="w-3.5 h-3.5" />
+                      {showRawJson ? 'Hide Raw JSON' : 'Inspect JSON API'}
+                    </button>
+                    <button
+                      onClick={handleDownloadSql}
+                      className="text-xs font-semibold text-[#7D6D73] hover:text-[#1F161A] flex items-center gap-1 cursor-pointer"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      .sql script
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Raw JSON Inspector Drawer */}
+              {showRawJson && (
+                <div className="p-4 rounded-2xl bg-[#1C1618] text-emerald-400 font-mono text-xs border border-white/10 shadow-inner relative animate-in fade-in duration-200">
+                  <div className="flex items-center justify-between pb-2 mb-2 border-b border-white/10 text-white/70">
+                    <span className="text-[11px] font-bold uppercase tracking-wider">
+                      Response: GET /api/db/schemas
+                    </span>
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(JSON.stringify(schemasData, null, 2));
+                        if (onShowToast) onShowToast('JSON Copied', 'Schemas payload copied to clipboard');
+                      }}
+                      className="px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-white text-[10px] font-semibold transition cursor-pointer"
+                    >
+                      Copy JSON
+                    </button>
+                  </div>
+                  <pre className="max-h-60 overflow-y-auto overflow-x-auto text-[11px] leading-relaxed">
+                    {JSON.stringify(schemasData || { note: 'Loading live schemas...' }, null, 2)}
+                  </pre>
+                </div>
+              )}
+
+              {/* Table Schemas Explorer Section */}
+              <div className="bg-white rounded-2xl border border-[#EADBD5] shadow-xs p-5 space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div>
+                    <h4 className="font-serif text-sm font-bold text-[#1F161A] flex items-center gap-2">
+                      <Table className="w-4 h-4 text-[#781D32]" />
+                      Available Relational Table Schemas ({schemasData?.tables?.length || 10} Tables)
+                    </h4>
+                    <p className="text-xs text-[#7D6D73]">
+                      Click any table to inspect its column geometry, primary keys, SQL data types, and linked API endpoints.
+                    </p>
+                  </div>
+
+                  {/* Search / Filter Input */}
+                  <div className="relative w-full sm:w-64">
+                    <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-[#7D6D73]" />
+                    <input
+                      type="text"
+                      placeholder="Search tables or columns..."
+                      value={schemaSearchFilter}
+                      onChange={(e) => setSchemaSearchFilter(e.target.value)}
+                      className="w-full pl-8 pr-3 py-1.5 rounded-xl bg-[#FAF3F0] border border-[#EADBD5] text-xs text-[#1F161A] focus:outline-none focus:border-[#781D32]"
+                    />
+                  </div>
+                </div>
+
+                {/* Table Selection Pills */}
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  {(schemasData?.tables || [
+                    { name: 'practices', rowCount: 40 },
+                    { name: 'diet_plans', rowCount: 14 },
+                    { name: 'live_classes', rowCount: 4 },
+                    { name: 'users', rowCount: 2 },
+                    { name: 'profiles', rowCount: 2 },
+                    { name: 'chat_messages', rowCount: 12 },
+                    { name: 'media_items', rowCount: 2 },
+                    { name: 'practice_logs', rowCount: 15 },
+                    { name: 'user_progress', rowCount: 1 },
+                    { name: 'class_attendees', rowCount: 18 },
+                  ])
+                    .filter((t) => {
+                      if (!schemaSearchFilter.trim()) return true;
+                      const q = schemaSearchFilter.toLowerCase();
+                      const matchName = t.name.toLowerCase().includes(q);
+                      const fullTable = schemasData?.tables?.find((tbl) => tbl.name === t.name);
+                      const matchCol = fullTable?.columns?.some((c) => c.name.toLowerCase().includes(q));
+                      return matchName || matchCol;
+                    })
+                    .map((t) => {
+                      const isSelected = selectedSchemaTable === t.name;
+                      return (
+                        <button
+                          key={t.name}
+                          onClick={() => setSelectedSchemaTable(t.name)}
+                          className={`px-3 py-1.5 rounded-xl text-xs font-mono font-semibold transition cursor-pointer flex items-center gap-1.5 ${
+                            isSelected
+                              ? 'bg-[#781D32] text-white shadow-xs'
+                              : 'bg-[#FAF3F0] text-[#7D6D73] hover:text-[#1F161A] hover:bg-[#F2E6E2] border border-[#EADBD5]'
+                          }`}
+                        >
+                          <span>{t.name}</span>
+                          <span
+                            className={`px-1.5 py-0.2 rounded-full text-[10px] ${
+                              isSelected ? 'bg-white/20 text-white' : 'bg-white text-[#781D32]'
+                            }`}
+                          >
+                            {t.rowCount}
+                          </span>
+                        </button>
+                      );
+                    })}
+                </div>
+
+                {/* Detailed Selected Table Schema View */}
+                {(() => {
+                  const currentTable =
+                    schemasData?.tables?.find((t) => t.name === selectedSchemaTable) ||
+                    schemasData?.tables?.[0];
+
+                  if (!currentTable) {
+                    return (
+                      <p className="text-xs text-[#7D6D73] py-4 text-center">
+                        No table schema matching &quot;{schemaSearchFilter}&quot;
+                      </p>
+                    );
+                  }
+
+                  return (
+                    <div className="mt-4 pt-4 border-t border-[#EADBD5] space-y-3">
+                      {/* Table Header Info */}
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-[#FAF3F0] p-3.5 rounded-xl border border-[#EADBD5]">
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="font-mono text-sm font-bold text-[#781D32]">
+                              {currentTable.name}
+                            </span>
+                            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-200">
+                              PK: {currentTable.primaryKey}
+                            </span>
+                            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-200">
+                              {currentTable.rowCount} Rows
+                            </span>
+                          </div>
+                          <p className="text-xs text-[#7D6D73] mt-1">{currentTable.description}</p>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <span className="text-[11px] font-mono text-[#781D32] bg-white px-2 py-1 rounded border border-[#EADBD5]">
+                            {currentTable.apiEndpoint}
+                          </span>
+                          <button
+                            onClick={() => {
+                              setCustomSql(`SELECT * FROM ${currentTable.name} LIMIT 10;`);
+                              setActiveTab('console');
+                            }}
+                            className="px-2.5 py-1 rounded-lg bg-white hover:bg-[#FAF3F0] text-xs font-semibold text-[#1F161A] border border-[#EADBD5] flex items-center gap-1 transition cursor-pointer"
+                            title="Execute query on this table in SQL console"
+                          >
+                            <Play className="w-3 h-3 text-emerald-600 fill-current" />
+                            Query
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Column Table */}
+                      <div className="overflow-x-auto rounded-xl border border-[#EADBD5]">
+                        <table className="w-full text-left text-xs">
+                          <thead className="bg-[#FAF3F0] text-[#7D6D73] font-bold uppercase tracking-wider text-[10px] border-b border-[#EADBD5]">
+                            <tr>
+                              <th className="py-2.5 px-3">Column Name</th>
+                              <th className="py-2.5 px-3">SQL Data Type</th>
+                              <th className="py-2.5 px-3 text-center">Key</th>
+                              <th className="py-2.5 px-3 text-center">Nullable</th>
+                              <th className="py-2.5 px-3">Default Value</th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-[#EADBD5] font-mono bg-white">
+                            {currentTable.columns.map((col) => {
+                              const isPk = col.key === 'PRI';
+                              const isUni = col.key === 'UNI';
+                              const isMul = col.key === 'MUL';
+
+                              return (
+                                <tr key={col.name} className="hover:bg-[#FAF3F0]/60 transition">
+                                  <td className="py-2.5 px-3 font-bold text-[#1F161A] flex items-center gap-1.5">
+                                    {isPk && <span className="text-amber-500 font-sans text-xs">🔑</span>}
+                                    <span>{col.name}</span>
+                                  </td>
+                                  <td className="py-2.5 px-3 text-[#781D32] font-semibold">{col.type}</td>
+                                  <td className="py-2.5 px-3 text-center">
+                                    {isPk && (
+                                      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800">
+                                        PRI
+                                      </span>
+                                    )}
+                                    {isUni && (
+                                      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800">
+                                        UNI
+                                      </span>
+                                    )}
+                                    {isMul && (
+                                      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-purple-100 text-purple-800">
+                                        INDEX
+                                      </span>
+                                    )}
+                                    {!isPk && !isUni && !isMul && <span className="text-gray-400">—</span>}
+                                  </td>
+                                  <td className="py-2.5 px-3 text-center">
+                                    <span
+                                      className={`text-[10px] font-bold ${
+                                        col.nullable ? 'text-gray-500' : 'text-rose-600'
+                                      }`}
+                                    >
+                                      {col.nullable ? 'YES' : 'NOT NULL'}
+                                    </span>
+                                  </td>
+                                  <td className="py-2.5 px-3 text-[#7D6D73] text-[11px]">
+                                    {col.defaultVal || <span className="italic text-gray-400">NULL</span>}
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  );
+                })()}
               </div>
             </div>
           )}
